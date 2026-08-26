@@ -1,4 +1,4 @@
-# Good Apples — Website 2.0
+# Good Apples Website 2.0
 
 Static marketing site for Good Apples. No build step: open `index.html`, or serve
 the folder over HTTP (the fonts need a real origin, so `file://` won't do).
@@ -13,7 +13,7 @@ python3 -m http.server 4321
 index.html            markup for every section
 assets/css/style.css  all styling, numbered sections in the header comment
 assets/js/main.js     preloader, smooth scroll, hero hover, banner flipbook, cursor
-assets/fonts/         Archivo variable (OFL) — the wordmark is the Condensed
+assets/fonts/         Archivo variable (OFL). The wordmark is the Condensed
                       ExtraBold instance, wdth 75% / wght 800
 assets/vendor/        GSAP + ScrollTrigger + ScrollSmoother, Swiper
 assets/img/hero/      hero grid thumbnails, cropped per subject

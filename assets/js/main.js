@@ -1,5 +1,5 @@
 /***************************************************
-    Good Apples — Website 2.0
+    Good Apples Website 2.0
     01. Preloader
     02. Smooth scroll (ScrollSmoother)
     03. Fade-in animation
@@ -138,7 +138,7 @@
     }
 
     /*----------------------------------------*/
-    /*  04c. Full bleed banner — GIF-style frame cycle
+    /*  04c. Full bleed banner, GIF-style frame cycle
     /*----------------------------------------*/
     (function bannerFlipbook() {
         const FRAME_MS = 175;

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------------
-    Good Apples — Website 2.0
+    Good Apples Website 2.0
     01. Fonts
     02. Root / theme default
     03. Grid (container / row / cols / utilities)
@@ -22,7 +22,7 @@
 /*----------------------------------------*/
 /*  01. Fonts
 /*----------------------------------------*/
-/* Archivo variable — the Good Apples wordmark uses the Condensed ExtraBold
+/* Archivo variable. The Good Apples wordmark uses the Condensed ExtraBold
    instance (wdth 75%, wght 800) */
 @font-face {
     font-family: "Archivo";
@@ -471,7 +471,7 @@ body.tp-magic-cursor #magic-cursor {
     transition: 0.3s;
 }
 
-/* GOOD APPLES wordmark — stacked over two lines, cap-to-cap height 39px
+/* GOOD APPLES wordmark, stacked over two lines, cap-to-cap height 39px
    (the height the single-line logotype occupied). Archivo's cap height is
    0.73em, so line-height 0.73 sits the two cap rows exactly flush. */
 .ga-logo {
@@ -485,7 +485,7 @@ body.tp-magic-cursor #magic-cursor {
     text-transform: uppercase;
     color: var(--ga-black);
     -webkit-font-smoothing: antialiased;
-    /* the cap rows sit high inside the tight line boxes — nudge the lockup
+    /* the cap rows sit high inside the tight line boxes, so nudge the lockup
        back down so the wordmark optically centres against the menu button */
     transform: translateY(0.18em);
 }
@@ -613,7 +613,7 @@ body.tp-magic-cursor #magic-cursor {
 
 /* Each .fix clips its span, and the span slides out by -105% of its own
    height. The body's 26px line-height strut would otherwise make .fix taller
-   than the span at these sizes, leaving the hidden line peeking out — so the
+   than the span at these sizes, leaving the hidden line peeking out, so the
    strut is zeroed and the spans align to the top of their box. */
 .px-hero-2-content,
 .px-hero-2-contents {
@@ -691,7 +691,7 @@ body.tp-magic-cursor #magic-cursor {
 
 /* The reference steps this size per breakpoint. GOOD + APPLES measure 5.23em
    in Archivo Condensed ExtraBold against DESIGN + STUDIO's 4.01em in Thunder,
-   so every step is the reference's value x 0.764 — the lockup then occupies
+   so every step is the reference's value x 0.764, so the lockup occupies
    the same width on the page as the original does. */
 @media only screen and (min-width: 1800px) and (max-width: 1900px) {
     .px-hero-2-text { font-size: 244px; }
@@ -895,7 +895,7 @@ body.tp-magic-cursor #magic-cursor {
 }
 
 /* the track holds the value list twice, so translating it exactly -50%
-   lands the second copy where the first began — a seamless loop */
+   lands the second copy where the first began, giving a seamless loop */
 .ga-ticker-track {
     display: flex;
     flex: 0 0 auto;
