@@ -841,7 +841,10 @@ body.tp-magic-cursor #magic-cursor {
 
 @media (max-width: 767px) {
     .ga-banner-img { height: 200px; }
-    .ga-banner-frames { height: 300px; margin-top: -30px; }
+    /* height is ~2/3 of the viewport width so the box sits at the source's own
+       3:2 ratio and object-fit crops nothing; the 25px overhang top and bottom
+       is the travel the parallax drifts within */
+    .ga-banner-frames { height: 66.6vw; min-height: 250px; margin-top: -25px; }
 }
 
 /*----------------------------------------*/

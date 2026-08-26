@@ -269,6 +269,38 @@
     })();
 
     /*----------------------------------------*/
+    /*  04d. Banner parallax without the smoother
+    /*----------------------------------------*/
+    // ScrollSmoother's data-speed only exists where the smoother runs, which is
+    // pointer devices. Everywhere else the band would sit flat, so the drift is
+    // done here instead. It stays inside the frame box's overhang, so the band
+    // is always covered no matter where the drift sits.
+    if (!useSmoother) {
+        (function bannerDrift() {
+            const band = document.querySelector(".ga-banner-img");
+            const frames = document.querySelector(".ga-banner-frames");
+            if (!band || !frames) return;
+
+            function update() {
+                const r = band.getBoundingClientRect();
+                if (r.bottom < -100 || r.top > window.innerHeight + 100) return;
+                const slack = (frames.offsetHeight - band.offsetHeight) / 2;
+                if (slack <= 0) return;
+                // -1 once the band has passed above, +1 while still below
+                const progress = ((r.top + r.height / 2) - window.innerHeight / 2) /
+                    ((window.innerHeight + r.height) / 2);
+                const clamped = Math.max(-1, Math.min(1, progress));
+                frames.style.transform = "translate3d(0," + (-clamped * slack).toFixed(1) + "px,0)";
+            }
+
+            window.addEventListener("scroll", update, { passive: true });
+            window.addEventListener("resize", update);
+            window.addEventListener("load", update);
+            update();
+        })();
+    }
+
+    /*----------------------------------------*/
     /*  05. Magic cursor
     /*----------------------------------------*/
     (function magicCursor() {
