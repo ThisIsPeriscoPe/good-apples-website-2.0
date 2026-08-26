@@ -43,7 +43,11 @@
     }
 
     function imagesReady() {
-        const imgs = Array.from(document.images);
+        // Lazy images below the fold never start loading, so waiting on them
+        // would hang the loader forever. Only the eager ones gate the reveal.
+        const imgs = Array.from(document.images).filter(function (img) {
+            return img.loading !== "lazy";
+        });
         return Promise.all(imgs.map(function (img) {
             if (img.complete) return Promise.resolve();
             return new Promise(function (res) {
@@ -137,7 +141,7 @@
     /*  04c. Full bleed banner — GIF-style frame cycle
     /*----------------------------------------*/
     (function bannerFlipbook() {
-        const FRAME_MS = 140;
+        const FRAME_MS = 175;
 
         const wrap = document.querySelector(".ga-banner-frames");
         if (!wrap) return;
@@ -173,6 +177,8 @@
             return new Promise(function (res) {
                 img.addEventListener("load", res, { once: true });
                 img.addEventListener("error", res, { once: true });
+                // never let a stalled frame hold the whole cycle hostage
+                setTimeout(res, 8000);
             });
         })).then(function () {
             // only run while the band is actually on screen
