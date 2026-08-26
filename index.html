@@ -9,9 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>document.documentElement.classList.add("ga-fades");</script>
-    <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        // Hide-before-reveal is opt-in and self-cancelling: main.js confirms it is
+        // running by setting this flag, and if it never does (stale cached copy,
+        // blocked script) the hidden state is dropped so nothing stays invisible.
+        document.documentElement.classList.add("ga-fades");
+        setTimeout(function () {
+            if (!window.gaFadesReady) document.documentElement.classList.remove("ga-fades");
+        }, 5000);
+    </script>
+    <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css?v=20260826c">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260826c">
 </head>
 
 <body class="tp-magic-cursor">
@@ -569,11 +577,11 @@
         </div>
     </div>
 
-    <script src="assets/vendor/gsap.min.js"></script>
-    <script src="assets/vendor/ScrollTrigger.min.js"></script>
-    <script src="assets/vendor/ScrollSmoother.min.js"></script>
-    <script src="assets/vendor/swiper-bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/vendor/gsap.min.js?v=20260826c"></script>
+    <script src="assets/vendor/ScrollTrigger.min.js?v=20260826c"></script>
+    <script src="assets/vendor/ScrollSmoother.min.js?v=20260826c"></script>
+    <script src="assets/vendor/swiper-bundle.min.js?v=20260826c"></script>
+    <script src="assets/js/main.js?v=20260826c"></script>
 </body>
 
 </html>

@@ -90,6 +90,10 @@
     // The hidden state also only applies once JS has marked the document, so
     // if any of this breaks the page simply renders fully visible.
     (function fadeIns() {
+        // Tells the inline head failsafe that a current main.js is in charge,
+        // so it leaves the hidden state alone.
+        window.gaFadesReady = true;
+
         let pending = Array.prototype.slice.call(document.querySelectorAll(".px-fade-anim"));
         if (!pending.length) return;
 
