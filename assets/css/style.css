@@ -17,6 +17,7 @@
     15. Work
     16. Manifesto
     17. Footer
+    18. Scroll reveal
 -----------------------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -1262,4 +1263,31 @@ body.tp-magic-cursor #magic-cursor {
 
 @media (max-width: 767px) {
     .ga-footer-cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/*----------------------------------------*/
+/*  18. Scroll reveal
+/*----------------------------------------*/
+/* Only hides once JS has added .ga-fades to <html>, so a script failure
+   leaves the page fully visible rather than blank. The transition is CSS so
+   it cannot stall on a throttled frame loop the way a JS tween can. */
+.ga-fades .px-fade-anim {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.ga-fades .px-fade-anim.is-in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ga-fades .px-fade-anim {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }

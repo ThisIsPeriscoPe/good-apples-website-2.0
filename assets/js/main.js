@@ -63,13 +63,18 @@
     }
 
     /*----------------------------------------*/
-    /*  02. Smooth scroll
+    /*  02. Smooth scroll (pointer devices only)
     /*----------------------------------------*/
-    if (document.querySelector("#smooth-wrapper") && document.querySelector("#smooth-content")) {
+    // ScrollSmoother drives scrolling with a CSS transform on #smooth-content.
+    // On touch devices that fights the platform's own scrolling and leaves
+    // anything position-dependent (lazy loading, scroll triggers) reading
+    // stale geometry, so phones and tablets get native scrolling instead.
+    const useSmoother = window.matchMedia("(min-width: 1200px) and (pointer: fine)").matches;
+
+    if (useSmoother && document.querySelector("#smooth-wrapper") && document.querySelector("#smooth-content")) {
         ScrollSmoother.create({
             smooth: 1.35,
             effects: true,
-            smoothTouch: 0.15,
             ignoreMobileResize: true
         });
     }
@@ -77,28 +82,74 @@
     /*----------------------------------------*/
     /*  03. Fade-in animation
     /*----------------------------------------*/
-    gsap.utils.toArray(".px-fade-anim").forEach(function (item) {
-        const offset = item.getAttribute("data-fade-offset") || 40,
-            duration = item.getAttribute("data-duration") || 0.75,
-            direction = item.getAttribute("data-fade-from") || "bottom",
-            onScroll = item.getAttribute("data-on-scroll") || 1,
-            delay = item.getAttribute("data-delay") || 0.15,
-            ease = item.getAttribute("data-ease") || "power2.out",
-            settings = {
-                opacity: 0,
-                ease: ease,
-                duration: duration,
-                delay: delay,
-                x: (direction === "left" ? -offset : (direction === "right" ? offset : 0)),
-                y: (direction === "top" ? -offset : (direction === "bottom" ? offset : 0))
-            };
+    // The reveal is a plain CSS transition toggled by a class, not a GSAP
+    // tween. GSAP runs on requestAnimationFrame, so a throttled frame loop
+    // (backgrounded tab, low power mode) can leave an element stuck at
+    // opacity 0 with no way back. A CSS transition cannot fail that way.
+    //
+    // The hidden state also only applies once JS has marked the document, so
+    // if any of this breaks the page simply renders fully visible.
+    (function fadeIns() {
+        let pending = Array.prototype.slice.call(document.querySelectorAll(".px-fade-anim"));
+        if (!pending.length) return;
 
-        if (onScroll == 1) {
-            settings.scrollTrigger = { trigger: item, start: "top 85%" };
+        function showAllNow() {
+            document.documentElement.classList.remove("ga-fades");
+            pending = [];
         }
 
-        gsap.from(item, settings);
-    });
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            showAllNow();
+            return;
+        }
+
+        pending.forEach(function (item) {
+            const delay = parseFloat(item.getAttribute("data-delay"));
+            if (delay) item.style.transitionDelay = delay + "s";
+        });
+
+        function sweep() {
+            if (!pending.length) return;
+            const fold = window.innerHeight * 0.92;
+            pending = pending.filter(function (item) {
+                // top < fold catches both "just entered" and "already scrolled
+                // past", so a fast flick cannot skip anything
+                if (item.getBoundingClientRect().top < fold) {
+                    item.classList.add("is-in");
+                    return false;
+                }
+                return true;
+            });
+            if (!pending.length) {
+                window.removeEventListener("scroll", sweep);
+                window.removeEventListener("resize", sweep);
+            }
+        }
+
+        // Called directly rather than through rAF: sweeping a shrinking list of
+        // a couple of dozen rects is cheap, and it cannot deadlock the way an
+        // rAF-gated handler can if the frame loop is throttled mid-scroll.
+        window.addEventListener("scroll", sweep, { passive: true });
+        window.addEventListener("resize", sweep);
+        sweep();
+
+        window.addEventListener("load", function () {
+            sweep();
+            setTimeout(sweep, 300);
+        });
+
+        // Hard backstop. Whatever happens, nothing stays invisible: if anything
+        // is still waiting well after load, drop the hidden state altogether.
+        setTimeout(function () {
+            if (pending.length) {
+                const fold = window.innerHeight;
+                const offscreen = pending.filter(function (item) {
+                    return item.getBoundingClientRect().top >= fold;
+                });
+                if (offscreen.length !== pending.length) showAllNow();
+            }
+        }, 6000);
+    })();
 
     // Fonts and images settling after first paint shift the layout, which
     // leaves every ScrollTrigger pointing at a stale scroll position.
@@ -111,6 +162,10 @@
             ScrollTrigger.refresh();
         });
     }
+
+    // Without the smoother the banner gets no data-speed parallax, which is
+    // fine: its frame box is taller than the band at every breakpoint, so it
+    // still fills correctly, just without the drift.
 
     /*----------------------------------------*/
     /*  04. Hero hover / active state
