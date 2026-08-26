@@ -43,11 +43,12 @@
     }
 
     function imagesReady() {
-        // Lazy images below the fold never start loading, so waiting on them
-        // would hang the loader forever. Only the eager ones gate the reveal.
-        const imgs = Array.from(document.images).filter(function (img) {
-            return img.loading !== "lazy";
-        });
+        // Only the first-impression images gate the reveal: the hero grid and
+        // the banner frames. Gating on every image on the page would make the
+        // loader hang around while things far below the fold download.
+        const imgs = Array.from(document.querySelectorAll(
+            ".px-hero-2-thumb img, .px-hero-2-thumbs img, .ga-banner-frame"
+        ));
         return Promise.all(imgs.map(function (img) {
             if (img.complete) return Promise.resolve();
             return new Promise(function (res) {
@@ -98,6 +99,18 @@
 
         gsap.from(item, settings);
     });
+
+    // Fonts and images settling after first paint shift the layout, which
+    // leaves every ScrollTrigger pointing at a stale scroll position.
+    window.addEventListener("load", function () {
+        ScrollTrigger.refresh();
+    });
+
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+            ScrollTrigger.refresh();
+        });
+    }
 
     /*----------------------------------------*/
     /*  04. Hero hover / active state
