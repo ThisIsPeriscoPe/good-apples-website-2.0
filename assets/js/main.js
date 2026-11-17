@@ -10,6 +10,7 @@
     08. Header reveal
     09. Menu
     10. Hero rotator
+    11. Wordmark dock
 ****************************************************/
 
 (function () {
@@ -373,8 +374,17 @@
         // hero, which is dark, so the black wordmark disappears into it. While
         // the header is still over the hero it inverts to cream; the moment it
         // picks up its own cream band it goes back to black.
-        const overDark = !!document.querySelector(".ga-hero");
+        const heroEl = document.querySelector(".ga-hero");
+        const overDark = !!heroEl;
         if (overDark) header.classList.add("over-hero");
+
+        // The wordmark lands in the nav right at the end of the hero. Letting
+        // the header hide on that very scroll would snatch the landing away
+        // the moment it happened, so hiding only starts once the hero is well
+        // behind us and the mark has had a beat to be seen in place.
+        const holdUntil = function () {
+            return heroEl ? heroEl.offsetHeight + 240 : 60;
+        };
 
         // The header floats over the page with no background of its own. On a
         // tall window that reads fine, because the hero fills the first screen
@@ -389,6 +399,17 @@
             start: 1,
             end: 99999,
             onUpdate: function (self) {
+                // While the hero wordmark is still flying into the nav slot
+                // (section 11) the header has to hold still and stay
+                // transparent: if it slid away or took its cream band
+                // mid-flight, the mark would land on a header that is not
+                // there, over a band that should not be on the dark hero yet.
+                if (header.classList.contains("logo-pending")) {
+                    header.classList.remove("is-stuck", "is-hidden");
+                    if (overDark) header.classList.add("over-hero");
+                    return;
+                }
+
                 if (self.scroll() < 60) {
                     header.classList.remove("is-stuck", "is-hidden");
                     if (overDark) header.classList.add("over-hero");
@@ -396,7 +417,10 @@
                 }
                 header.classList.remove("over-hero");
                 header.classList.add("is-stuck");
-                header.classList.toggle("is-hidden", self.direction === 1);
+                header.classList.toggle(
+                    "is-hidden",
+                    self.direction === 1 && self.scroll() > holdUntil()
+                );
             }
         });
     })();
@@ -484,6 +508,151 @@
                 current.classList.remove("is-out");
             }, 760);
         }, HOLD_MS);
+    })();
+
+    /*----------------------------------------*/
+    /*  11. Wordmark dock
+    /*----------------------------------------*/
+    (function wordmarkDock() {
+        const dock = document.getElementById("ga_wordmark");
+        const hero = document.querySelector(".ga-hero");
+        const header = document.querySelector(".px-header-2-area.header-fixed");
+        if (!dock || !hero || !header) return;
+
+        const good = dock.querySelector(".ga-wm-good");
+        const apples = dock.querySelector(".ga-wm-apples");
+        const mid = dock.querySelector(".ga-wm-mid");
+        const rotator = dock.querySelector(".ga-wm-above");
+        const navGood = header.querySelector(".ga-logo-line");
+        const navApples = header.querySelector(".ga-logo-word");
+        if (!good || !apples || !navGood || !navApples) return;
+
+        // The header owns the slot the wordmark is flying into, so until the
+        // handover its own logo stays hidden and the two never both show.
+        header.classList.add("logo-pending");
+
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Reveal once the splash is out of the way. The preloader marks itself
+        // loaded; if there is no preloader on the page, go straight away.
+        const loader = document.getElementById("loader");
+        function reveal() { dock.classList.add("is-revealed"); }
+        if (!loader || loader.classList.contains("loaded")) {
+            reveal();
+        } else {
+            new MutationObserver(function (m, obs) {
+                if (loader.classList.contains("loaded")) { reveal(); obs.disconnect(); }
+            }).observe(loader, { attributes: true, attributeFilter: ["class"] });
+            // belt and braces: never leave the hero wordless if the splash stalls
+            setTimeout(reveal, 7000);
+        }
+
+        // Measure the flight. Both rects are read in viewport coordinates with
+        // the dock untransformed, and the dock is fixed, so the delta holds for
+        // the whole scroll. The target is measured with the header in its
+        // scrolled state, because that is the slot the wordmark ends up in.
+        function measure() {
+            gsap.set([good, apples], { clearProps: "transform" });
+
+            // .is-stuck drops the header's padding-top from 40 to 18, and that
+            // property is transitioned. Measuring straight after adding the
+            // class reads the padding the transition has not moved off yet, so
+            // the target came out 22px low and the mark jumped on handover.
+            // Transitions are suppressed for the measurement.
+            const wasStuck = header.classList.contains("is-stuck");
+            const prevTransition = header.style.transition;
+            header.style.transition = "none";
+            if (!wasStuck) header.classList.add("is-stuck");
+            void header.offsetHeight;
+
+            const tg = navGood.getBoundingClientRect();
+            const ta = navApples.getBoundingClientRect();
+
+            if (!wasStuck) header.classList.remove("is-stuck");
+            void header.offsetHeight;
+            header.style.transition = prevTransition;
+
+            const g = good.getBoundingClientRect();
+            const a = apples.getBoundingClientRect();
+            if (!g.width || !tg.width) return null;
+
+            return {
+                good:   { x: tg.left - g.left, y: tg.top - g.top, scale: tg.width / g.width },
+                apples: { x: ta.left - a.left, y: ta.top - a.top, scale: ta.width / a.width }
+            };
+        }
+
+        if (reduced) {
+            // No flight: hand straight over so the page still has exactly one
+            // wordmark at any moment.
+            ScrollTrigger.create({
+                trigger: hero,
+                start: "bottom 80%",
+                onEnter: function () {
+                    dock.classList.add("is-docked");
+                    header.classList.remove("logo-pending");
+                },
+                onLeaveBack: function () {
+                    dock.classList.remove("is-docked");
+                    header.classList.add("logo-pending");
+                }
+            });
+            return;
+        }
+
+        let tl;
+
+        function build() {
+            const d = measure();
+            if (!d) return;
+
+            if (tl) tl.scrollTrigger && tl.scrollTrigger.kill();
+            if (tl) tl.kill();
+
+            tl = gsap.timeline({
+                defaults: { ease: "none" },
+                scrollTrigger: {
+                    trigger: hero,
+                    start: "top top",
+                    // lands a little before the hero fully clears, so the mark
+                    // is already parked by the time the header takes its band
+                    end: "bottom 22%",
+                    scrub: 0.5,
+                    invalidateOnRefresh: true,
+                    onUpdate: function (self) {
+                        const done = self.progress > 0.985;
+                        dock.classList.toggle("is-docked", done);
+                        header.classList.toggle("logo-pending", !done);
+                    }
+                }
+            });
+
+            tl.to(good,   { x: d.good.x,   y: d.good.y,   scale: d.good.scale }, 0)
+              .to(apples, { x: d.apples.x, y: d.apples.y, scale: d.apples.scale }, 0);
+
+            // The bar, the tagline and the rotating line are hero furniture,
+            // not part of the mark, so they drop away early rather than
+            // shrinking into the nav with it.
+            const furniture = [mid, rotator].filter(Boolean);
+            if (furniture.length) tl.to(furniture, { opacity: 0, duration: 0.3 }, 0);
+        }
+
+        // Fonts change the measured widths, so wait for them before measuring.
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(build);
+        } else {
+            build();
+        }
+
+        ScrollTrigger.addEventListener("refreshInit", function () {
+            gsap.set([good, apples], { clearProps: "transform" });
+        });
+
+        let resizeTimer = null;
+        window.addEventListener("resize", function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(build, 180);
+        });
     })();
 
 })();

@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118f); bump it in index.html, studio.html, contact.html
+  (currently 20261118m); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -187,6 +187,52 @@ Read this first when picking the project up, from either Claude account.
 - Removed with the old hero: the scattered grid's hover and tablet Swiper
   slider in main.js, and the Swiper library itself (151K off the home page,
   it had no markup left to act on).
+
+**Joey's calls, 18 Nov (third round)**
+- **The ticker moved to sit directly under the gif hero.** Joey likes "the
+  black moving strip beneath the full bleed gif, nice contrast", but "it only
+  works when its white below it". Dark services straight under it killed that.
+  Order is now hero (gif) -> ticker (black strip) -> statement (cream) ->
+  services (dark) -> work. The strip gets the gif above and cream below, and
+  services stays dark, separated. **Do not put a dark block directly under
+  the ticker.**
+- **One wordmark, not two.** Joey: the stacked nav mark and the full width
+  hero mark were both on screen at once. The hero wordmark now lives in a
+  fixed dock (`#ga_wordmark`, section 23 of the CSS, section 11 of main.js)
+  outside `#smooth-wrapper`, and is flown into the nav slot on scroll: the two
+  words scale and translate to land exactly on the header's two logo lines,
+  while the green bar, tagline and rotating line fade out as hero furniture.
+  At the end the dock hides and the real header logo takes over, so only one
+  mark exists at any moment. It reverses fully on the way back up.
+  - It must live outside `#smooth-wrapper`: ScrollSmoother transforms
+    `#smooth-content`, and a transformed ancestor makes `position: fixed`
+    behave like `absolute`.
+  - The header is pinned visible and transparent for the whole flight
+    (`logo-pending`), or the mark would land on a header that had slid away.
+  - It stays visible for 240px past the hero before it can hide again,
+    otherwise the landing was snatched away the instant it happened.
+  - **The target is measured with transitions suppressed.** `.is-stuck` drops
+    the header's padding-top 40 -> 18 and that property is transitioned, so
+    measuring straight after adding the class read the old padding and the
+    mark jumped 22px on handover. Verified landing delta is now [0,0,0] on
+    both words.
+- **Work thumbs colour on hover again.** The ten unlinked cards had been
+  locked to greyscale to flag they have no page; that rule had equal
+  specificity to the hover rule and sat later in the file, so it won. Ten of
+  eighteen cards never came to life and the grid read as broken. Lock removed.
+- **Flipbook: 220ms a frame** (was 175). Joey: "gif is a bit too rapid".
+- Joey on the hero copy, 18 Nov: "good work for good people or human led
+  agency, or that green line, all can be adjusted / moved / removed if
+  needed... not attached tho those, but appreciate some detailed contextual
+  text or elements". So the strapline, tagline and green bar are all free to
+  change; he just wants *some* supporting detail there.
+
+**Next up (not started)**
+- **Splash screen.** Joey, 18 Nov: "splash screen i also think could be cooler
+  than just percentage climb, like an apple being bitten into untill its gone
+  or something, then a smooth way into the main page." Still the old percent
+  counter. The dock already waits for the loader's `loaded` class before
+  revealing the wordmark, so a new splash only has to keep setting that class.
 
 **Open questions (owner: Joey)**
 - CMBT Hydrate can photos (May 2024): did we design that can?
