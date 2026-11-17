@@ -21,49 +21,220 @@
     /*----------------------------------------*/
     /*  01. Preloader
     /*----------------------------------------*/
-    const countText = document.querySelector(".loader__count .count__text");
-    const countBdr = document.querySelector(".loader__wrapper > .count__bdr");
+    // Joey, 18 Nov: "an apple being bitten into until its gone, then a smooth
+    // way into the main page". Bites come off both sides until only the core
+    // is left, the core drops away, and the black opens out from where the
+    // apple was. The bites are the progress: the last one waits until the
+    // hero can actually show. Everything else on the page keys off the
+    // loader's `loaded` class (the wordmark dock waits for it).
+    // Then: "use an actual real etched apple" (deep-etched, i.e. cut out: the
+    // photo from the current site), and give each bite "some impactful subtle
+    // shake, zoom, and alternate rotations" with "very subtle crumbs".
+    (function splash() {
+        const loader = document.getElementById("loader");
+        if (!loader) return;
+        const wrapper = loader.querySelector(".loader__wrapper");
+        const svg = loader.querySelector(".ga-apple");
+        const maskSkin = loader.querySelector("#ga_bites");
+        const maskFlesh = loader.querySelector("#ga_bites_flesh");
+        const crumbs = loader.querySelector(".ga-crumbs");
+        const photo = loader.querySelector(".ga-apple-photo");
+        const NS = "http://www.w3.org/2000/svg";
+        let finished = false;
 
-    function startLoader() {
-        let t = 0;
-        (function updateCount() {
-            if (t < 100) {
-                const increment = Math.floor(Math.random() * 10) + 1;
-                t = Math.min(t + increment, 100);
-                countText.textContent = t;
-                countBdr.style.width = t + "%";
-                setTimeout(updateCount, Math.floor(Math.random() * 120) + 25);
-            } else {
-                hideLoader();
-            }
-        })();
-    }
+        function done() {
+            if (finished) return;
+            finished = true;
+            loader.classList.add("loaded");
+            try { sessionStorage.setItem("ga-splash-seen", "1"); } catch (e) { /* private mode */ }
+        }
 
-    function hideLoader() {
-        gsap.to(".loader__count", { duration: 0.8, ease: "power2.in", y: "100%", delay: 0.5 });
-        gsap.to(".loader__wrapper", { duration: 0.8, ease: "power4.in", y: "-100%", delay: 0.7 });
-        setTimeout(function () {
-            document.getElementById("loader").classList.add("loaded");
-        }, 1600);
-    }
+        // Never leave anyone on a black screen, whatever happens below.
+        setTimeout(done, 10000);
 
-    function imagesReady() {
-        // Only the hero's own frames gate the reveal. Gating on every image on
-        // the page would make the loader hang around while things far below the
-        // fold download.
-        const imgs = Array.from(document.querySelectorAll(".ga-banner-frame"));
-        return Promise.all(imgs.map(function (img) {
-            if (img.complete) return Promise.resolve();
-            return new Promise(function (res) {
-                img.addEventListener("load", res, { once: true });
-                img.addEventListener("error", res, { once: true });
+        if (!wrapper || !svg || !maskSkin || !maskFlesh || !window.gsap) { done(); return; }
+
+        // Only the hero's first frame and the wordmark font gate the exit.
+        // The flipbook already holds on frame one until the rest decode, and
+        // waiting on all 16 frames (3.5 MB) kept phones on the splash for ages.
+        function heroReady() {
+            const first = document.querySelector(".ga-banner-frame");
+            const img = new Promise(function (res) {
+                if (!first || first.complete) return res();
+                first.addEventListener("load", res, { once: true });
+                first.addEventListener("error", res, { once: true });
             });
-        }));
-    }
+            const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+            const cap = new Promise(function (res) { setTimeout(res, 6000); });
+            return Promise.race([Promise.all([img, fonts]), cap]);
+        }
 
-    if (countText && countBdr) {
-        imagesReady().then(startLoader);
-    }
+        // The apple photo itself (83 KB, preloaded in the head) has to be in
+        // before the first bite, or the bites would land on nothing.
+        function appleReady() {
+            const src = photo && (photo.getAttribute("href") || photo.getAttributeNS("http://www.w3.org/1999/xlink", "href"));
+            if (!src) return Promise.resolve();
+            const im = new Image();
+            im.src = src;
+            const loaded = im.decode ? im.decode().catch(function () {}) : new Promise(function (res) { im.onload = im.onerror = res; });
+            return Promise.race([loaded, new Promise(function (res) { setTimeout(res, 2500); })]);
+        }
+
+        // The black opens from the middle, so the hero shows through where the
+        // apple was. The wordmark is handed in while the hole is still opening.
+        function openUp() {
+            const big = Math.ceil(Math.hypot(window.innerWidth, window.innerHeight) / 2) + 40;
+            return gsap.timeline({ onComplete: done })
+                .to(wrapper, { "--ga-hole": big + "px", duration: 0.95, ease: "power3.inOut" }, 0)
+                .call(function () { loader.classList.add("loaded"); }, null, 0.6);
+        }
+
+        let seen = false;
+        try { seen = sessionStorage.getItem("ga-splash-seen") === "1"; } catch (e) { /* private mode */ }
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (reduced) {
+            // no bites, no movement: a plain fade once the hero is ready
+            gsap.set(svg, { opacity: 1, scale: 1 });
+            heroReady().then(done);
+            return;
+        }
+
+        if (seen) {
+            // back on the home page in the same visit: skip the meal
+            gsap.set(svg, { opacity: 0 });
+            heroReady().then(openUp);
+            return;
+        }
+
+        // Side bites, alternating, each a little deeper. The last pair are big
+        // enough to leave only the core: the top with its stem and leaf, the
+        // base, and a narrow waist. Coordinates are in the SVG's 200 x 224 box,
+        // measured off the photo's own outline (widest at y 112, x 3 to 196).
+        const CENTRE = { x: 100, y: 118 };
+        // Flesh shows along each bite edge, widest in the middle of the bite
+        // and tapering to nothing at the ends, as it does on a real apple.
+        const FLESH = 4.5;
+        // The big right-hand bite sits lower than the left one so it never
+        // reaches the leaf (the leaf has no flesh to show).
+        const BITES = [
+            { cx: 212, cy: 98,  r: 37 },
+            { cx: -12, cy: 133, r: 37 },
+            { cx: 220, cy: 152, r: 49 },
+            { cx: -20, cy: 88,  r: 49 },
+            { cx: 239, cy: 128, r: 98 },
+            { cx: -39, cy: 118, r: 98 }
+        ];
+
+        // A bite is a circle with a row of small, slightly uneven bumps along
+        // the edge facing the apple's middle: tooth marks, not a cookie cutter.
+        // Each bite goes into both masks. On the flesh it is the same circle
+        // nudged outwards by FLESH, so the photo is cut a little deeper than
+        // the flesh: a crescent of flesh shows, widest mid-bite.
+        function biteShape(b, cx, cy, mask, teethSeed) {
+            const g = document.createElementNS(NS, "g");
+            const main = document.createElementNS(NS, "circle");
+            main.setAttribute("cx", cx.toFixed(1)); main.setAttribute("cy", cy.toFixed(1)); main.setAttribute("r", b.r);
+            main.setAttribute("fill", "#000");
+            g.appendChild(main);
+            const toward = Math.atan2(CENTRE.y - cy, CENTRE.x - cx);
+            const teeth = 7, spread = 1.25;
+            teethSeed.forEach(function (j, i) {
+                const a = toward - spread / 2 + (spread * i) / (teeth - 1) + j.da;
+                const t = document.createElementNS(NS, "circle");
+                t.setAttribute("cx", (cx + Math.cos(a) * b.r * j.dr).toFixed(1));
+                t.setAttribute("cy", (cy + Math.sin(a) * b.r * j.dr).toFixed(1));
+                t.setAttribute("r", (Math.min(Math.max(b.r * 0.1, 3), 5.2) * j.ds).toFixed(1));
+                t.setAttribute("fill", "#000");
+                g.appendChild(t);
+            });
+            mask.appendChild(g);
+            gsap.set(g, { scale: 0, svgOrigin: cx.toFixed(1) + " " + cy.toFixed(1) });
+            return g;
+        }
+
+        function makeBite(b) {
+            // one set of uneven teeth shared by both masks, so the flesh
+            // follows the same tooth marks as the skin
+            const seed = [];
+            for (let i = 0; i < 7; i++) seed.push({ da: (Math.random() - 0.5) * 0.06, dr: 0.99 + Math.random() * 0.025, ds: 0.75 + Math.random() * 0.5 });
+            const away = Math.atan2(b.cy - CENTRE.y, b.cx - CENTRE.x);
+            return [
+                biteShape(b, b.cx, b.cy, maskSkin, seed),
+                biteShape(b, b.cx + Math.cos(away) * FLESH, b.cy + Math.sin(away) * FLESH, maskFlesh, seed)
+            ];
+        }
+
+        // Very subtle crumbs: a few small specks of flesh, the odd fleck of
+        // skin, flicked out from where the teeth went in.
+        function spray(b) {
+            const away = Math.atan2(b.cy - CENTRE.y, b.cx - CENTRE.x);
+            const d = Math.hypot(CENTRE.x - b.cx, CENTRE.y - b.cy) || 1;
+            const px = b.cx + ((CENTRE.x - b.cx) / d) * b.r * 0.92;
+            const py = b.cy + ((CENTRE.y - b.cy) / d) * b.r * 0.92;
+            const tl = gsap.timeline();
+            const count = 5;
+            for (let i = 0; i < count; i++) {
+                const c = document.createElementNS(NS, "circle");
+                c.setAttribute("cx", (px + (Math.random() - 0.5) * 10).toFixed(1));
+                c.setAttribute("cy", (py + (Math.random() - 0.5) * 14).toFixed(1));
+                c.setAttribute("r", (0.9 + Math.random() * 1.4).toFixed(1));
+                if (i === 0) c.setAttribute("class", "is-skin");
+                crumbs.appendChild(c);
+                const a = away + (Math.random() - 0.5) * 1.4;
+                const dist = 16 + Math.random() * 26;
+                tl.fromTo(c, { opacity: 0.95 }, {
+                    x: Math.cos(a) * dist,
+                    y: Math.sin(a) * dist + 14 + Math.random() * 16,
+                    opacity: 0,
+                    duration: 0.45 + Math.random() * 0.2,
+                    ease: "power2.out",
+                    onComplete: function () { c.remove(); }
+                }, 0);
+            }
+            return tl;
+        }
+
+        // One chomp. The bite snaps in, and the apple takes the hit: a short
+        // shake, a little punch of zoom and a tilt away from the side that was
+        // bitten, so the tilts alternate as the bites swap sides. Everything
+        // settles back within about a third of a second.
+        function chomp(b, pair) {
+            const tilt = b.cx > CENTRE.x ? -3.2 : 3.2;
+            return gsap.timeline()
+                .to(pair, { scale: 1, duration: 0.13, ease: "back.out(2.4)" }, 0)
+                .fromTo(svg, { scale: 1.045 }, { scale: 1, duration: 0.42, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
+                .fromTo(svg, { rotation: tilt }, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)", overwrite: "auto" }, 0)
+                .to(svg, { keyframes: { x: [0, tilt * -1.1, tilt * 0.8, tilt * -0.4, 0] }, duration: 0.24, ease: "none", overwrite: "auto" }, 0)
+                .add(spray(b), 0.03);
+        }
+
+        const pairs = BITES.map(makeBite);
+        const last = BITES.length - 1;
+        const STEP = 0.3;   // between bites
+        const FIRST = 0.6;  // after the apple lands
+
+        appleReady().then(function () {
+            const meal = gsap.timeline();
+            meal.to(svg, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", transformOrigin: "50% 55%" }, 0);
+            for (let i = 0; i < last; i++) meal.add(chomp(BITES[i], pairs[i]), FIRST + i * STEP);
+
+            // The last bite is due one beat after the one before it. Waiting
+            // for the whole timeline would also wait for the crumbs to land,
+            // which left the core sitting there doing nothing.
+            const mealDone = new Promise(function (res) { meal.call(res, null, FIRST + last * STEP); });
+
+            Promise.all([mealDone, heroReady()]).then(function () {
+                const drop = Math.round(window.innerHeight * 0.55);
+                gsap.timeline()
+                    .add(chomp(BITES[last], pairs[last]), 0)
+                    // core left, a beat, then it drops away
+                    .to(svg, { y: drop, rotation: 16, duration: 0.7, ease: "power2.in", overwrite: "auto" }, 0.34)
+                    .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 0.79)
+                    .add(openUp(), 0.62);
+            });
+        });
+    })();
 
     /*----------------------------------------*/
     /*  02. Smooth scroll (pointer devices only)

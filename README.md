@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118m); bump it in index.html, studio.html, contact.html
+  (currently 20261118n); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -79,11 +79,8 @@ Read this first when picking the project up, from either Claude account.
 **Checked and NOT yet checked (be honest about this)**
 - Verified: the menu opens, closes, navigates and releases the scroll lock, and
   both new pages render, at 1440x473 with the smoother on.
-- NOT verified: the menu or the two new pages at phone width or on a tall
-  window. Do that first next session. Chrome on macOS will not size a window
-  below ~500px, so use the in-app browser pane for a true 375px check, and make
-  sure the pane is VISIBLE first: a hidden pane fires no scroll events and no
-  animation frames at all and reports everything as broken.
+- Verified 18 Nov: the menu and both new pages at 375px phone width and on a
+  tall 1920x1200 window too (see "Done 18 Nov" below for how).
 
 **Next: the remaining ten project pages**
 1. Copy research still to do:
@@ -142,6 +139,13 @@ Read this first when picking the project up, from either Claude account.
   - encode_scroll.py makes the eased mp4.
   - shot.mjs takes screenshots.
   - sheet.py and build_sheet.py make contact sheets.
+  - qa.mjs: headless QA pass per page and size (overflow, hidden reveals,
+    menu, console errors, a screenshot per scroll step).
+  - splashrec.mjs: records a page load as a strip of screenshots, to play the
+    splash through frame by frame.
+  - The site is served locally on port 4321 (`python3 -m http.server 4321`
+    from the repo; the in-app preview launcher can't read the Desktop, so run
+    it from a shell and point `.claude/launch.json` at the URL).
 - Session transcripts (either account):
   ~/.claude/projects/-Users-hypedesign-Desktop-Good-Apples-Web-Website-2-0/.
   The 17 Nov session is 3e89cdea-….
@@ -227,12 +231,43 @@ Read this first when picking the project up, from either Claude account.
   text or elements". So the strapline, tagline and green bar are all free to
   change; he just wants *some* supporting detail there.
 
-**Next up (not started)**
-- **Splash screen.** Joey, 18 Nov: "splash screen i also think could be cooler
-  than just percentage climb, like an apple being bitten into untill its gone
-  or something, then a smooth way into the main page." Still the old percent
-  counter. The dock already waits for the loader's `loaded` class before
-  revealing the wordmark, so a new splash only has to keep setting that class.
+**Done 18 Nov (Good Apples account, picking up from the team account)**
+- **Bitten-apple splash replaces the percent counter** (section 01 of
+  main.js, section 05 of the CSS, markup at the top of index.html; the splash
+  only exists on the home page).
+  - Joey's brief: "an apple being bitten into untill its gone, then a smooth
+    way into the main page". Then "use an actual real etched apple" for "that
+    motion sickness vibe". **"Etched" means deep-etched (cut out), not an
+    engraving.** It is the real apple photo already on the current
+    good-apples.com.au: `Desktop/Good Apples/Web/Brand Assets/Image 7.png`,
+    exported to `assets/img/splash/apple.webp` (83 KB, preloaded in the head).
+  - Six bites alternate sides until only the core is left; the core drops and
+    the black opens out from the middle onto the hero (a radial mask driven by
+    `--ga-hole`). Each bite lands with a shake, a small zoom punch, a tilt
+    away from the bitten side and a few tiny crumbs (Joey: "impactful subtle
+    shake, zoom, and alternate rotations... very subtle apple crumbs").
+  - Bites cut the photo slightly deeper than a flesh-toned copy underneath,
+    so a thin crescent of flesh shows along the tooth marks, tapering at the
+    ends. The big right bite sits low on purpose so it never touches the leaf.
+  - Only the hero's first frame and the fonts gate the exit (it used to wait
+    for all 16 frames, 3.5 MB, which held phones on the splash for 10s+). The
+    flipbook already holds on frame one until the rest decode.
+  - Full meal on the first visit per session (~3.5s); coming back to home in
+    the same visit skips straight to the opening (~0.6s); reduced motion gets
+    a plain fade. A 10s hard stop means nobody is ever left on black.
+- **Work thumbs show in colour on phones.** They only coloured on hover, and
+  touch screens never hover, so every card was grey on a phone. Now
+  `@media (hover: none)` shows them in full colour.
+- **Checked, with headless Chrome (`Claude tools/qa.mjs`)**: home, Studio,
+  Contact and Kioni at 375x812 (phone emulation), 1440x650 and 1920x1200, with
+  the ScrollSmoother path actually on at desktop sizes (the script fakes a
+  mouse, since headless has none). No horizontal overflow, no reveal left
+  hidden in view, the menu opens, covers the screen, closes on Escape and
+  releases the scroll lock. Only console error: no favicon (404).
+  The splash was played through frame by frame with `Claude tools/splashrec.mjs`
+  at 1440x900, 1440x650 and 375x812, including the same-visit reload.
+  Use these instead of the in-app browser when the session isn't on screen:
+  a hidden pane stops animating and reports everything as broken.
 
 **Open questions (owner: Joey)**
 - CMBT Hydrate can photos (May 2024): did we design that can?

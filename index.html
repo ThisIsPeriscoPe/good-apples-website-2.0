@@ -18,8 +18,9 @@
             if (!window.gaFadesReady) document.documentElement.classList.remove("ga-fades");
         }, 5000);
     </script>
-    <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css?v=20261118m">
-    <link rel="stylesheet" href="assets/css/style.css?v=20261118m">
+    <link rel="stylesheet" href="assets/vendor/swiper-bundle.min.css?v=20261118n">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261118n">
+    <link rel="preload" as="image" href="assets/img/splash/apple.webp" type="image/webp" fetchpriority="high">
 </head>
 
 <body class="tp-magic-cursor">
@@ -32,15 +33,40 @@
     <!-- End magic cursor -->
 
     <!-- preloader -->
-    <div id="loader" class="loader">
+    <!-- splash: an apple gets eaten down to the core while the hero loads, then
+         the screen opens out from where it was. Built in section 01 of main.js. -->
+    <div id="loader" class="loader" role="status" aria-label="Loading Good Apples">
         <div class="loader__wrapper">
-            <div class="loader__content">
-                <div class="loader__count">
-                    <span class="count__text">0</span>
-                    <span class="count__percent">%</span>
-                </div>
-            </div>
-            <span class="count__bdr"></span>
+            <!-- The real deep-etched apple from the current site (Brand Assets/Image 7.png).
+                 Two copies: the photo on top, and under it the same silhouette filled
+                 flesh-coloured. Bites cut the photo a little wider than the flesh, so
+                 every bite shows a thin edge of apple flesh along the tooth marks. -->
+            <svg class="ga-apple" viewBox="0 0 200 224.4" aria-hidden="true" focusable="false">
+                <defs>
+                    <!-- flesh: the photo's own light and shade, mapped to pale apple-flesh
+                         tones, and pulled in a touch so no flesh rims the outside edge -->
+                    <filter id="ga_flesh" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+                        <feColorMatrix in="SourceGraphic" type="matrix" result="tone"
+                            values="0.13 0.30 0.05 0 0.64
+                                    0.12 0.29 0.05 0 0.61
+                                    0.09 0.22 0.04 0 0.43
+                                    0    0    0    1 0" />
+                        <feMorphology in="SourceAlpha" operator="erode" radius="1.4" result="shape" />
+                        <feComposite in="tone" in2="shape" operator="in" />
+                    </filter>
+                    <mask id="ga_bites" maskUnits="userSpaceOnUse" x="-160" y="-60" width="520" height="350">
+                        <rect x="-160" y="-60" width="520" height="350" fill="#fff" />
+                    </mask>
+                    <mask id="ga_bites_flesh" maskUnits="userSpaceOnUse" x="-160" y="-60" width="520" height="350">
+                        <rect x="-160" y="-60" width="520" height="350" fill="#fff" />
+                    </mask>
+                </defs>
+                <g class="ga-apple-whole">
+                    <image class="ga-apple-flesh" href="assets/img/splash/apple.webp" width="200" height="224.4" filter="url(#ga_flesh)" mask="url(#ga_bites_flesh)" />
+                    <image class="ga-apple-photo" href="assets/img/splash/apple.webp" width="200" height="224.4" mask="url(#ga_bites)" />
+                </g>
+                <g class="ga-crumbs"></g>
+            </svg>
         </div>
     </div>
 
@@ -535,10 +561,10 @@
         </div>
     </div>
 
-    <script src="assets/vendor/gsap.min.js?v=20261118m"></script>
-    <script src="assets/vendor/ScrollTrigger.min.js?v=20261118m"></script>
-    <script src="assets/vendor/ScrollSmoother.min.js?v=20261118m"></script>
-    <script src="assets/js/main.js?v=20261118m"></script>
+    <script src="assets/vendor/gsap.min.js?v=20261118n"></script>
+    <script src="assets/vendor/ScrollTrigger.min.js?v=20261118n"></script>
+    <script src="assets/vendor/ScrollSmoother.min.js?v=20261118n"></script>
+    <script src="assets/js/main.js?v=20261118n"></script>
 </body>
 
 </html>

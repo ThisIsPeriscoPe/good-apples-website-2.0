@@ -309,54 +309,34 @@ li,
     background: var(--ga-black);
 }
 
-.loader__wrapper::after {
-    position: absolute;
-    bottom: 40px;
-    content: "";
-    height: 1px;
-    width: 100%;
-    display: inline-block;
-    border-bottom: 1px solid #FEFFF8;
+/* The exit opens a hole in the black from the middle out. --ga-hole is tweened
+   by main.js; until then it is 0 and the mask covers everything. */
+.loader__wrapper {
+    --ga-hole: 0px;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--ga-hole), #000 calc(var(--ga-hole) + 1px));
+            mask-image: radial-gradient(circle at 50% 50%, transparent var(--ga-hole), #000 calc(var(--ga-hole) + 1px));
 }
 
-.loader__content {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
+.ga-apple {
+    width: min(44vmin, 300px);
+    height: auto;
+    overflow: visible;
+    /* starts small and invisible; main.js pops it in. Without JS the
+       ga-fades guard never applies, so it shows as a plain apple. */
 }
 
-.loader__count {
-    position: relative;
-    display: flex;
-    align-items: center;
-    line-height: 1;
+.ga-fades .ga-apple {
+    opacity: 0;
+    transform: scale(0.82);
 }
 
-.count__text,
-.count__percent {
-    font-size: 200px;
-    font-family: var(--ga-ff-wordmark);
-    font-weight: 800;
-    font-stretch: 75%;
-    letter-spacing: -0.02em;
-    color: #FEFFF8;
+/* crumbs are mostly flesh with the odd fleck of skin; colours set per crumb */
+.ga-crumbs circle {
+    fill: #F1E8C4;
 }
 
-.count__bdr {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    width: 0%;
-    height: 5px;
-    border-radius: 30px;
-    background-color: #FEFFF8;
-    transition: width 0.1s linear;
+.ga-crumbs circle.is-skin {
+    fill: #7DB43A;
 }
 
 /*----------------------------------------*/
@@ -1279,6 +1259,12 @@ body.tp-magic-cursor #magic-cursor {
 .ga-work-item:hover .ga-work-thumb img {
     filter: saturate(1);
     transform: scale(1.05);
+}
+
+/* Phones and tablets can't hover, so a hover-only colour left every thumb grey
+   for good. Where there is no hover, the work shows in full colour. */
+@media (hover: none) {
+    .ga-work-thumb img { filter: none; }
 }
 
 .ga-work-name {
