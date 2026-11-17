@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261117g); bump it in index.html, studio.html, contact.html
+  (currently 20261118a); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -62,10 +62,8 @@ Read this first when picking the project up, from either Claude account.
 - `studio.html` and `contact.html` built. Both use real facts only: founded
   2016, rebrands 2018 and 2024, owned and operated by PeriscoPe, studio at
   1/76 Township Dr Burleigh Heads, and the five values from the showcase deck.
-  No team names, bios, client counts or phone number, because none are sourced.
-  There is no phone number anywhere in the project files, so Contact is
-  email-led rather than carrying an invented one. No fake contact form either:
-  a form with nowhere to submit is not usable.
+  No team names, bios or client counts, because none are sourced. No fake
+  contact form either: a form with nowhere to submit is not usable.
 - **The hamburger menu now works** (section 08 of main.js, section 21 of the
   CSS). It had to: Studio and Contact were otherwise unreachable from every
   page except the home footer. Full-screen black panel, closes on link click
@@ -147,6 +145,13 @@ Read this first when picking the project up, from either Claude account.
 - Session transcripts (either account):
   ~/.claude/projects/-Users-hypedesign-Desktop-Good-Apples-Web-Website-2-0/.
   The 17 Nov session is 3e89cdea-….
+
+**Joey's calls, 18 Nov 2026 (both were open questions, now closed)**
+- **"Skilled Operators", not the deck's "Expert Operators".** Used on the home
+  ticker, the Studio values list and the manifesto. Do not change it back.
+- **Phone number is 0450 534 610**, Martin Corr's, from his email signature.
+  It is now on the Contact page, under the big email address and in the side
+  column. Linked as `tel:+61450534610`.
 
 **Open questions (owner: Joey)**
 - CMBT Hydrate can photos (May 2024): did we design that can?

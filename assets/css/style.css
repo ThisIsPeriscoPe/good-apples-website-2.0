@@ -1532,6 +1532,28 @@ body.tp-magic-cursor #magic-cursor {
     opacity: 0.55;
 }
 
+.ga-contact-phone {
+    margin: clamp(14px, 2vh, 26px) 0 0;
+    font-size: clamp(16px, 1.5vw, 24px);
+    letter-spacing: -0.01em;
+    color: var(--tp-text-body);
+}
+
+.ga-contact-phone a {
+    color: var(--ga-black);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.3);
+    transition: border-color 0.25s ease;
+}
+
+.ga-contact-phone a:hover {
+    border-bottom-color: var(--ga-black);
+}
+
+.ga-contact-address a {
+    color: var(--ga-black);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.3);
+}
+
 .ga-contact-address {
     font-style: normal;
     font-size: clamp(14px, 1vw, 17px);

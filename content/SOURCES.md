@@ -48,5 +48,14 @@ index has no dead links. Places worth digging:
 - Studio address: 1/76 Township Dr, Burleigh Heads QLD 4220.
 - The five values on the site's ticker are the deck's own: Expert Operators,
   Honesty & Transparency, Wellness Driven, Active Lifestyles, No Bad Humans.
-  Note the deck says "Expert Operators"; the live site said "Skilled
-  Operators". The site currently uses "Skilled".
+  The Sept 2025 deck says "Expert Operators"; the live site said "Skilled
+  Operators". **Joey's call, 18 Nov 2026: "Skilled Operators" wins.** It is
+  what the home page ticker, the Studio values list and the manifesto all use.
+  Do not switch it back to the deck's wording.
+- **Phone: 0450 534 610.** Joey's call, 18 Nov 2026, in answer to this file
+  noting that no number existed anywhere in the project. It is Martin Corr's
+  (PeriscoPe Managing Partner) number, taken from his own email signature,
+  which is the same in every email he sends. Joey's own signature already
+  points people at Martin for anything urgent. Written as `0450 534 610` and
+  linked as `tel:+61450534610`, because the signature's "(+61) 0450 534 610"
+  is not a dialable format.
