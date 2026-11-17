@@ -23,6 +23,7 @@
     21. Menu
     22. Hero (full bleed)
     23. Wordmark dock
+    24. Project gallery
 -----------------------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -2187,5 +2188,45 @@ body.tp-magic-cursor #magic-cursor {
 
     .ga-wm-inner {
         transform: none;
+    }
+}
+
+
+/*----------------------------------------*/
+/*  24. Project gallery
+/*----------------------------------------*/
+/* Under the copy on each project page: full-width shots and two-up pairs,
+   Motion Sickness style. Built by Claude tools/build_pages.py. Pairs are
+   cropped to the same shape at build time so their edges line up. */
+.ga-case-gallery {
+    padding: 0 0 clamp(70px, 9vw, 150px);
+}
+
+.ga-case-gallery .container > * + * {
+    margin-top: clamp(14px, 1.8vw, 32px);
+}
+
+.ga-g {
+    margin: 0;
+    overflow: hidden;
+    background: #161616; /* holds the space dark while the image loads */
+}
+
+.ga-g img,
+.ga-g video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.ga-g-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 1.8vw, 32px);
+}
+
+@media (max-width: 767px) {
+    .ga-g-pair {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118n); bump it in index.html, studio.html, contact.html
+  (currently 20261118o); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -81,6 +81,37 @@ Read this first when picking the project up, from either Claude account.
   both new pages render, at 1440x473 with the smoother on.
 - Verified 18 Nov: the menu and both new pages at 375px phone width and on a
   tall 1920x1200 window too (see "Done 18 Nov" below for how).
+
+**Joey's calls, 18 Nov (fourth round)**
+- **Outer Bound is cafe work only.** "outerbound music stuff do not include,
+  just cafe related stuff." No record store, record launch, community record
+  digs or other music material anywhere on the site, including galleries. The
+  Run Club (the cafe's own run club), cafe merch, menus and the gift voucher
+  are fine.
+- **Splash:** "use an actual real etched apple" means deep-etched (cut out),
+  and each bite gets "impactful subtle shake, zoom, and alternate rotations"
+  with "very subtle apple crumbs". See "Done 18 Nov".
+
+**Project pages and galleries (18 Nov, in progress)**
+- **Veteran Games page built** (work/veteran-games.html), copy sourced from the
+  2027 Partnership Report HANDOFF and written to the VG Tone of Voice sheet
+  (all rows read 18 Nov). Its card on the home page is now a link.
+- **Every built page now has a gallery** under the copy, Motion Sickness style:
+  full-width shots and two-up pairs, with video loops (site scroll-throughs,
+  film clips) that only load and play while on screen.
+- **Pages and galleries are built by a script**, not by hand:
+  `python3 "Desktop/Good Apples/Web/Claude tools/build_pages.py" [slug ...]`
+  reads `Claude tools/site-pages.json` (copy for new pages, gallery source
+  files, crops, alt text), writes the media into `assets/img/work/<slug>/` and
+  `assets/video/`, writes or updates `work/<slug>.html` (new pages use
+  work/kioni.html as the template), and links the home card. Edit the JSON
+  and re-run rather than hand-editing gallery markup.
+- Nine pages still to build: ICONIC Beverages, BikeChain, Fjord, Zesty Paws,
+  Pharmacy Guild, TreeArc, Rygg, Take Me Wellness, ELMNT H3O. Their facts are
+  being gathered, with sources, into `Desktop/Good Apples/Web/Project facts/`
+  (private: not in the public repo). Write their copy only from those files.
+- Favicon and touch icon added (made from the splash apple); the console 404
+  is gone.
 
 **Next: the remaining ten project pages**
 1. Copy research still to do:

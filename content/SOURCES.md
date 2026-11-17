@@ -20,16 +20,35 @@ the same deck is identical apart from the cover, so there is nothing extra in it
 Raw text is in `kioni-case-study-raw.txt` next to this file. Extract with
 `/opt/homebrew/bin/pdftotext -layout` (pdfplumber and pypdf are not installed).
 
-## Sourced, not yet written
+## Veteran Games (written 18 Nov 2026)
 
-- **Veteran Games.** Numbers verified in
-  `Desktop/Veteran Games/2027 Partnership Report/HANDOFF.md`.
-  **Read the whole VG Tone of Voice sheet before writing a word of this page**
-  (spreadsheet `1iphskWF1R6_cHF6qhK1MQGsDI0-gBJ8aeWXVnwnziwQ`, all four tabs,
-  download as .xlsx because the connector only returns the first rows).
-  Survey figures are n=11, so either say so or leave them out.
+- Every line traces to `Desktop/Veteran Games/2027 Partnership Report/HANDOFF.md`:
+  the purpose line quotes the VG website's Our Purpose page as recorded there
+  ("proactive health initiative designed to address key findings from the
+  Royal Commission into Defence and Veteran Suicide"); the 2026 events, 11
+  Finals Teams from Australia, the UK and the USA, 376K Instagram views over
+  Finals weekend, website visitors 28x the weekend before; and Joey's design
+  and web delivery list (VeteranGames.com, 18 stadium screen sequences, 21
+  sponsor lower thirds + 31 awards/presenter/winner graphics, 12 team intro
+  films, 12 billboards, stage sponsor wall, 35 emails).
+- Written after reading every row of the VG Tone of Voice sheet (18 Nov).
+  It follows R29 (purpose first; reach is evidence, not the story), R01 (no
+  grit), R02/R03 (Veterans in full, never "the Games"), R05 (the Finals),
+  R07 (VeteranGames.com) and R28 (no em dashes). The standard description is
+  the sheet's own: "Australia's premier military-inspired team competition
+  for Veterans".
+- The merch billboard frame was left out of the gallery on purpose: its line
+  "Every order backs the Veteran Games" breaks R22 (Support, not Back).
 
-## No copy yet (9 projects)
+## Galleries (18 Nov 2026)
+
+Each project page now ends with a gallery built by
+`Desktop/Good Apples/Web/Claude tools/build_pages.py` from
+`Claude tools/site-pages.json`, which lists every source file. Media is
+cropped, resized and compressed into `assets/img/work/<slug>/` and
+`assets/video/`. Galleries carry alt text only, no captions or claims.
+
+## No copy yet (9 projects, being sourced 18 Nov into Desktop/Good Apples/Web/Project facts/)
 
 ICONIC Beverages, BikeChain, Fjord, Zesty Paws, Pharmacy Guild, TreeArc, Rygg,
 Take Me Wellness, ELMNT H3O.

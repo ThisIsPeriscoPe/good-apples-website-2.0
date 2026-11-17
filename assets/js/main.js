@@ -11,6 +11,7 @@
     09. Menu
     10. Hero rotator
     11. Wordmark dock
+    12. Project gallery video
 ****************************************************/
 
 (function () {
@@ -824,6 +825,37 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(build, 180);
         });
+    })();
+
+    /*----------------------------------------*/
+    /*  12. Project gallery video
+    /*----------------------------------------*/
+    // Gallery videos (site scroll-throughs, film loops) load nothing until
+    // they come near the screen, play only while on it, and pause when they
+    // leave. Reduced motion gets the poster and the player controls instead.
+    (function galleryVideo() {
+        const vids = Array.from(document.querySelectorAll(".ga-g-video"));
+        if (!vids.length) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            vids.forEach(function (v) { v.controls = true; });
+            return;
+        }
+        if (!("IntersectionObserver" in window)) {
+            vids.forEach(function (v) { v.autoplay = true; v.play().catch(function () {}); });
+            return;
+        }
+        const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                const v = e.target;
+                if (e.isIntersecting) {
+                    if (v.preload === "none") v.preload = "auto";
+                    v.play().catch(function () {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { threshold: 0.2 });
+        vids.forEach(function (v) { io.observe(v); });
     })();
 
 })();
