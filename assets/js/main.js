@@ -6,6 +6,7 @@
     04. Hero hover / active state
     05. Magic cursor
     06. Back to top
+    07. Header reveal
 ****************************************************/
 
 (function () {
@@ -100,6 +101,9 @@
         function showAllNow() {
             document.documentElement.classList.remove("ga-fades");
             pending = [];
+            window.removeEventListener("scroll", sweep);
+            window.removeEventListener("resize", sweep);
+            if (window.gsap && gsap.ticker) gsap.ticker.remove(sweep);
         }
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -127,14 +131,20 @@
             if (!pending.length) {
                 window.removeEventListener("scroll", sweep);
                 window.removeEventListener("resize", sweep);
+                if (window.gsap && gsap.ticker) gsap.ticker.remove(sweep);
             }
         }
 
-        // Called directly rather than through rAF: sweeping a shrinking list of
-        // a couple of dozen rects is cheap, and it cannot deadlock the way an
-        // rAF-gated handler can if the frame loop is throttled mid-scroll.
+        // Two drivers, because neither covers both cases on its own.
+        // ScrollSmoother hijacks scrolling and drives it from GSAP's ticker, so
+        // the window fires no scroll events while it is running and a
+        // scroll-only sweep would stall after the first screen. The ticker
+        // covers that; the scroll listener covers phones, where the smoother is
+        // off. Both call the same idempotent sweep and both detach once the
+        // pending list is empty, so nothing runs for the rest of the visit.
         window.addEventListener("scroll", sweep, { passive: true });
         window.addEventListener("resize", sweep);
+        if (window.gsap && gsap.ticker) gsap.ticker.add(sweep);
         sweep();
 
         window.addEventListener("load", function () {
@@ -386,5 +396,35 @@
             else window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
+
+    /*----------------------------------------*/
+    /*  07. Header reveal
+    /*----------------------------------------*/
+    (function headerReveal() {
+        const header = document.querySelector(".px-header-2-area.header-fixed");
+        if (!header) return;
+
+        // The header floats over the page with no background of its own. On a
+        // tall window that reads fine, because the hero fills the first screen
+        // and the wordmark sits on empty space. On a short laptop window you
+        // scroll straight into dense content and the wordmark lands on top of
+        // the section titles. So: transparent while still at the top, then it
+        // gets out of the way on the way down and comes back on its own
+        // background on the way up.
+        // Driven by ScrollTrigger rather than a window scroll listener, so it
+        // behaves the same with ScrollSmoother running and without it.
+        ScrollTrigger.create({
+            start: 1,
+            end: 99999,
+            onUpdate: function (self) {
+                if (self.scroll() < 60) {
+                    header.classList.remove("is-stuck", "is-hidden");
+                    return;
+                }
+                header.classList.add("is-stuck");
+                header.classList.toggle("is-hidden", self.direction === 1);
+            }
+        });
+    })();
 
 })();

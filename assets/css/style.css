@@ -18,6 +18,7 @@
     16. Manifesto
     17. Footer
     18. Scroll reveal
+    19. Project page
 -----------------------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -470,6 +471,37 @@ body.tp-magic-cursor #magic-cursor {
 .header-fixed.px-header-2-area.sticky-bg .px-header-logo {
     padding-top: 0;
     transition: 0.3s;
+}
+
+/* Scrolled state. The header has no background of its own, so on a short
+   window the wordmark collides with whatever section is passing under it.
+   Going down it slides away; coming back up it returns on a solid band. */
+.px-header-2-area.header-fixed {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.3s ease,
+                padding-top 0.3s ease;
+}
+
+.px-header-2-area.header-fixed.is-stuck {
+    background-color: var(--tp-body-bg);
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.px-header-2-area.header-fixed.is-hidden {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .px-header-2-area.header-fixed {
+        transition: none;
+    }
+
+    /* Nothing slides, so leave it in place on its band rather than
+       popping in and out as the page moves. */
+    .px-header-2-area.header-fixed.is-hidden {
+        transform: none;
+    }
 }
 
 /* GOOD APPLES wordmark, stacked over two lines, cap-to-cap height 39px
@@ -1300,4 +1332,91 @@ body.tp-magic-cursor #magic-cursor {
         transform: none;
         transition: none;
     }
+}
+
+/*----------------------------------------*/
+/*  19. Project page
+/*----------------------------------------*/
+.ga-project-page .ga-case-hero {
+    padding: clamp(150px, 22vh, 260px) 0 clamp(36px, 4vw, 70px);
+}
+
+.ga-case-title {
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(52px, 9vw, 180px);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--ga-black);
+}
+
+.ga-case-hook {
+    max-width: 24ch;
+    margin: clamp(20px, 2vw, 34px) 0 0;
+    font-size: clamp(20px, 2.1vw, 38px);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    color: var(--ga-black);
+}
+
+/* full bleed, and tall enough to hold the frame on a phone */
+.ga-case-shot img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+.ga-case-body {
+    padding: clamp(60px, 8vw, 130px) 0 clamp(50px, 6vw, 90px);
+}
+
+.ga-case-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: clamp(36px, 5vw, 110px);
+}
+
+.ga-case-text p {
+    max-width: 62ch;
+    font-size: clamp(17px, 1.35vw, 24px);
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+    margin-bottom: 1.1em;
+}
+
+.ga-case-text p:last-child {
+    margin-bottom: 0;
+}
+
+.ga-case-list {
+    list-style: none;
+    margin-top: 4px;
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+}
+
+.ga-case-list li {
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
+    font-size: clamp(14px, 1vw, 17px);
+    letter-spacing: -0.01em;
+}
+
+.ga-case-next {
+    padding: 0 0 clamp(70px, 9vw, 140px);
+}
+
+@media (max-width: 991px) {
+    .ga-case-cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* an index card with no page yet: still readable, just not clickable */
+.ga-work-item.is-pending {
+    cursor: default;
+}
+
+.ga-work-item.is-pending .ga-work-thumb img {
+    filter: saturate(0);
 }
