@@ -17,8 +17,8 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261117a); bump it in index.html whenever CSS or JS changes, or
-  phones serve a stale mix.
+  (currently 20261117c); bump it in index.html AND in every work/*.html
+  whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
   - Services regrouped to 10 across Brand / Digital / Content / Marketing,
     written from the real-work evidence in Notes, not the old site's six.
@@ -28,11 +28,36 @@ Read this first when picking the project up, from either Claude account.
   - Work index rebuilt for all 18: 3 columns with the middle column staggered,
     2 columns under 1200px, 1 under 768px. Checked at 1440x650 and 375px, no
     horizontal overflow.
-  - Cards link to `work/<slug>.html`. **Those pages do not exist yet**, so
-    every work card is currently a dead link. Build them next or the index
-    404s.
+  - Eight project pages built and linked: she-means-business, healthy-rituals,
+    kioni, bskt, harvest-and-halo, cmbt, sprout, outer-bound. The other ten
+    render as unlinked `.is-pending` cards, because there is no sourced copy
+    for them yet and nothing on this site is invented. No dead links remain.
+  - `content/SOURCES.md` records, per project, where the copy came from or
+    that there is none. Read it before writing any project page.
+- Two faults found and fixed 17 Nov while checking every size:
+  - **The reveal stalled on every desktop viewport.** ScrollSmoother drives
+    scrolling from the GSAP ticker, so the window fires no scroll events while
+    it runs and the `.px-fade-anim` sweep stopped after the first screen.
+    Anything at or above 1200px with a fine pointer stayed invisible below the
+    fold. It passed the earlier check only because that ran at 965px, where the
+    smoother is off and native scroll events fire. The sweep now runs off
+    `gsap.ticker` as well as the scroll listener; both detach once nothing is
+    pending. **Lesson: verify above 1200px as well as below, or you are testing
+    a different code path.**
+  - **The header collided with content on short windows.** It floats with no
+    background of its own, which only reads well while the hero fills the
+    screen. It now slides away going down and returns on a solid band going up
+    (`.is-stuck` / `.is-hidden`, section 07 of main.js), driven by ScrollTrigger
+    so it is identical with and without the smoother. At the very top it is
+    transparent exactly as before.
+  - Verified with zero elements left hidden in view across a full-page sweep at
+    1800x775, 1440x473 and 500x723, on the home page and on project pages.
+    Note Chrome on macOS will not make a window narrower than ~500px; for a
+    true 375px check use the in-app browser pane, and make sure it is VISIBLE,
+    because a hidden pane fires no scroll events and no frames at all and will
+    report everything as broken.
 
-**Next: the 18 project pages**
+**Next: the remaining ten project pages, then Studio and Contact**
 1. Copy research still to do:
    - Drive deck "Good Apples Project Showcase" (Sept 2025). Not yet read.
    - Drive "SMB - Final Report". Not yet read.
@@ -57,8 +82,13 @@ Read this first when picking the project up, from either Claude account.
 2. Disciplines per project are deliberately NOT on the cards yet. Only the name
    and year are shown, because both are real. Do not guess disciplines; take
    them from the showcase deck.
-3. Then the Studio page and the Contact page.
-4. Check desktop, phone and 1440x650 before showing Joey.
+3. Ten projects still have no copy at all: ICONIC Beverages, BikeChain, Fjord,
+   Zesty Paws, Pharmacy Guild, TreeArc, Rygg, Take Me Wellness, ELMNT H3O.
+   Worth digging: `Good Apples Case Studies 2.0.xd` (Aug 2026) and the inbox.
+   Leave a card unlinked rather than inventing a description for it.
+4. Then the Studio page and the Contact page.
+5. Check desktop, phone and 1440x650 before showing Joey, and read the two
+   faults above first so they are not reintroduced.
 
 **Where things live**
 - Hero contact sheet: Desktop/Good Apples/Web/Work hero picks (17 Nov).jpg.
