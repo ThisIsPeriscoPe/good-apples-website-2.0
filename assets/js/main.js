@@ -3,11 +3,13 @@
     01. Preloader
     02. Smooth scroll (ScrollSmoother)
     03. Fade-in animation
-    04. Hero hover / active state
-    05. Magic cursor
-    06. Back to top
-    07. Header reveal
-    08. Menu
+    04. Hero flipbook
+    05. Hero parallax without the smoother
+    06. Magic cursor
+    07. Back to top
+    08. Header reveal
+    09. Menu
+    10. Hero rotator
 ****************************************************/
 
 (function () {
@@ -45,12 +47,10 @@
     }
 
     function imagesReady() {
-        // Only the first-impression images gate the reveal: the hero grid and
-        // the banner frames. Gating on every image on the page would make the
-        // loader hang around while things far below the fold download.
-        const imgs = Array.from(document.querySelectorAll(
-            ".px-hero-2-thumb img, .px-hero-2-thumbs img, .ga-banner-frame"
-        ));
+        // Only the hero's own frames gate the reveal. Gating on every image on
+        // the page would make the loader hang around while things far below the
+        // fold download.
+        const imgs = Array.from(document.querySelectorAll(".ga-banner-frame"));
         return Promise.all(imgs.map(function (img) {
             if (img.complete) return Promise.resolve();
             return new Promise(function (res) {
@@ -183,48 +183,12 @@
     // still fills correctly, just without the drift.
 
     /*----------------------------------------*/
-    /*  04. Hero hover / active state
-    /*----------------------------------------*/
-    document.querySelectorAll(".px-hero-2-thumb").forEach(function (thumb) {
-        thumb.addEventListener("mouseenter", function () {
-            const parent = thumb.closest(".px-hero-2-item");
-            document.querySelectorAll(".px-hero-2-item").forEach(function (item) {
-                item.classList.remove("active");
-            });
-            if (parent) parent.classList.add("active");
-        });
-    });
-
-    /*----------------------------------------*/
-    /*  04b. Hero slider (tablet / mobile)
-    /*----------------------------------------*/
-    if (typeof Swiper !== "undefined" && document.querySelector(".gallery-thumbs")) {
-        const thumbs = new Swiper(".gallery-thumbs", {
-            slidesPerView: 3,
-            spaceBetween: 10,
-            centeredSlides: true,
-            slideToClickedSlide: true,
-            loop: true,
-            autoplay: { delay: 3000, disableOnInteraction: false }
-        });
-
-        const slider = new Swiper(".px-hero-2-top-active", {
-            slidesPerView: 1,
-            centeredSlides: true,
-            loop: true,
-            allowTouchMove: false
-        });
-
-        thumbs.on("slideChange", function () {
-            slider.slideToLoop(thumbs.realIndex);
-        });
-    }
-
-    /*----------------------------------------*/
-    /*  04c. Full bleed banner, GIF-style frame cycle
+    /*  04. Hero flipbook, GIF-style frame cycle
     /*----------------------------------------*/
     (function bannerFlipbook() {
-        const FRAME_MS = 175;
+        // Pace. It read fine at 175 as a mid-page band, but the hero fills the
+        // whole screen now, so the same rate felt frantic. Another 25% slower.
+        const FRAME_MS = 220;
 
         const wrap = document.querySelector(".ga-banner-frames");
         if (!wrap) return;
@@ -280,7 +244,7 @@
     })();
 
     /*----------------------------------------*/
-    /*  04d. Banner parallax without the smoother
+    /*  05. Hero parallax without the smoother
     /*----------------------------------------*/
     // ScrollSmoother's data-speed only exists where the smoother runs, which is
     // pointer devices. Everywhere else the band would sit flat, so the drift is
@@ -312,7 +276,7 @@
     }
 
     /*----------------------------------------*/
-    /*  05. Magic cursor
+    /*  06. Magic cursor
     /*----------------------------------------*/
     (function magicCursor() {
         if (!document.body.classList.contains("tp-magic-cursor")) return;
@@ -377,7 +341,7 @@
     })();
 
     /*----------------------------------------*/
-    /*  06. Back to top
+    /*  07. Back to top
     /*----------------------------------------*/
     const backToTopWrapper = document.querySelector(".back-to-top-wrapper");
     const backToTopBtn = document.getElementById("back_to_top");
@@ -399,11 +363,18 @@
     }
 
     /*----------------------------------------*/
-    /*  07. Header reveal
+    /*  08. Header reveal
     /*----------------------------------------*/
     (function headerReveal() {
         const header = document.querySelector(".px-header-2-area.header-fixed");
         if (!header) return;
+
+        // On the home page the header's first screen is now the full bleed
+        // hero, which is dark, so the black wordmark disappears into it. While
+        // the header is still over the hero it inverts to cream; the moment it
+        // picks up its own cream band it goes back to black.
+        const overDark = !!document.querySelector(".ga-hero");
+        if (overDark) header.classList.add("over-hero");
 
         // The header floats over the page with no background of its own. On a
         // tall window that reads fine, because the hero fills the first screen
@@ -420,8 +391,10 @@
             onUpdate: function (self) {
                 if (self.scroll() < 60) {
                     header.classList.remove("is-stuck", "is-hidden");
+                    if (overDark) header.classList.add("over-hero");
                     return;
                 }
+                header.classList.remove("over-hero");
                 header.classList.add("is-stuck");
                 header.classList.toggle("is-hidden", self.direction === 1);
             }
@@ -429,7 +402,7 @@
     })();
 
     /*----------------------------------------*/
-    /*  08. Menu
+    /*  09. Menu
     /*----------------------------------------*/
     (function menu() {
         const btn = document.getElementById("hamburger-open-btn");
@@ -476,6 +449,41 @@
                 btn.focus();
             }
         });
+    })();
+
+    /*----------------------------------------*/
+    /*  10. Hero rotator
+    /*----------------------------------------*/
+    (function heroRotator() {
+        const lines = Array.from(document.querySelectorAll(".ga-hero-line"));
+        if (lines.length < 2) return;
+
+        // Reduced motion keeps the first line and never moves. The <p> carries
+        // the full phrase in aria-label, so nothing is lost to a screen reader.
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        const HOLD_MS = 2600;
+        let index = 0;
+
+        setInterval(function () {
+            const current = lines[index];
+            index = (index + 1) % lines.length;
+            const next = lines[index];
+
+            // Current slides down and out, next drops in from above.
+            current.classList.remove("is-in");
+            current.classList.add("is-out");
+
+            // Park the incoming line above the box with no transition, so it
+            // does not travel across the whole height on its way in.
+            next.classList.remove("is-out");
+            void next.offsetWidth;
+            next.classList.add("is-in");
+
+            setTimeout(function () {
+                current.classList.remove("is-out");
+            }, 760);
+        }, HOLD_MS);
     })();
 
 })();

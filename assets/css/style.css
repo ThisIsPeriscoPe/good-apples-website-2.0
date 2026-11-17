@@ -21,6 +21,7 @@
     19. Project page
     20. Studio and Contact pages
     21. Menu
+    22. Hero (full bleed)
 -----------------------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -1018,78 +1019,224 @@ body.tp-magic-cursor #magic-cursor {
 /*----------------------------------------*/
 /*  14. Services
 /*----------------------------------------*/
+/* Dark block. It butts straight onto the values ticker above it, so the two
+   read as one dark band breaking the cream page in half. */
 .ga-services-area {
-    padding: clamp(90px, 12vh, 180px) 0;
+    padding: clamp(80px, 11vh, 170px) 0 clamp(60px, 9vh, 130px);
+}
+
+.ga-dark {
+    background-color: var(--ga-black);
+    color: var(--tp-body-bg);
+}
+
+.ga-dark .ga-section-title {
+    color: var(--tp-body-bg);
+}
+
+.ga-dark .ga-eyebrow {
+    color: var(--ga-green-light);
+}
+
+/* Each discipline area gets its own header column beside its rows, so the
+   ten services read as four decisions rather than one long inventory. */
+.ga-service-group {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 70px);
+    padding: clamp(32px, 4.5vw, 64px) 0;
+    border-top: 1px solid rgba(254, 255, 248, 0.16);
+}
+
+.ga-service-group:last-child {
+    border-bottom: 1px solid rgba(254, 255, 248, 0.16);
+}
+
+.ga-service-group-head {
+    position: relative;
+    /* follows its rows down on a tall group rather than stranding at the top */
+    position: sticky;
+    top: clamp(90px, 14vh, 130px);
+    align-self: start;
+}
+
+.ga-service-group-name {
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(30px, 3.4vw, 60px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--ga-green-light);
+    margin: 0 0 14px;
+}
+
+.ga-service-group-blurb {
+    max-width: 24ch;
+    margin: 0;
+    font-size: clamp(13px, 0.95vw, 16px);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: rgba(254, 255, 248, 0.6);
+}
+
+.ga-service-group-count {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(254, 255, 248, 0.4);
 }
 
 .ga-service-list {
     list-style: none;
-    border-top: 1px solid rgba(10, 10, 10, 0.14);
+    margin: 0;
+    padding: 0;
 }
 
 .ga-service {
+    position: relative;
     display: grid;
-    grid-template-columns: 5rem minmax(0, 1.1fr) 8rem minmax(0, 1fr);
-    gap: clamp(16px, 2vw, 40px);
+    /* Name and description sit side by side rather than stacked, so the row
+       uses the full width of the column instead of leaving the right half
+       empty. This is the listed layout from the flat version, kept. */
+    grid-template-columns: 3.2rem minmax(0, 1.15fr) minmax(0, 1fr) 1.6rem;
+    grid-template-areas: "num name desc arrow";
+    gap: 6px clamp(14px, 1.8vw, 34px);
     align-items: baseline;
-    padding: clamp(26px, 3vw, 46px) 0;
-    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
-    transition: background-color 0.4s ease, padding 0.4s ease;
+    padding: clamp(18px, 2vw, 28px) 0;
+    border-bottom: 1px solid rgba(254, 255, 248, 0.14);
+    transition: opacity 0.35s ease;
 }
 
-.ga-service:hover {
-    background-color: rgba(170, 224, 96, 0.16);
+.ga-service:first-child {
+    padding-top: 0;
+}
+
+.ga-service:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
 }
 
 .ga-service-num {
-    font-family: var(--tp-ff-body);
+    grid-area: num;
+    font-size: 12px;
     font-weight: 700;
-    font-size: 14px;
-    letter-spacing: -0.02em;
-    color: var(--tp-text-px-body, #6D6868);
+    letter-spacing: 0.04em;
+    color: rgba(254, 255, 248, 0.45);
+    transition: color 0.3s ease;
 }
 
 .ga-service-name {
+    grid-area: name;
+    margin: 0;
     font-family: var(--ga-ff-wordmark);
     font-weight: 800;
     font-stretch: 75%;
-    font-size: clamp(26px, 3vw, 52px);
+    font-size: clamp(24px, 2.5vw, 44px);
     line-height: 0.95;
     letter-spacing: -0.04em;
     text-transform: uppercase;
-    color: var(--ga-black);
-}
-
-.ga-service-cat {
-    font-family: var(--tp-ff-body);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    color: var(--tp-text-px-body, #6D6868);
+    color: var(--tp-body-bg);
+    transition: color 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ga-service-desc {
-    font-size: clamp(14px, 1vw, 17px);
+    grid-area: desc;
+    margin: 0;
+    font-size: clamp(13px, 0.95vw, 16px);
     line-height: 1.5;
     letter-spacing: -0.01em;
-    margin: 0;
-    color: var(--tp-text-body);
+    color: rgba(254, 255, 248, 0.6);
+    transition: color 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ga-service-arrow {
+    grid-area: arrow;
+    align-self: center;
+    justify-self: end;
+    display: inline-flex;
+    color: var(--ga-green-light);
+    opacity: 0;
+    transform: translate(-8px, 8px);
+    transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hovering one row pulls focus to it and pushes every other row in the whole
+   section back, so the list behaves like one instrument rather than ten. */
+.ga-services-area:has(.ga-service:hover) .ga-service:not(:hover) {
+    opacity: 0.32;
+}
+
+.ga-service:hover .ga-service-name {
+    color: var(--ga-green-light);
+    transform: translateX(clamp(6px, 0.8vw, 16px));
+}
+
+.ga-service:hover .ga-service-desc {
+    color: rgba(254, 255, 248, 0.82);
+    transform: translateX(clamp(6px, 0.8vw, 16px));
+}
+
+.ga-service:hover .ga-service-num {
+    color: var(--ga-green-light);
+}
+
+.ga-service:hover .ga-service-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
 }
 
 @media (max-width: 991px) {
+    /* The header stops being a column and becomes a heading above its rows,
+       so the names keep their size instead of being squeezed into a third. */
+    .ga-service-group {
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(18px, 4vw, 30px);
+    }
+
+    .ga-service-group-head {
+        position: static;
+    }
+
+    .ga-service-group-blurb {
+        max-width: 42ch;
+    }
+
     .ga-service {
-        grid-template-columns: 3rem minmax(0, 1fr);
+        grid-template-columns: 2.4rem minmax(0, 1fr);
+        grid-template-areas:
+            "num name"
+            ".   desc";
+        gap: 8px clamp(12px, 3vw, 24px);
         align-items: start;
     }
 
-    .ga-service-cat,
-    .ga-service-desc {
-        grid-column: 2;
+    /* No hover on touch, so the arrow would never appear: drop it rather than
+       leave an invisible column of dead space. */
+    .ga-service-arrow {
+        display: none;
     }
 }
 
-/*----------------------------------------*/
+@media (prefers-reduced-motion: reduce) {
+    .ga-service,
+    .ga-service-name,
+    .ga-service-desc,
+    .ga-service-arrow,
+    .ga-service-num {
+        transition: none;
+    }
+
+    .ga-service:hover .ga-service-name,
+    .ga-service:hover .ga-service-desc {
+        transform: none;
+    }
+}
+
 /*  15. Work
 /*----------------------------------------*/
 .ga-work-area {
@@ -1669,6 +1816,12 @@ body.tp-magic-cursor #magic-cursor {
     color: var(--tp-body-bg);
 }
 
+/* Over the dark full bleed hero the black wordmark vanishes into the
+   photograph, so it inverts until the header takes its own cream band. */
+.px-header-2-area.header-fixed.over-hero .ga-logo {
+    color: var(--tp-body-bg);
+}
+
 /* Short windows: the list has to scroll rather than run off the bottom. */
 @media (max-height: 640px) {
     .ga-menu {
@@ -1702,5 +1855,149 @@ body.tp-magic-cursor #magic-cursor {
 
     .ga-menu-list a:hover {
         transform: none;
+    }
+}
+
+/*----------------------------------------*/
+/*  22. Hero (full bleed)
+/*----------------------------------------*/
+/* The flipbook is the hero now, so the band markup from section 11 is reused
+   here at full viewport height. Keeping .ga-banner-img / .ga-banner-frames as
+   the class names means the frame cycling and the no-smoother parallax
+   fallback in main.js both keep working untouched. */
+.ga-hero {
+    position: relative;
+    height: 100vh;
+    /* svh so the iOS address bar cannot push the wordmark off the bottom */
+    height: 100svh;
+    /* Low enough that a real browser window never trips it. At 560px a short
+       laptop window (1440x473) made the hero taller than the viewport and
+       pushed the bottom-anchored wordmark clean off the fold. */
+    min-height: 420px;
+    overflow: hidden;
+    background-color: var(--ga-black);
+}
+
+/* On a short window the lockup is sized off the height instead of the width,
+   so the wordmark, the rotator above it and the bottom margin all still fit
+   on screen together. */
+@media (min-width: 1200px) and (max-height: 700px) {
+    .ga-hero .px-hero-2-text {
+        font-size: min(168px, 26vh);
+    }
+
+    .ga-hero .px-hero-2-text i {
+        width: clamp(200px, 24vw, 420px);
+        height: 8px;
+    }
+}
+
+.ga-hero .ga-banner-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+}
+
+/* Taller than the hero and pulled up, so the parallax always has image to
+   reveal at both ends rather than running out and showing the background. */
+.ga-hero .ga-banner-frames {
+    height: calc(100% + 260px);
+    margin-top: -130px;
+}
+
+/* The frames are photographs, so the wordmark needs a floor to sit on.
+   Weighted to the bottom, where the lockup is. */
+.ga-hero-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(to bottom,
+            rgba(10, 10, 10, 0.42) 0%,
+            rgba(10, 10, 10, 0.12) 26%,
+            rgba(10, 10, 10, 0.12) 46%,
+            rgba(10, 10, 10, 0.58) 82%,
+            rgba(10, 10, 10, 0.76) 100%);
+}
+
+.ga-hero-inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(26px, 4vh, 58px);
+    padding: 0 clamp(16px, 3vw, 44px);
+    text-align: center;
+}
+
+/* Inverted lockup: same metrics as the original, cream instead of black. */
+.ga-hero .px-hero-2-text,
+.ga-hero .px-hero-2-text span {
+    color: var(--tp-body-bg);
+}
+
+.ga-hero .px-hero-2-text {
+    margin: 0;
+}
+
+.ga-hero-wordmark {
+    text-shadow: 0 2px 40px rgba(10, 10, 10, 0.3);
+}
+
+/* Rotator. One line is visible at a time; the others are clipped out of the
+   same box, so the block never changes height as the lines swap. */
+.ga-hero-rotator {
+    position: relative;
+    display: block;
+    height: 1.07em;
+    margin: 0 0 clamp(14px, 2.4vh, 30px);
+    overflow: hidden;
+    font-family: var(--tp-ff-body);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.07;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--tp-body-bg);
+}
+
+.ga-hero-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: block;
+    transform: translateY(-105%);
+    transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.ga-hero-line.is-in {
+    transform: translateY(0);
+}
+
+/* The outgoing line leaves downward while the incoming one drops in from
+   above, so the three read as one belt rather than a crossfade. */
+.ga-hero-line.is-out {
+    transform: translateY(105%);
+    transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media (max-width: 1199px) {
+    /* Below xl the green bar and its tagline are display:none (they always
+       were), so the lockup is just the two words and can breathe. */
+    .ga-hero .px-hero-2-text {
+        font-size: clamp(54px, 15vw, 118px);
+    }
+}
+
+@media (max-width: 767px) {
+    .ga-hero-rotator {
+        font-size: 12.5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ga-hero-line {
+        transition: none;
     }
 }

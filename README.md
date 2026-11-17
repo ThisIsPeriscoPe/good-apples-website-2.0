@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118a); bump it in index.html, studio.html, contact.html
+  (currently 20261118f); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -152,6 +152,41 @@ Read this first when picking the project up, from either Claude account.
 - **Phone number is 0450 534 610**, Martin Corr's, from his email signature.
   It is now on the Contact page, under the big email address and in the side
   column. Linked as `tel:+61450534610`.
+
+**Joey's calls, 18 Nov (second round)**
+- **The full bleed flipbook is the hero now.** The scattered image grid is
+  gone from the home page: "not a fan of the scattered images for hero".
+  The hero is 100svh of the cycling frames with the GOOD / APPLES lockup
+  over it, inverted to cream, plus a three line rotator (Good Work / By Good
+  People / For Good People). The markup still uses `.ga-banner-img` and
+  `.ga-banner-frames`, so the frame cycling and the no-smoother parallax
+  fallback kept working untouched.
+- **`assets/img/hero/*.jpg` are deliberately kept** even though nothing on
+  the site references them. Joey: the scattered selects "are still a decent
+  image reffo for general image selection taste for case study thumbs and
+  whatnot". They are a taste reference, not dead weight. Do not bin them.
+- **Flipbook pace is now 220ms per frame** (`FRAME_MS`, section 04 of
+  main.js), up from 175. Joey, 18 Nov: "gif is a bit too rapid". It read fine
+  as a mid-page band but felt frantic once it filled the screen.
+- **Services section is dark and regrouped.** Joey: dark mode, and the flat
+  list "feels a bit vanilla". It now runs as four discipline groups (Brand /
+  Digital / Content / Marketing), each with its own sticky header column,
+  blurb and count, beside its numbered rows. Hovering any row dims every
+  other row in the section to 0.32 via `:has()`, turns the name and number
+  green and slides an arrow in. Jack Nimble's own "What We Do" is dark with
+  images, which backed the dark call; theirs is stacked blocks, which is the
+  "bit basic" Joey means.
+- **Per-service image thumbs are NOT in yet, on purpose.** Joey was open to
+  them. Mapping them honestly against the projects' own discipline lists only
+  covers 6 of the 10 services: Brand Identity, Packaging, Websites,
+  Photography, Ad Creative and Print and Merch. Nothing in the eight built
+  case studies demonstrates Email and CRM, Video and Motion, 3D and Product
+  Renders or Decks and Sales Collateral, and putting a photo of a tote bag
+  next to "3D and Product Renders" would claim work we cannot show. Ask Joey
+  which jobs cover those four, then add all ten.
+- Removed with the old hero: the scattered grid's hover and tablet Swiper
+  slider in main.js, and the Swiper library itself (151K off the home page,
+  it had no markup left to act on).
 
 **Open questions (owner: Joey)**
 - CMBT Hydrate can photos (May 2024): did we design that can?
