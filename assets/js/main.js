@@ -7,6 +7,7 @@
     05. Magic cursor
     06. Back to top
     07. Header reveal
+    08. Menu
 ****************************************************/
 
 (function () {
@@ -423,6 +424,56 @@
                 }
                 header.classList.add("is-stuck");
                 header.classList.toggle("is-hidden", self.direction === 1);
+            }
+        });
+    })();
+
+    /*----------------------------------------*/
+    /*  08. Menu
+    /*----------------------------------------*/
+    (function menu() {
+        const btn = document.getElementById("hamburger-open-btn");
+        const panel = document.getElementById("ga_menu");
+        const header = document.querySelector(".px-header-2-area.header-fixed");
+        if (!btn || !panel) return;
+
+        let open = false;
+
+        function setOpen(next) {
+            if (next === open) return;
+            open = next;
+
+            panel.classList.toggle("is-open", open);
+            panel.setAttribute("aria-hidden", open ? "false" : "true");
+            btn.classList.toggle("active", open);
+            btn.setAttribute("aria-expanded", open ? "true" : "false");
+            if (header) header.classList.toggle("menu-open", open);
+
+            // Freeze the page underneath. With ScrollSmoother running the body
+            // does not scroll at all, so pausing the smoother is what actually
+            // stops it; without it, the body does, so lock that instead.
+            const smoother = window.ScrollSmoother && ScrollSmoother.get();
+            if (smoother) smoother.paused(open);
+            else document.body.style.overflow = open ? "hidden" : "";
+        }
+
+        btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-controls", "ga_menu");
+
+        btn.addEventListener("click", function () {
+            setOpen(!open);
+        });
+
+        // Closing on link click matters for the in-page anchors, where nothing
+        // navigates and the panel would otherwise stay over the section.
+        panel.addEventListener("click", function (e) {
+            if (e.target.closest("a")) setOpen(false);
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && open) {
+                setOpen(false);
+                btn.focus();
             }
         });
     })();

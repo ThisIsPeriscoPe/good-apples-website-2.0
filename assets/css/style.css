@@ -19,6 +19,8 @@
     17. Footer
     18. Scroll reveal
     19. Project page
+    20. Studio and Contact pages
+    21. Menu
 -----------------------------------------------------------------------------------*/
 
 /*----------------------------------------*/
@@ -554,20 +556,35 @@ body.tp-magic-cursor #magic-cursor {
     transition: all 0.3s ease-in-out;
 }
 
-.tp-hamburger-btn.active {
-    background-color: var(--tp-common-px-black);
-}
-
 .tp-hamburger-btn.active span {
     margin: 0 auto;
 }
 
+/* Three bars in the markup, so the middle one goes and the outer two cross.
+   The theme's own rules assumed two and left the third bar sitting there. */
+/* `.active span` already sets margin to 0, so all three bars are stacked on
+   the centre line: they only need to rotate, not travel. */
 .tp-hamburger-btn.active span:nth-child(1) {
-    transform: rotate(45deg) translate(3px, 2px);
+    transform: rotate(45deg);
 }
 
 .tp-hamburger-btn.active span:nth-child(2) {
-    transform: rotate(-45deg) translate(0px, 1px);
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.tp-hamburger-btn.active span:nth-child(3) {
+    transform: rotate(-45deg);
+}
+
+/* A black circle on the black menu panel is invisible, so the open state
+   inverts: cream disc, black cross. */
+.tp-hamburger-btn.active {
+    background-color: var(--tp-body-bg);
+}
+
+.tp-hamburger-btn.active span {
+    background-color: var(--ga-black);
 }
 
 /*----------------------------------------*/
@@ -1419,4 +1436,249 @@ body.tp-magic-cursor #magic-cursor {
 
 .ga-work-item.is-pending .ga-work-thumb img {
     filter: saturate(0);
+}
+
+/*----------------------------------------*/
+/*  20. Studio and Contact pages
+/*----------------------------------------*/
+.ga-studio-values-area {
+    padding: clamp(60px, 9vh, 130px) 0;
+}
+
+/* Same numbered-row rhythm as the services list, so the two read as one
+   system rather than a second layout invented for this page. */
+.ga-studio-values {
+    list-style: none;
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+}
+
+.ga-studio-value {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(16px, 2vw, 40px);
+    align-items: baseline;
+    padding: clamp(26px, 3vw, 44px) 0;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
+}
+
+.ga-studio-value-name {
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(24px, 2.6vw, 44px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--ga-black);
+    margin: 0;
+}
+
+.ga-studio-value p {
+    font-size: clamp(14px, 1vw, 17px);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--tp-text-body);
+}
+
+.ga-studio-sub {
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(22px, 2.2vw, 38px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--ga-black);
+    margin: 0 0 clamp(18px, 2vw, 30px);
+}
+
+.ga-studio-sidelink {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    color: var(--ga-black);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.3);
+    transition: border-color 0.25s ease;
+}
+
+.ga-studio-sidelink:hover {
+    border-bottom-color: var(--ga-black);
+}
+
+/* Contact */
+.ga-contact-main {
+    padding: clamp(10px, 2vh, 30px) 0 clamp(50px, 7vh, 100px);
+}
+
+.ga-contact-mail {
+    display: block;
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    /* shrinks with the viewport so the address never wraps mid-word */
+    font-size: clamp(26px, 6.4vw, 118px);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    color: var(--ga-black);
+    word-break: normal;
+    overflow-wrap: anywhere;
+    transition: opacity 0.25s ease;
+}
+
+.ga-contact-mail:hover {
+    opacity: 0.55;
+}
+
+.ga-contact-address {
+    font-style: normal;
+    font-size: clamp(14px, 1vw, 17px);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    color: var(--tp-text-body);
+    margin: 0 0 clamp(24px, 3vw, 40px);
+}
+
+@media (max-width: 991px) {
+    .ga-studio-value {
+        grid-template-columns: 3rem minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .ga-studio-value p {
+        grid-column: 2;
+        margin-top: 10px;
+    }
+}
+
+/*----------------------------------------*/
+/*  21. Menu
+/*----------------------------------------*/
+/* Sits outside #smooth-wrapper so ScrollSmoother's transform never moves it. */
+.ga-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 8;
+    background-color: var(--ga-black);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ga-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Column so the contact row sits on the bottom edge instead of trailing the
+   list and leaving dead space under it on short windows. */
+.ga-menu-inner {
+    width: 100%;
+    max-width: 1830px;
+    min-height: 100%;
+    margin: 0 auto;
+    padding: 120px clamp(20px, 4vw, 60px) clamp(30px, 5vh, 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ga-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ga-menu-list a {
+    display: inline-block;
+    font-family: var(--ga-ff-wordmark);
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: clamp(38px, 7vw, 104px);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--tp-body-bg);
+    transition: color 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ga-menu-list a:hover {
+    color: var(--ga-green-light);
+    transform: translateX(clamp(8px, 1.2vw, 22px));
+}
+
+.ga-menu-foot {
+    margin-top: auto;
+    padding-top: clamp(30px, 6vh, 70px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(16px, 2.5vw, 42px);
+    border-top: 1px solid rgba(254, 255, 248, 0.2);
+    padding-top: clamp(18px, 2.5vh, 32px);
+}
+
+.ga-menu-foot a {
+    font-size: clamp(13px, 1vw, 16px);
+    letter-spacing: -0.01em;
+    color: rgba(254, 255, 248, 0.72);
+    transition: color 0.25s ease;
+}
+
+.ga-menu-foot a:hover {
+    color: var(--ga-green-light);
+}
+
+/* The button sits above the panel so it can close it again. */
+.px-header-2-area.header-fixed {
+    z-index: 10;
+}
+
+/* While the menu is open the header must not slide away under it. */
+.px-header-2-area.header-fixed.menu-open {
+    transform: none;
+    background-color: transparent;
+}
+
+.px-header-2-area.header-fixed.menu-open .ga-logo {
+    color: var(--tp-body-bg);
+}
+
+/* Short windows: the list has to scroll rather than run off the bottom. */
+@media (max-height: 640px) {
+    .ga-menu {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    /* Clear the header band properly. At 96px the wordmark and the first
+       menu item ran together and read as one block. */
+    .ga-menu-inner {
+        padding-top: 132px;
+        justify-content: flex-start;
+    }
+
+    .ga-menu-foot {
+        padding-top: clamp(20px, 4vh, 40px);
+    }
+
+    /* Sized off the viewport height so all five items plus the contact row
+       still fit without scrolling on a short laptop window. */
+    .ga-menu-list a {
+        font-size: clamp(24px, 9vh, 52px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ga-menu,
+    .ga-menu-list a {
+        transition: none;
+    }
+
+    .ga-menu-list a:hover {
+        transform: none;
+    }
 }

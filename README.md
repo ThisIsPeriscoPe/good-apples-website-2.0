@@ -17,7 +17,8 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261117c); bump it in index.html AND in every work/*.html
+  (currently 20261117g); bump it in index.html, studio.html, contact.html
+  AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
   - Services regrouped to 10 across Brand / Digital / Content / Marketing,
@@ -57,7 +58,36 @@ Read this first when picking the project up, from either Claude account.
     because a hidden pane fires no scroll events and no frames at all and will
     report everything as broken.
 
-**Next: the remaining ten project pages, then Studio and Contact**
+**Also done 17 Nov (later in the session)**
+- `studio.html` and `contact.html` built. Both use real facts only: founded
+  2016, rebrands 2018 and 2024, owned and operated by PeriscoPe, studio at
+  1/76 Township Dr Burleigh Heads, and the five values from the showcase deck.
+  No team names, bios, client counts or phone number, because none are sourced.
+  There is no phone number anywhere in the project files, so Contact is
+  email-led rather than carrying an invented one. No fake contact form either:
+  a form with nowhere to submit is not usable.
+- **The hamburger menu now works** (section 08 of main.js, section 21 of the
+  CSS). It had to: Studio and Contact were otherwise unreachable from every
+  page except the home footer. Full-screen black panel, closes on link click
+  and Escape, and pauses ScrollSmoother while open (with the smoother running
+  the body does not scroll at all, so `body { overflow: hidden }` does nothing
+  on its own). The panel sits outside `#smooth-wrapper` so the smoother's
+  transform cannot move it.
+- The theme's hamburger active-state CSS assumed two bars while the markup has
+  three, so the third bar was left sitting there and the cross came out as a
+  `<`. Fixed, and the open state now inverts to a cream disc, because a black
+  circle on the black panel was invisible.
+
+**Checked and NOT yet checked (be honest about this)**
+- Verified: the menu opens, closes, navigates and releases the scroll lock, and
+  both new pages render, at 1440x473 with the smoother on.
+- NOT verified: the menu or the two new pages at phone width or on a tall
+  window. Do that first next session. Chrome on macOS will not size a window
+  below ~500px, so use the in-app browser pane for a true 375px check, and make
+  sure the pane is VISIBLE first: a hidden pane fires no scroll events and no
+  animation frames at all and reports everything as broken.
+
+**Next: the remaining ten project pages**
 1. Copy research still to do:
    - Drive deck "Good Apples Project Showcase" (Sept 2025). Not yet read.
    - Drive "SMB - Final Report". Not yet read.
