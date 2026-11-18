@@ -107,28 +107,26 @@
             return;
         }
 
-        // Five big bites, alternating sides and getting deeper, leave a proper
-        // apple core: the top with its stem and leaf, the base, and a thin
-        // waist about 32 wide. Joey, 18 Nov: "more of the apple would get
-        // eaten", "the top and bottom and thin core of apple should be left",
-        // "this but much thinner", then "less bites". Coordinates are in the
-        // SVG's 200 x 224 box, measured off the photo's own outline (widest at
-        // y 112, x 3 to 196; the leaf sits above y 42 between x 108 and 190,
-        // the stem at x 95). The last two bites alone carve the final core.
+        // Three big bites leave a proper apple core: the top with its stem
+        // and leaf, the base, and a thin waist about 32 wide. A big chunk off
+        // the right, then the left side down to the core, then the right.
+        // Joey, 18 Nov: "the top and bottom and thin core of apple should be
+        // left", "much thinner", then "drags on for too long. just go less
+        // bites, and larger". Coordinates are in the SVG's 200 x 224 box,
+        // measured off the photo's own outline (widest at y 112, x 3 to 196;
+        // the leaf sits above y 42 between x 108 and 190, the stem at x 95).
         const CENTRE = { x: 100, y: 118 };
         // The right-hand bites sit low so they never reach the leaf: the last
         // one is centred at y 145 for exactly that.
         const BITES = [
-            { cx: 214, cy: 100, r: 56 },
-            { cx: -16, cy: 130, r: 62 },
-            { cx: 226, cy: 150, r: 86 },
+            { cx: 222, cy: 128, r: 80 },
             { cx: -19, cy: 118, r: 104 },
             { cx: 219, cy: 145, r: 104 }
         ];
         // It starts small (section 05 of the CSS) and every chomp leaves it
-        // this much bigger, with a heavier punch on the way: about 2.1x by the
-        // last bite, which is still smaller than the old starting size.
-        const GROW = 1.16;
+        // this much bigger, with a punch on the way: about 2x by the last
+        // bite, which is still smaller than the old starting size.
+        const GROW = 1.26;
         const PUNCH = 1.12;
 
         // A bite edge, the way teeth actually leave it: a handful of wide,
@@ -183,7 +181,7 @@
             const px = b.cx + ((CENTRE.x - b.cx) / d) * b.r * 0.92;
             const py = b.cy + ((CENTRE.y - b.cy) / d) * b.r * 0.92;
             const tl = gsap.timeline();
-            const count = 5;
+            const count = 6;
             for (let i = 0; i < count; i++) {
                 const c = document.createElementNS(NS, "circle");
                 c.setAttribute("cx", (px + (Math.random() - 0.5) * 10).toFixed(1));
@@ -239,8 +237,8 @@
 
         const bites = BITES.map(makeBite);
         const last = BITES.length - 1;
-        const STEP = 0.75;  // between bites: fewer, bigger, unhurried
-        const FIRST = 0.7;  // after the apple lands
+        const STEP = 0.6;   // between bites
+        const FIRST = 0.55; // after the apple lands
         const level = function (i) { return Math.pow(GROW, i + 1); };
 
         appleReady().then(function () {
@@ -260,9 +258,9 @@
                     // core left, a beat, then it drops away
                     // it falls the way it is leaning, rather than swinging
                     // back across upright to fall the other way
-                    .to(svg, { y: drop, rotation: function () { return gsap.getProperty(svg, "rotation") < 0 ? -16 : 16; }, duration: 0.75, ease: "power2.in", overwrite: "auto" }, 0.5)
-                    .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 1.0)
-                    .add(openUp(), 0.8);
+                    .to(svg, { y: drop, rotation: function () { return gsap.getProperty(svg, "rotation") < 0 ? -16 : 16; }, duration: 0.7, ease: "power2.in", overwrite: "auto" }, 0.4)
+                    .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 0.85)
+                    .add(openUp(), 0.6);
             });
         });
     })();
