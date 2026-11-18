@@ -127,10 +127,20 @@ Read this first when picking the project up, from either Claude account.
   `Desktop/Good Apples/Web/Assets/Rygg/Site photos (rygg.au, Nov 2026)`.
   **Lesson: heroes are full-bleed photography, never a website screenshot.**
   Screens belong in the gallery.
-- **Fjord hero replaced too, for the same reason** (it was also a homepage
-  screenshot). It is now a still from Fjord's own homepage film: a woman
-  mid-gasp in an ice bath. The film and the still are in
-  `Desktop/Good Apples/Web/Assets/Fjord`. No other hero is a screenshot.
+- **Fjord hero replaced too.** It was also a homepage screenshot. A still from
+  Fjord's homepage film went up first and Joey binned it: "fjord hero is
+  trash", "fjord probably has the most beautiful shots out of all the
+  projects, even video". It is now Fjord's own install photo "Hakea" (a man
+  in a bronze Fjord bath under a spotlight, "10-12°" on the wall), and the
+  gallery now shows their install photography (Alchemy Saunas, Si Studio,
+  Limfjord renders) and a clip of their homepage film alongside our site, GIF
+  ad and apparel. Sources are in `Desktop/Good Apples/Web/Assets/Fjord/Site
+  photos (fjord.com.au, Nov 2026)` and `Assets/Fjord`. **Lesson: a video
+  frame is never a hero; use the brand's best stills, at full size.** No other
+  hero is a screenshot.
+- **CMBT question closed.** Joey, 18 Nov: "yes anything cmbt we did". All
+  CMBT work on the page is ours, including the 2024 Hydrate cans and the plant
+  protein bar packs, so those images stay.
 - **Pharmacy Guild: build it,** crediting Akin Agency for the QSPP animation
   ("just mention akin where suitable"). Shown: QSPP "Pharmacy has Evolved"
   and the PAM explainer. Only finished, delivered pieces; nothing from the
@@ -168,17 +178,15 @@ Read this first when picking the project up, from either Claude account.
   is gone.
 
 **Next (as of 18 Nov, all 18 pages built)**
-1. Joey to answer: did we design the CMBT Hydrate can and the plant protein
-   bar packaging now on the CMBT page? If not, swap those images out.
-2. Per-service image thumbs (see "second round" below) can now cover nine of
+1. Per-service image thumbs (see "second round" below) can now cover nine of
    the ten services from built pages: Pharmacy Guild shows Video and Motion,
    Fjord and Zesty Paws show Email and CRM, ELMNT shows Decks and Sales
    Collateral. 3D and Product Renders still has no project. Ask Joey before
    building them.
-3. Take Me Wellness: when the store launches, add real screens of it to the
+2. Take Me Wellness: when the store launches, add real screens of it to the
    gallery (today it shows the homepage banners and brand imagery only).
-4. Rygg: add packaging images once the US tubes are on sale.
-5. Before showing Joey anything, check desktop, phone and 1440x650, and read
+3. Rygg: add packaging images once the US tubes are on sale.
+4. Before showing Joey anything, check desktop, phone and 1440x650, and read
    the two faults above so they are not reintroduced.
 
 **Where things live**
@@ -346,7 +354,7 @@ Read this first when picking the project up, from either Claude account.
   a hidden pane stops animating and reports everything as broken.
 
 **Open questions (owner: Joey)**
-- CMBT Hydrate can photos (May 2024): did we design that can?
+- ~~CMBT Hydrate can photos: did we design that can?~~ Closed 18 Nov: yes, all CMBT work is ours (Joey).
 - Client OK needed for testimonials.
 - No results for Good Apples-era projects.
 - No team or studio photos.
@@ -437,8 +445,8 @@ images/               original uncropped source images
       - Kioni shoot originals are in Assets/Kioni/Shoot originals (Drive).
       - The live cmbt.com.au is a 2025 rebuild, not HYPE's design; don't use
         it. The live BSKT site still matches HYPE's 2022 design.
-      - Open (Joey): the CMBT Hydrate can photos are a May 2024 shoot from
-        CMBT's own Drive. Confirm we designed that can before they go live.
+      - Closed 18 Nov: the CMBT Hydrate can photos (May 2024, from CMBT's own
+        Drive) are our design. Joey: "yes anything cmbt we did".
   - Live-site scroll videos (1440x900, about 14–16 s each) are in
     Desktop/Good Apples/Web/Assets/<client>/ for Rygg, Veteran Games and Fjord.
   - Caveats found:
