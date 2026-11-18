@@ -236,6 +236,11 @@ Read this first when picking the project up, from either Claude account.
 3. Rygg: add packaging images once the US tubes are on sale.
 4. Before showing Joey anything, check desktop, phone and 1440x650, and read
    the two faults above so they are not reintroduced.
+5. Open (Joey, raised 18 Nov): two hero gif frames may need swapping. One is
+   TreeArc's business card with the managing director's email and mobile
+   legible (the TreeArc gallery left cards out for that reason). The other is
+   the Take Me website concept made by the other studio before we started.
+   Frames live in `assets/img/banner/frame-01..16.jpg`.
 
 **Where things live**
 - Hero contact sheet: Desktop/Good Apples/Web/Work hero picks (17 Nov).jpg.
