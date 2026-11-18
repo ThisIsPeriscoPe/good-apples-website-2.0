@@ -107,27 +107,32 @@
             return;
         }
 
-        // Side bites, alternating, each bigger than the last. The last pair are
-        // big enough to leave only the core: the top with its stem and leaf,
-        // the base, and a narrow waist. Coordinates are in the SVG's 200 x 224
-        // box, measured off the photo's own outline (widest at y 112, x 3 to
-        // 196). Joey, 18 Nov: "bigger slower bites", so the side bites are a
-        // third bigger than the first cut and spaced twice as far apart.
+        // Bites alternate sides, each bigger and deeper than the last, until
+        // what is left is a proper apple core: the top with its stem and leaf,
+        // the base, and a thin waist about 32 wide (Joey, 18 Nov: "more of the
+        // apple would get eaten", "the top and bottom and thin core of apple
+        // should be left", then of the old 82-wide core: "this but much
+        // thinner"). Coordinates are in the SVG's 200 x 224 box,
+        // measured off the photo's own outline (widest at y 112, x 3 to 196;
+        // the leaf sits above y 42 between x 108 and 190, the stem at x 95).
         const CENTRE = { x: 100, y: 118 };
-        // The big right-hand bite sits lower than the left one so it never
-        // reaches the leaf.
+        // The right-hand bites sit lower than the left ones so they never
+        // reach the leaf: the last one is centred at y 145 for exactly that.
         const BITES = [
             { cx: 214, cy: 98,  r: 50 },
             { cx: -14, cy: 134, r: 50 },
             { cx: 224, cy: 152, r: 64 },
             { cx: -24, cy: 88,  r: 64 },
             { cx: 239, cy: 128, r: 98 },
-            { cx: -39, cy: 118, r: 98 }
+            { cx: -39, cy: 118, r: 98 },
+            { cx: 219, cy: 145, r: 104 },
+            { cx: -19, cy: 118, r: 104 }
         ];
-        // Joey: the apple "would gradually increase in size each bite". Each
-        // chomp leaves it this much bigger, so it ends about 1.5x its size
-        // (still clear of the edges on a short 1440x650 laptop window).
-        const GROW = 1.07;
+        // It starts small (section 05 of the CSS) and every chomp leaves it
+        // this much bigger, with a heavier punch on the way: about 2.1x by the
+        // last bite, which is still smaller than the old starting size.
+        const GROW = 1.1;
+        const PUNCH = 1.1;
 
         // A bite edge, the way teeth actually leave it: a handful of wide,
         // shallow scoops of different sizes along the front of the bite, with
@@ -211,8 +216,10 @@
         function chomp(b, bite, level) {
             const tilt = b.cx > CENTRE.x ? -3.4 : 3.4;
             return gsap.timeline()
-                .to(bite, { scale: 1, duration: 0.17, ease: "back.out(2.2)" }, 0)
-                .fromTo(svg, { scale: level * 1.05 }, { scale: level, duration: 0.62, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
+                // a bite never overshoots: on the big ones a springy ease made
+                // the apple look as if it grew back after each bite
+                .to(bite, { scale: 1, duration: 0.2, ease: "power3.out" }, 0)
+                .fromTo(svg, { scale: level * PUNCH }, { scale: level, duration: 0.62, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
                 .fromTo(svg, { rotation: tilt }, { rotation: 0, duration: 0.7, ease: "elastic.out(1, 0.4)", overwrite: "auto" }, 0)
                 .to(svg, { keyframes: { x: [0, tilt * -1.1, tilt * 0.8, tilt * -0.4, 0] }, duration: 0.3, ease: "none", overwrite: "auto" }, 0)
                 .add(spray(b), 0.04);
@@ -220,8 +227,8 @@
 
         const bites = BITES.map(makeBite);
         const last = BITES.length - 1;
-        const STEP = 0.6;   // between bites
-        const FIRST = 0.75; // after the apple lands
+        const STEP = 0.55;  // between bites
+        const FIRST = 0.7;  // after the apple lands
         const level = function (i) { return Math.pow(GROW, i + 1); };
 
         appleReady().then(function () {

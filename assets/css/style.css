@@ -318,8 +318,10 @@ li,
             mask-image: radial-gradient(circle at 50% 50%, transparent var(--ga-hole), #000 calc(var(--ga-hole) + 1px));
 }
 
+/* Starts small and grows with every bite (Joey, 18 Nov: "overall be smaller
+   from start to end, and also have heavier scale ramp ups"). */
 .ga-apple {
-    width: min(44vmin, 300px);
+    width: min(28vmin, 180px);
     height: auto;
     overflow: visible;
     /* starts small and invisible; main.js pops it in. Without JS the

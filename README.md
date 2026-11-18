@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118q); bump it in index.html, studio.html, contact.html
+  (currently 20261118r); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -142,13 +142,27 @@ Read this first when picking the project up, from either Claude account.
   "less 3d bite effect and just direct bite etch into flat image", then the
   tooth marks "look way too unnatural and like repetitive cogs".
   - Flat cut-outs: the flesh layer (filter + second mask) is gone.
-  - Side bites a third bigger (r 50 and 64), 0.6s apart (was 0.3s); the
-    whole meal is about 5.5s before the hole opens.
-  - The apple grows 1.07x per bite (about 1.5x by the core), sized to stay
-    clear of the edges on a 1440x650 window.
+  - Side bites a third bigger (r 50 and 64), more spread out than the
+    original 0.3s (see the second pass below for the current timing).
+  - The apple grows with each bite (see the second pass below).
   - Bite edges are a handful of wide, shallow, uneven scoops with small
     ridges between them, re-rolled every visit, instead of seven small round
     teeth.
+- **Splash, second pass (same day):** "overall be smaller from start to end,
+  and also have heavier scale ramp ups", "the whole/more of the apple would
+  get eaten", then "the top and bottom and thin core of apple should be
+  left" and, of the old core, "this but much thinner".
+  - The apple starts at min(28vmin, 180px) (was 44vmin / 300px) and grows
+    1.1x per bite with a 1.1x punch (was 1.07x / 1.05x): about 2.1x by the
+    end, still smaller than the old start.
+  - Eight bites now, 0.55s apart. The last two are deeper side bites that
+    leave a proper core: the top with stem and leaf, the base, and a waist
+    about 32 wide (the old core was 82). They stop short of the leaf (the
+    right-hand ones sit low for that). The core then drops as before.
+  - Bites snap in with a hard ease-out: a springy ease made the big bites
+    overshoot, so the apple looked as if it grew back.
+  - Tried and rejected: eating the core from below until only the stem cap
+    was left. Joey wants the classic core left at the end.
 - Tools: `Claude tools/herorec.mjs` screenshots the hero after the splash and
   at chosen scroll positions (desktop with a fake mouse, or `WxHm` for a
   phone). `qa.mjs` and `herorec.mjs` used to start their "wait for the
@@ -236,11 +250,12 @@ Read this first when picking the project up, from either Claude account.
 3. Rygg: add packaging images once the US tubes are on sale.
 4. Before showing Joey anything, check desktop, phone and 1440x650, and read
    the two faults above so they are not reintroduced.
-5. Open (Joey, raised 18 Nov): two hero gif frames may need swapping. One is
-   TreeArc's business card with the managing director's email and mobile
-   legible (the TreeArc gallery left cards out for that reason). The other is
-   the Take Me website concept made by the other studio before we started.
-   Frames live in `assets/img/banner/frame-01..16.jpg`.
+5. Closed 18 Nov: the hero gif frames stay as they are. Joey: "take me is
+   fine mate, i've already said this" (Take Me imagery is fine anywhere, as
+   long as the copy doesn't claim the brand or packaging), and "business
+   cards are fine for treearc", staff details on them are fine. No cleaner
+   TreeArc image beat the cards, and the cards are back in the TreeArc
+   gallery too. Frames live in `assets/img/banner/frame-01..16.jpg`.
 
 **Where things live**
 - Hero contact sheet: Desktop/Good Apples/Web/Work hero picks (17 Nov).jpg.
