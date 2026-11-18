@@ -92,6 +92,21 @@ Read this first when picking the project up, from either Claude account.
   and each bite gets "impactful subtle shake, zoom, and alternate rotations"
   with "very subtle apple crumbs". See "Done 18 Nov".
 
+**Joey's calls, 18 Nov (fifth round): image freshness**
+- **CMBT: no old shots.** "i swear you are picking like the most ancient
+  outdated cmbt photos." The gallery is now all 2024 work from CMBT's own
+  Instagram export (Drive, shared by CMBT in May 2025; copies in
+  `Desktop/Good Apples/Web/Assets/CMBT/2024 Instagram (Drive)`), and the
+  hero is the May 2024 Hydrate can-in-hand shot. The 2019-2022 shoot images
+  in "Best picks (Nov 2026)" are not to be used on the site.
+- **BSKT: the colour studio shots.** "all these suck for BSKT", "nicer studio
+  shot images". The gallery is the 2025 studio set already saved in
+  `Desktop/Good Apples/Web/Assets/BSKT` (bars on red, granola pours on
+  yellow and blue, Davidson Plum on red earth, Dark Cocoa grid, Cinnamon
+  Myrtle launch), not the 2021-22 shoot in "Best picks".
+- Lesson for picking images anywhere on this site: newest and boldest first.
+  Check the date before the content.
+
 **Project pages and galleries (18 Nov, in progress)**
 - **Veteran Games page built** (work/veteran-games.html), copy sourced from the
   2027 Partnership Report HANDOFF and written to the VG Tone of Voice sheet
