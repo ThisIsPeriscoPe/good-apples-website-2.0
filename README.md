@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118r); bump it in index.html, studio.html, contact.html
+  (currently 20261118s); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -153,12 +153,18 @@ Read this first when picking the project up, from either Claude account.
   get eaten", then "the top and bottom and thin core of apple should be
   left" and, of the old core, "this but much thinner".
   - The apple starts at min(28vmin, 180px) (was 44vmin / 300px) and grows
-    1.1x per bite with a 1.1x punch (was 1.07x / 1.05x): about 2.1x by the
-    end, still smaller than the old start.
-  - Eight bites now, 0.55s apart. The last two are deeper side bites that
-    leave a proper core: the top with stem and leaf, the base, and a waist
-    about 32 wide (the old core was 82). They stop short of the leaf (the
-    right-hand ones sit low for that). The core then drops as before.
+    1.16x per bite with a 1.12x punch: about 2.1x by the end, still smaller
+    than the old start.
+  - Then "was hoping for less bites, and also the rotate back and forth per
+    bite. not always by the same amount, a bit of asymmetry": **five bites**,
+    0.75s apart (it had gone to eight). The last two carve the final core:
+    the top with stem and leaf, the base, and a waist about 32 wide (the old
+    core was 82). They stop short of the leaf (the right-hand ones sit low
+    for that). The core then drops as before.
+  - Each bite rocks the apple away from the bitten side, back past centre,
+    then settles, with every swing a fresh random size (measured at 30fps:
+    about +10/-2.5, -6/+8, +11/-4, -13/-3 degrees), and it settles at a
+    slightly different angle each time instead of straight.
   - Bites snap in with a hard ease-out: a springy ease made the big bites
     overshoot, so the apple looked as if it grew back.
   - Tried and rejected: eating the core from below until only the stem cap

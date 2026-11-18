@@ -107,32 +107,29 @@
             return;
         }
 
-        // Bites alternate sides, each bigger and deeper than the last, until
-        // what is left is a proper apple core: the top with its stem and leaf,
-        // the base, and a thin waist about 32 wide (Joey, 18 Nov: "more of the
-        // apple would get eaten", "the top and bottom and thin core of apple
-        // should be left", then of the old 82-wide core: "this but much
-        // thinner"). Coordinates are in the SVG's 200 x 224 box,
-        // measured off the photo's own outline (widest at y 112, x 3 to 196;
-        // the leaf sits above y 42 between x 108 and 190, the stem at x 95).
+        // Five big bites, alternating sides and getting deeper, leave a proper
+        // apple core: the top with its stem and leaf, the base, and a thin
+        // waist about 32 wide. Joey, 18 Nov: "more of the apple would get
+        // eaten", "the top and bottom and thin core of apple should be left",
+        // "this but much thinner", then "less bites". Coordinates are in the
+        // SVG's 200 x 224 box, measured off the photo's own outline (widest at
+        // y 112, x 3 to 196; the leaf sits above y 42 between x 108 and 190,
+        // the stem at x 95). The last two bites alone carve the final core.
         const CENTRE = { x: 100, y: 118 };
-        // The right-hand bites sit lower than the left ones so they never
-        // reach the leaf: the last one is centred at y 145 for exactly that.
+        // The right-hand bites sit low so they never reach the leaf: the last
+        // one is centred at y 145 for exactly that.
         const BITES = [
-            { cx: 214, cy: 98,  r: 50 },
-            { cx: -14, cy: 134, r: 50 },
-            { cx: 224, cy: 152, r: 64 },
-            { cx: -24, cy: 88,  r: 64 },
-            { cx: 239, cy: 128, r: 98 },
-            { cx: -39, cy: 118, r: 98 },
-            { cx: 219, cy: 145, r: 104 },
-            { cx: -19, cy: 118, r: 104 }
+            { cx: 214, cy: 100, r: 56 },
+            { cx: -16, cy: 130, r: 62 },
+            { cx: 226, cy: 150, r: 86 },
+            { cx: -19, cy: 118, r: 104 },
+            { cx: 219, cy: 145, r: 104 }
         ];
         // It starts small (section 05 of the CSS) and every chomp leaves it
         // this much bigger, with a heavier punch on the way: about 2.1x by the
         // last bite, which is still smaller than the old starting size.
-        const GROW = 1.1;
-        const PUNCH = 1.1;
+        const GROW = 1.16;
+        const PUNCH = 1.12;
 
         // A bite edge, the way teeth actually leave it: a handful of wide,
         // shallow scoops of different sizes along the front of the bite, with
@@ -208,26 +205,44 @@
             return tl;
         }
 
-        // One chomp. The bite snaps in, and the apple takes the hit: a short
-        // shake, a punch of zoom and a tilt away from the side that was
-        // bitten, so the tilts alternate as the bites swap sides. It settles
-        // at its new, slightly bigger size (level) rather than back where it
-        // started, so the apple grows bite by bite.
+        // One chomp. The bite snaps in, and the apple takes the hit: a punch
+        // of zoom, a short shake, and a rock back and forth, first away from
+        // the side that was bitten. Joey: "rotate back and forth per bite,
+        // not always by the same amount, a bit of asymmetry". So every swing
+        // is a fresh random size, and the apple settles at a slightly
+        // different angle each time rather than snapping back to straight.
+        // It also settles at its new, bigger size (level), so it grows bite
+        // by bite. Chomps are built in bite order, so `rest` carries from one
+        // bite's resting angle into the next.
+        let rest = 0;
+        const between = function (a, b) { return a + Math.random() * (b - a); };
         function chomp(b, bite, level) {
-            const tilt = b.cx > CENTRE.x ? -3.4 : 3.4;
+            const away = b.cx > CENTRE.x ? -1 : 1;
+            const from = rest;
+            rest = between(-2.6, 2.6);
+            const swing = [away * between(5.5, 10), -away * between(2.5, 6), away * between(0.8, 2.6)];
+            const shake = [between(2.2, 4.4), between(1.4, 3.4), between(0.5, 1.6)];
             return gsap.timeline()
                 // a bite never overshoots: on the big ones a springy ease made
                 // the apple look as if it grew back after each bite
                 .to(bite, { scale: 1, duration: 0.2, ease: "power3.out" }, 0)
                 .fromTo(svg, { scale: level * PUNCH }, { scale: level, duration: 0.62, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
-                .fromTo(svg, { rotation: tilt }, { rotation: 0, duration: 0.7, ease: "elastic.out(1, 0.4)", overwrite: "auto" }, 0)
-                .to(svg, { keyframes: { x: [0, tilt * -1.1, tilt * 0.8, tilt * -0.4, 0] }, duration: 0.3, ease: "none", overwrite: "auto" }, 0)
+                .to(svg, {
+                    keyframes: [
+                        { rotation: from + swing[0], duration: 0.1, ease: "power2.out" },
+                        { rotation: from + swing[1], duration: 0.2, ease: "sine.inOut" },
+                        { rotation: from + swing[2], duration: 0.2, ease: "sine.inOut" },
+                        { rotation: rest, duration: 0.34, ease: "sine.out" }
+                    ],
+                    overwrite: "auto"
+                }, 0)
+                .to(svg, { keyframes: { x: [0, -away * shake[0], away * shake[1], -away * shake[2], 0] }, duration: 0.32, ease: "none", overwrite: "auto" }, 0)
                 .add(spray(b), 0.04);
         }
 
         const bites = BITES.map(makeBite);
         const last = BITES.length - 1;
-        const STEP = 0.55;  // between bites
+        const STEP = 0.75;  // between bites: fewer, bigger, unhurried
         const FIRST = 0.7;  // after the apple lands
         const level = function (i) { return Math.pow(GROW, i + 1); };
 
