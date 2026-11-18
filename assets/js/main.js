@@ -12,6 +12,7 @@
     10. (hero rotator, removed 18 Nov)
     11. Wordmark dock
     12. Project gallery video
+    13. Service hover thumbs
 ****************************************************/
 
 (function () {
@@ -300,6 +301,67 @@
         let pending = Array.prototype.slice.call(document.querySelectorAll(".px-fade-anim"));
         if (!pending.length) return;
 
+        // Text blocks reveal line by line instead of fading (section 18 of
+        // the CSS). Every word is wrapped in a mask (.ga-w) around a mover
+        // (.ga-wi); the words are then grouped into lines by where they sit,
+        // and each line gets a delay a beat after the one above. Splitting
+        // into word masks rather than rebuilding lines keeps links, <br>s and
+        // centred text intact, and on a resize only the delays change.
+        // Image blocks are left on the fade.
+        const NOT_TEXT = ".ga-work-item, .ga-g, .ga-case-shot";
+        const textBlocks = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? [] :
+            pending.filter(function (el) { return !el.matches(NOT_TEXT) && el.textContent.trim(); });
+
+        function splitWords(root) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            const nodes = [];
+            while (walker.nextNode()) {
+                const n = walker.currentNode;
+                if (n.nodeValue.trim() && !n.parentElement.closest(".ga-w, svg, script, style")) nodes.push(n);
+            }
+            nodes.forEach(function (node) {
+                const frag = document.createDocumentFragment();
+                node.nodeValue.split(/(\s+)/).forEach(function (part) {
+                    if (!part) return;
+                    if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+                    const w = document.createElement("span");
+                    w.className = "ga-w";
+                    const i = document.createElement("span");
+                    i.className = "ga-wi";
+                    i.textContent = part;
+                    w.appendChild(i);
+                    frag.appendChild(w);
+                });
+                node.parentNode.replaceChild(frag, node);
+            });
+        }
+
+        function lineDelays(block) {
+            const base = parseFloat(block.getAttribute("data-delay")) || 0;
+            let line = -1, lastTop = null;
+            block.querySelectorAll(".ga-w").forEach(function (w) {
+                const top = w.getBoundingClientRect().top;
+                if (lastTop === null || Math.abs(top - lastTop) > 4) { line++; lastTop = top; }
+                w.firstChild.style.setProperty("--d", (base + Math.min(line, 14) * 0.075).toFixed(3) + "s");
+            });
+        }
+
+        textBlocks.forEach(function (block) {
+            splitWords(block);
+            // the block itself no longer fades, so its own delay moves onto
+            // the words (lineDelays) instead of the container
+            block.classList.add("ga-lines");
+        });
+        function allDelays() { textBlocks.forEach(lineDelays); }
+        allDelays();
+        // line breaks only settle once the web fonts are in
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(allDelays);
+        let delayTimer = null;
+        window.addEventListener("resize", function () {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(allDelays, 200);
+        });
+
         function showAllNow() {
             document.documentElement.classList.remove("ga-fades");
             pending = [];
@@ -314,6 +376,7 @@
         }
 
         pending.forEach(function (item) {
+            if (item.classList.contains("ga-lines")) return;
             const delay = parseFloat(item.getAttribute("data-delay"));
             if (delay) item.style.transitionDelay = delay + "s";
         });
@@ -578,48 +641,69 @@
         const overDark = !!heroEl;
         if (overDark) header.classList.add("over-hero");
 
-        // The wordmark lands in the nav right at the end of the hero. Letting
-        // the header hide on that very scroll would snatch the landing away
-        // the moment it happened, so hiding only starts once the hero is well
-        // behind us and the mark has had a beat to be seen in place.
-        const holdUntil = function () {
-            return heroEl ? heroEl.offsetHeight + 240 : 60;
-        };
+        // Three states, and only one change at a time (Joey, 18 Nov: the
+        // sticky header "seems a bit glitchy" - it used to show its cream
+        // band, swap the logo to black and drop its padding all at once, with
+        // the ticker visible underneath, then slide away a moment later):
+        //   1. at the top, or while the hero is still under it (or the hero
+        //      wordmark is still flying in, section 11): transparent, cream
+        //      logo, never hidden;
+        //   2. past that and scrolling down: it slides away, looking exactly
+        //      as it did, and only takes its cream band once it is off screen;
+        //   3. scrolling back up: it returns already on its band, black logo.
+        // It reads the hero's real position on screen every frame (GSAP's
+        // ticker), so it cannot lag behind ScrollSmoother's easing the way a
+        // scroll event can.
+        const BAND = 140;           // a little more than the header itself, so it starts tucking away just before the ticker reaches it
+        let over = true, lastY = window.scrollY, dir = 0, bandTimer = null;
 
-        // The header floats over the page with no background of its own. On a
-        // tall window that reads fine, because the hero fills the first screen
-        // and the wordmark sits on empty space. On a short laptop window you
-        // scroll straight into dense content and the wordmark lands on top of
-        // the section titles. So: transparent while still at the top, then it
-        // gets out of the way on the way down and comes back on its own
-        // background on the way up.
-        // Driven by ScrollTrigger rather than a window scroll listener, so it
-        // behaves the same with ScrollSmoother running and without it.
-        ScrollTrigger.create({
-            start: 1,
-            end: 99999,
-            onUpdate: function (self) {
-                const y = self.scroll();
-                // While the hero is still under the header (or the hero
-                // wordmark is still flying into the nav slot, section 11) the
-                // header holds still, stays transparent and keeps its logo
-                // cream. The flight lands on exactly this slot, so the hand
-                // over is invisible; the cream band and black logo only arrive
-                // once the hero has scrolled out from under the header.
-                const overHero = !!heroEl && y < heroEl.offsetHeight - header.offsetHeight;
-                if (header.classList.contains("logo-pending") || overHero || y < 60) {
-                    header.classList.remove("is-stuck", "is-hidden");
-                    if (overDark) header.classList.add("over-hero");
-                    return;
-                }
-                header.classList.remove("over-hero");
-                header.classList.add("is-stuck");
-                header.classList.toggle(
-                    "is-hidden",
-                    self.direction === 1 && y > holdUntil()
-                );
+        function setOver() {
+            clearTimeout(bandTimer);
+            header.classList.remove("is-stuck", "is-hidden");
+            if (overDark) header.classList.add("over-hero");
+        }
+
+        function update() {
+            const y = window.scrollY;
+            if (Math.abs(y - lastY) > 4) { dir = y > lastY ? 1 : -1; lastY = y; }
+
+            if (heroEl) {
+                // a few px of hysteresis so it cannot flicker at the edge
+                const bottom = heroEl.getBoundingClientRect().bottom;
+                over = over ? bottom > BAND - 4 : bottom > BAND + 4;
+            } else {
+                over = false;
             }
-        });
+            if (header.classList.contains("logo-pending") || over || y < 60) {
+                if (!header.classList.contains("over-hero") || header.classList.contains("is-stuck") || header.classList.contains("is-hidden")) setOver();
+                return;
+            }
+
+            if (dir > 0) {
+                if (!header.classList.contains("is-hidden")) {
+                    header.classList.add("is-hidden");
+                    // swap to the band only once it has slid out of view
+                    clearTimeout(bandTimer);
+                    bandTimer = setTimeout(function () {
+                        if (header.classList.contains("is-hidden")) {
+                            header.classList.remove("over-hero");
+                            header.classList.add("is-stuck");
+                        }
+                    }, 460);
+                }
+            } else if (dir < 0) {
+                if (header.classList.contains("is-hidden") || !header.classList.contains("is-stuck")) {
+                    clearTimeout(bandTimer);
+                    header.classList.remove("over-hero");
+                    header.classList.add("is-stuck");
+                    header.classList.remove("is-hidden");
+                }
+            }
+        }
+
+        if (window.gsap && gsap.ticker) gsap.ticker.add(update);
+        window.addEventListener("scroll", update, { passive: true });
+        update();
     })();
 
     /*----------------------------------------*/
@@ -854,6 +938,105 @@
             });
         }, { threshold: 0.2 });
         vids.forEach(function (v) { io.observe(v); });
+    })();
+
+    /*----------------------------------------*/
+    /*  13. Service hover thumbs
+    /*----------------------------------------*/
+    // Joey, 18 Nov: "something more interesting, maybe image thumbs on hover
+    // or something that correlate to services". Hovering a service shows a
+    // real project that did that work (data-thumb / data-project on each
+    // row), in a card that opens from its centre and follows the cursor with
+    // a little lag and lean. The list's own hover (green name, arrow, the
+    // other rows dimming) is untouched. Mouse devices only: nothing is built
+    // or downloaded on a phone.
+    (function serviceThumbs() {
+        const area = document.querySelector(".ga-services-area");
+        if (!area) return;
+        if (!window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 992px)").matches) return;
+        const rows = Array.from(area.querySelectorAll(".ga-service[data-thumb]"));
+        if (!rows.length) return;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const box = document.createElement("div");
+        box.className = "ga-service-thumb";
+        box.setAttribute("aria-hidden", "true");
+        const card = document.createElement("div");
+        card.className = "ga-service-thumb-card";
+        box.appendChild(card);
+        const imgs = rows.map(function (r) {
+            const im = new Image();
+            im.alt = "";
+            im.decoding = "async";
+            im.src = r.getAttribute("data-thumb");
+            card.appendChild(im);
+            return im;
+        });
+        const label = document.createElement("span");
+        label.className = "ga-service-thumb-label";
+        card.appendChild(label);
+        // on <body>: inside #smooth-wrapper the smoother's transform would
+        // turn position:fixed into absolute
+        document.body.appendChild(box);
+
+        let tx = 0, ty = 0, x = 0, y = 0, on = false, raf = null;
+
+        function render() {
+            const k = reduced ? 1 : 0.16;
+            x += (tx - x) * k;
+            y += (ty - y) * k;
+            // lean into the direction of travel, a few degrees at most
+            const lean = reduced ? 0 : Math.max(-7, Math.min(7, (tx - x) * 0.05));
+            box.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) rotate(" + lean.toFixed(2) + "deg)";
+            if (on || Math.abs(tx - x) > 0.4 || Math.abs(ty - y) > 0.4) {
+                raf = requestAnimationFrame(render);
+            } else {
+                raf = null;
+            }
+        }
+
+        // floats just above and to the right of the cursor, over the dimmed
+        // rows, so it never covers the row being hovered; flips left near the
+        // right edge and below the cursor near the top of the window
+        function aim(e) {
+            const w = box.offsetWidth, h = box.offsetHeight, gap = 24;
+            let nx = e.clientX + gap;
+            if (nx + w > window.innerWidth - 16) nx = e.clientX - w - gap;
+            let ny = e.clientY - h - gap;
+            if (ny < 16) ny = e.clientY + gap;
+            ny = Math.min(window.innerHeight - h - 16, ny);
+            tx = nx;
+            ty = ny;
+            if (!raf) raf = requestAnimationFrame(render);
+        }
+
+        function show(i, e) {
+            imgs.forEach(function (im, j) { im.classList.toggle("is-active", j === i); });
+            label.textContent = rows[i].getAttribute("data-project") || "";
+            if (!on) {
+                // first row entered: open where the cursor is, no fly-in
+                aim(e);
+                x = tx;
+                y = ty;
+            }
+            on = true;
+            box.classList.add("is-on");
+        }
+
+        function hide() {
+            on = false;
+            box.classList.remove("is-on");
+        }
+
+        rows.forEach(function (r, i) {
+            r.addEventListener("mouseenter", function (e) { show(i, e); });
+            r.addEventListener("mouseleave", function (e) {
+                const to = e.relatedTarget;
+                if (!to || !to.closest || !to.closest(".ga-service[data-thumb]")) hide();
+            });
+        });
+        area.addEventListener("mousemove", aim);
+        area.addEventListener("mouseleave", hide);
     })();
 
 })();

@@ -903,7 +903,7 @@ body.tp-magic-cursor #magic-cursor {
 }
 
 /* the supporting paragraph reverts to the body face at a readable size */
-.ga-statement span {
+.ga-statement-sub {
     display: block;
     max-width: 46ch;
     margin: clamp(28px, 3.5vw, 48px) auto 0;
@@ -920,7 +920,13 @@ body.tp-magic-cursor #magic-cursor {
 /*----------------------------------------*/
 /*  12. Values ticker
 /*----------------------------------------*/
+/* Tucked 2px up over the bottom of the hero. Under ScrollSmoother's
+   fractional transform the hero's scrim and its photo can end a pixel apart,
+   which left a bright 1px streak along the top of the strip (Joey, 18 Nov). */
 .ga-ticker-area {
+    position: relative;
+    z-index: 1;
+    margin-top: -2px;
     background-color: var(--ga-black);
     padding: clamp(18px, 2vw, 28px) 0;
     overflow: hidden;
@@ -1022,13 +1028,12 @@ body.tp-magic-cursor #magic-cursor {
     color: var(--ga-green-light);
 }
 
-/* Each discipline area gets its own header column beside its rows, so the
-   ten services read as four decisions rather than one long inventory. */
+/* Each discipline area is a small green label over its rows. (Redesigned
+   18 Nov: Joey, "Hs are competing too much, too texty". The group names used
+   to be as big as the service names, with a blurb and a count each; now the
+   service names are the only big type in the section.) */
 .ga-service-group {
-    display: grid;
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
-    gap: clamp(20px, 3vw, 70px);
-    padding: clamp(32px, 4.5vw, 64px) 0;
+    padding: clamp(28px, 3.4vw, 52px) 0;
     border-top: 1px solid rgba(254, 255, 248, 0.16);
 }
 
@@ -1037,42 +1042,18 @@ body.tp-magic-cursor #magic-cursor {
 }
 
 .ga-service-group-head {
-    position: relative;
-    /* follows its rows down on a tall group rather than stranding at the top */
-    position: sticky;
-    top: clamp(90px, 14vh, 130px);
-    align-self: start;
+    margin: 0 0 clamp(14px, 1.6vw, 26px);
 }
 
 .ga-service-group-name {
-    font-family: var(--ga-ff-wordmark);
-    font-weight: 800;
-    font-stretch: 75%;
-    font-size: clamp(30px, 3.4vw, 60px);
-    line-height: 0.92;
-    letter-spacing: -0.04em;
+    margin: 0;
+    font-family: var(--tp-ff-body);
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--ga-green-light);
-    margin: 0 0 14px;
-}
-
-.ga-service-group-blurb {
-    max-width: 24ch;
-    margin: 0;
-    font-size: clamp(13px, 0.95vw, 16px);
-    line-height: 1.5;
-    letter-spacing: -0.01em;
-    color: rgba(254, 255, 248, 0.6);
-}
-
-.ga-service-group-count {
-    position: absolute;
-    top: 4px;
-    right: 0;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: rgba(254, 255, 248, 0.4);
 }
 
 .ga-service-list {
@@ -1087,7 +1068,7 @@ body.tp-magic-cursor #magic-cursor {
     /* Name and description sit side by side rather than stacked, so the row
        uses the full width of the column instead of leaving the right half
        empty. This is the listed layout from the flat version, kept. */
-    grid-template-columns: 3.2rem minmax(0, 1.15fr) minmax(0, 1fr) 1.6rem;
+    grid-template-columns: 3.2rem minmax(0, 1.3fr) minmax(0, 1fr) 1.6rem;
     grid-template-areas: "num name desc arrow";
     gap: 6px clamp(14px, 1.8vw, 34px);
     align-items: baseline;
@@ -1120,7 +1101,7 @@ body.tp-magic-cursor #magic-cursor {
     font-family: var(--ga-ff-wordmark);
     font-weight: 800;
     font-stretch: 75%;
-    font-size: clamp(24px, 2.5vw, 44px);
+    font-size: clamp(26px, 3vw, 54px);
     line-height: 0.95;
     letter-spacing: -0.04em;
     text-transform: uppercase;
@@ -1175,21 +1156,6 @@ body.tp-magic-cursor #magic-cursor {
 }
 
 @media (max-width: 991px) {
-    /* The header stops being a column and becomes a heading above its rows,
-       so the names keep their size instead of being squeezed into a third. */
-    .ga-service-group {
-        grid-template-columns: minmax(0, 1fr);
-        gap: clamp(18px, 4vw, 30px);
-    }
-
-    .ga-service-group-head {
-        position: static;
-    }
-
-    .ga-service-group-blurb {
-        max-width: 42ch;
-    }
-
     .ga-service {
         grid-template-columns: 2.4rem minmax(0, 1fr);
         grid-template-areas:
@@ -1206,12 +1172,78 @@ body.tp-magic-cursor #magic-cursor {
     }
 }
 
+/* Hover thumb: a real project for the service under the cursor, following
+   it with a little lag and lean (section 13 of main.js builds it and puts it
+   on <body>, outside the smoother's transform). Mouse devices only. */
+.ga-service-thumb {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 12;
+    width: clamp(200px, 16vw, 290px);
+    aspect-ratio: 4 / 5;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.ga-service-thumb-card {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background-color: #161616;
+    clip-path: inset(50% 50% 50% 50%);
+    transition: clip-path 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.ga-service-thumb.is-on .ga-service-thumb-card {
+    clip-path: inset(0 0 0 0);
+}
+
+.ga-service-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.12);
+    transition: opacity 0.35s ease, transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.ga-service-thumb img.is-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.ga-service-thumb-label {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    padding: 6px 8px 5px;
+    background-color: var(--ga-black);
+    color: var(--tp-body-bg);
+    font-family: var(--tp-ff-body);
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+@media (hover: none), (max-width: 991px) {
+    .ga-service-thumb {
+        display: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .ga-service,
     .ga-service-name,
     .ga-service-desc,
     .ga-service-arrow,
-    .ga-service-num {
+    .ga-service-num,
+    .ga-service-thumb-card,
+    .ga-service-thumb img {
         transition: none;
     }
 
@@ -1483,9 +1515,50 @@ body.tp-magic-cursor #magic-cursor {
     transform: none;
 }
 
+/* Text reveal (18 Nov). Joey: text coming in on scroll "should be something
+   way more interesting and industry forward than just the stock fade up".
+   Text blocks no longer fade; every word rises out of its own mask with a
+   slight tilt that straightens, all the words on a line together and each
+   line a beat after the one above (section 03 of main.js splits the words
+   and works out the lines). Images keep the fade. It hangs off the same
+   .ga-fades / .is-in switch, so the no-JS and stuck-loop failsafes still
+   leave everything visible. */
+.ga-fades .px-fade-anim.ga-lines {
+    opacity: 1;
+    transform: none;
+}
+
+.ga-lines .ga-w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: 0.14em 0.04em 0.12em;
+    margin: -0.14em -0.04em -0.12em;
+}
+
+.ga-lines .ga-wi {
+    display: inline-block;
+}
+
+.ga-fades .ga-lines .ga-wi {
+    transform: translateY(118%) rotate(5deg);
+    transform-origin: 0 100%;
+    transition: transform 1.05s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: var(--d, 0s);
+}
+
+.ga-fades .ga-lines.is-in .ga-wi {
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .ga-fades .px-fade-anim {
         opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .ga-fades .ga-lines .ga-wi {
         transform: none;
         transition: none;
     }

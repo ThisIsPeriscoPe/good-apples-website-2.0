@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118u); bump it in index.html, studio.html, contact.html
+  (currently 20261118v); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -106,6 +106,49 @@ Read this first when picking the project up, from either Claude account.
   Myrtle launch), not the 2021-22 shoot in "Best picks".
 - Lesson for picking images anywhere on this site: newest and boldest first.
   Check the date before the content.
+
+**Joey's calls, 18 Nov (eighth round): services, text reveal, streak, header**
+- **Fjord hero, third go.** Joey: "fjord hero could be better", "theres just
+  much better design forward product hero shots", "no not poolside". It is
+  now Fjord's E12 render: the bronze Limfjord against terracotta tiles with
+  raking sunlight. The gallery swaps its E12 slot for the D10 travertine
+  render, so nothing repeats. **Lesson for Fjord: lead with the polished
+  product renders, not lifestyle or film stills.** The new Limfjord Core
+  renders are only 1125px wide, too small for a hero.
+- **Services restyled.** Joey: "Hs are competing too much, too texty", "the
+  count of services isn't really needed", "the list stuff is cool and how
+  they hover on and off". The group names are now small green labels; the
+  blurbs and counts are gone; the list runs full width; the row hover is
+  unchanged.
+- **Hover thumbs.** Joey: "maybe image thumbs on hover or something that
+  correlate to services". A 4:5 project image follows the cursor, floating
+  above it so it never covers the hovered row (section 13 of main.js; images
+  in `assets/img/services/01-10.jpg`). Projects: TreeArc, BSKT, Rygg, Zesty
+  Paws, Healthy Rituals, Pharmacy Guild, ELMNT, BikeChain, Fjord, and Veteran
+  Games (two partnership-deck slides). Mouse devices only.
+- **Text reveal.** Joey: "way more interesting and industry forward than just
+  the stock fade up". Text blocks now reveal word-masked, line by line, with
+  a slight tilt (section 03 of main.js and section 18 of the CSS); images
+  keep the fade. `.ga-statement span` became `.ga-statement-sub`, because a
+  generic span rule would hit the word spans.
+- **1px streak above the ticker fixed.** The hero scrim ended a pixel short
+  of the photo under the smoother's transform; the ticker now tucks 2px up
+  over it. Checked clean at five scroll positions.
+- **Overlay kept, on evidence.** Joey asked "do we even need the black
+  gradient overlay?". Frames 02, 10 and 14 were shot with and without it.
+  Without it, the cream GOOD APPLES and the context text all but vanish on
+  the bright frames (white wall, pale sky, white ledge), so it stays,
+  weighted to the bottom.
+- **Sticky header rebuilt** (Joey: "a bit glitchy"). It had been doing four
+  things at once as the logo landed: the ticker sliding under the
+  transparent logo, the band fading in, the logo crossfading to black, and
+  the padding dropping, then sliding away. Now:
+  - Over the hero it stays transparent with a cream logo.
+  - Scrolling down past the hero, it slides away looking exactly as it did,
+    and takes its band only once it is off screen.
+  - Scrolling up, it returns already on its band with a black logo.
+  - It reads the hero's real position every frame (GSAP ticker), with a few
+    px of hysteresis.
 
 **Joey's calls, 18 Nov (seventh round): hero rebuilt, splash bites redone**
 - **The hero was broken, and it was a real bug, not taste.** Joey: "black on
