@@ -9,7 +9,7 @@
     07. Back to top
     08. Header reveal
     09. Menu
-    10. Hero rotator
+    10. (hero rotator, removed 18 Nov)
     11. Wordmark dock
     12. Project gallery video
 ****************************************************/
@@ -37,7 +37,6 @@
         const wrapper = loader.querySelector(".loader__wrapper");
         const svg = loader.querySelector(".ga-apple");
         const maskSkin = loader.querySelector("#ga_bites");
-        const maskFlesh = loader.querySelector("#ga_bites_flesh");
         const crumbs = loader.querySelector(".ga-crumbs");
         const photo = loader.querySelector(".ga-apple-photo");
         const NS = "http://www.w3.org/2000/svg";
@@ -53,7 +52,7 @@
         // Never leave anyone on a black screen, whatever happens below.
         setTimeout(done, 10000);
 
-        if (!wrapper || !svg || !maskSkin || !maskFlesh || !window.gsap) { done(); return; }
+        if (!wrapper || !svg || !maskSkin || !window.gsap) { done(); return; }
 
         // Only the hero's first frame and the wordmark font gate the exit.
         // The flipbook already holds on frame one until the rest decode, and
@@ -108,62 +107,70 @@
             return;
         }
 
-        // Side bites, alternating, each a little deeper. The last pair are big
-        // enough to leave only the core: the top with its stem and leaf, the
-        // base, and a narrow waist. Coordinates are in the SVG's 200 x 224 box,
-        // measured off the photo's own outline (widest at y 112, x 3 to 196).
+        // Side bites, alternating, each bigger than the last. The last pair are
+        // big enough to leave only the core: the top with its stem and leaf,
+        // the base, and a narrow waist. Coordinates are in the SVG's 200 x 224
+        // box, measured off the photo's own outline (widest at y 112, x 3 to
+        // 196). Joey, 18 Nov: "bigger slower bites", so the side bites are a
+        // third bigger than the first cut and spaced twice as far apart.
         const CENTRE = { x: 100, y: 118 };
-        // Flesh shows along each bite edge, widest in the middle of the bite
-        // and tapering to nothing at the ends, as it does on a real apple.
-        const FLESH = 4.5;
         // The big right-hand bite sits lower than the left one so it never
-        // reaches the leaf (the leaf has no flesh to show).
+        // reaches the leaf.
         const BITES = [
-            { cx: 212, cy: 98,  r: 37 },
-            { cx: -12, cy: 133, r: 37 },
-            { cx: 220, cy: 152, r: 49 },
-            { cx: -20, cy: 88,  r: 49 },
+            { cx: 214, cy: 98,  r: 50 },
+            { cx: -14, cy: 134, r: 50 },
+            { cx: 224, cy: 152, r: 64 },
+            { cx: -24, cy: 88,  r: 64 },
             { cx: 239, cy: 128, r: 98 },
             { cx: -39, cy: 118, r: 98 }
         ];
+        // Joey: the apple "would gradually increase in size each bite". Each
+        // chomp leaves it this much bigger, so it ends about 1.5x its size
+        // (still clear of the edges on a short 1440x650 laptop window).
+        const GROW = 1.07;
 
-        // A bite is a circle with a row of small, slightly uneven bumps along
-        // the edge facing the apple's middle: tooth marks, not a cookie cutter.
-        // Each bite goes into both masks. On the flesh it is the same circle
-        // nudged outwards by FLESH, so the photo is cut a little deeper than
-        // the flesh: a crescent of flesh shows, widest mid-bite.
-        function biteShape(b, cx, cy, mask, teethSeed) {
+        // A bite edge, the way teeth actually leave it: a handful of wide,
+        // shallow scoops of different sizes along the front of the bite, with
+        // small sharp ridges where neighbouring scoops meet. (Joey, 18 Nov:
+        // the old row of small round teeth looked "like repetitive cogs".)
+        // Each scoop is a circle whose front sits on the bite's arc; together
+        // with a fill circle behind them they make one solid shape, cut
+        // straight out of the flat photo. Sizes, spacing and depth are
+        // jittered per scoop and re-rolled every visit, so no two bites match.
+        function biteShape(b, cx, cy, mask) {
             const g = document.createElementNS(NS, "g");
-            const main = document.createElementNS(NS, "circle");
-            main.setAttribute("cx", cx.toFixed(1)); main.setAttribute("cy", cy.toFixed(1)); main.setAttribute("r", b.r);
-            main.setAttribute("fill", "#000");
-            g.appendChild(main);
+            function disc(x, y, r) {
+                const c = document.createElementNS(NS, "circle");
+                c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", r.toFixed(1));
+                c.setAttribute("fill", "#000");
+                g.appendChild(c);
+            }
+            const jitter = function (amount) { return (Math.random() - 0.5) * 2 * amount; };
+
+            // everything behind the tooth line
+            disc(cx, cy, b.r * 0.9);
+
+            // scoops across the front of the bite, about 23 degrees apiece,
+            // covering more arc than ever shows inside the apple so the edge
+            // is scooped all the way to where the bite leaves the outline
             const toward = Math.atan2(CENTRE.y - cy, CENTRE.x - cx);
-            const teeth = 7, spread = 1.25;
-            teethSeed.forEach(function (j, i) {
-                const a = toward - spread / 2 + (spread * i) / (teeth - 1) + j.da;
-                const t = document.createElementNS(NS, "circle");
-                t.setAttribute("cx", (cx + Math.cos(a) * b.r * j.dr).toFixed(1));
-                t.setAttribute("cy", (cy + Math.sin(a) * b.r * j.dr).toFixed(1));
-                t.setAttribute("r", (Math.min(Math.max(b.r * 0.1, 3), 5.2) * j.ds).toFixed(1));
-                t.setAttribute("fill", "#000");
-                g.appendChild(t);
-            });
+            const half = 1.35;
+            let a = -half;
+            while (a <= half) {
+                const ang = toward + a;
+                const rs = b.r * (0.4 + jitter(0.07));
+                const front = b.r * (1 + jitter(0.018));
+                disc(cx + Math.cos(ang) * (front - rs), cy + Math.sin(ang) * (front - rs), rs);
+                a += 0.4 * (1 + jitter(0.28));
+            }
+
             mask.appendChild(g);
             gsap.set(g, { scale: 0, svgOrigin: cx.toFixed(1) + " " + cy.toFixed(1) });
             return g;
         }
 
         function makeBite(b) {
-            // one set of uneven teeth shared by both masks, so the flesh
-            // follows the same tooth marks as the skin
-            const seed = [];
-            for (let i = 0; i < 7; i++) seed.push({ da: (Math.random() - 0.5) * 0.06, dr: 0.99 + Math.random() * 0.025, ds: 0.75 + Math.random() * 0.5 });
-            const away = Math.atan2(b.cy - CENTRE.y, b.cx - CENTRE.x);
-            return [
-                biteShape(b, b.cx, b.cy, maskSkin, seed),
-                biteShape(b, b.cx + Math.cos(away) * FLESH, b.cy + Math.sin(away) * FLESH, maskFlesh, seed)
-            ];
+            return biteShape(b, b.cx, b.cy, maskSkin);
         }
 
         // Very subtle crumbs: a few small specks of flesh, the odd fleck of
@@ -197,28 +204,30 @@
         }
 
         // One chomp. The bite snaps in, and the apple takes the hit: a short
-        // shake, a little punch of zoom and a tilt away from the side that was
-        // bitten, so the tilts alternate as the bites swap sides. Everything
-        // settles back within about a third of a second.
-        function chomp(b, pair) {
-            const tilt = b.cx > CENTRE.x ? -3.2 : 3.2;
+        // shake, a punch of zoom and a tilt away from the side that was
+        // bitten, so the tilts alternate as the bites swap sides. It settles
+        // at its new, slightly bigger size (level) rather than back where it
+        // started, so the apple grows bite by bite.
+        function chomp(b, bite, level) {
+            const tilt = b.cx > CENTRE.x ? -3.4 : 3.4;
             return gsap.timeline()
-                .to(pair, { scale: 1, duration: 0.13, ease: "back.out(2.4)" }, 0)
-                .fromTo(svg, { scale: 1.045 }, { scale: 1, duration: 0.42, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
-                .fromTo(svg, { rotation: tilt }, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)", overwrite: "auto" }, 0)
-                .to(svg, { keyframes: { x: [0, tilt * -1.1, tilt * 0.8, tilt * -0.4, 0] }, duration: 0.24, ease: "none", overwrite: "auto" }, 0)
-                .add(spray(b), 0.03);
+                .to(bite, { scale: 1, duration: 0.17, ease: "back.out(2.2)" }, 0)
+                .fromTo(svg, { scale: level * 1.05 }, { scale: level, duration: 0.62, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
+                .fromTo(svg, { rotation: tilt }, { rotation: 0, duration: 0.7, ease: "elastic.out(1, 0.4)", overwrite: "auto" }, 0)
+                .to(svg, { keyframes: { x: [0, tilt * -1.1, tilt * 0.8, tilt * -0.4, 0] }, duration: 0.3, ease: "none", overwrite: "auto" }, 0)
+                .add(spray(b), 0.04);
         }
 
-        const pairs = BITES.map(makeBite);
+        const bites = BITES.map(makeBite);
         const last = BITES.length - 1;
-        const STEP = 0.3;   // between bites
-        const FIRST = 0.6;  // after the apple lands
+        const STEP = 0.6;   // between bites
+        const FIRST = 0.75; // after the apple lands
+        const level = function (i) { return Math.pow(GROW, i + 1); };
 
         appleReady().then(function () {
             const meal = gsap.timeline();
             meal.to(svg, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", transformOrigin: "50% 55%" }, 0);
-            for (let i = 0; i < last; i++) meal.add(chomp(BITES[i], pairs[i]), FIRST + i * STEP);
+            for (let i = 0; i < last; i++) meal.add(chomp(BITES[i], bites[i], level(i)), FIRST + i * STEP);
 
             // The last bite is due one beat after the one before it. Waiting
             // for the whole timeline would also wait for the crumbs to land,
@@ -228,11 +237,11 @@
             Promise.all([mealDone, heroReady()]).then(function () {
                 const drop = Math.round(window.innerHeight * 0.55);
                 gsap.timeline()
-                    .add(chomp(BITES[last], pairs[last]), 0)
+                    .add(chomp(BITES[last], bites[last], level(last)), 0)
                     // core left, a beat, then it drops away
-                    .to(svg, { y: drop, rotation: 16, duration: 0.7, ease: "power2.in", overwrite: "auto" }, 0.34)
-                    .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 0.79)
-                    .add(openUp(), 0.62);
+                    .to(svg, { y: drop, rotation: 16, duration: 0.75, ease: "power2.in", overwrite: "auto" }, 0.5)
+                    .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 1.0)
+                    .add(openUp(), 0.8);
             });
         });
     })();
@@ -571,18 +580,15 @@
             start: 1,
             end: 99999,
             onUpdate: function (self) {
-                // While the hero wordmark is still flying into the nav slot
-                // (section 11) the header has to hold still and stay
-                // transparent: if it slid away or took its cream band
-                // mid-flight, the mark would land on a header that is not
-                // there, over a band that should not be on the dark hero yet.
-                if (header.classList.contains("logo-pending")) {
-                    header.classList.remove("is-stuck", "is-hidden");
-                    if (overDark) header.classList.add("over-hero");
-                    return;
-                }
-
-                if (self.scroll() < 60) {
+                const y = self.scroll();
+                // While the hero is still under the header (or the hero
+                // wordmark is still flying into the nav slot, section 11) the
+                // header holds still, stays transparent and keeps its logo
+                // cream. The flight lands on exactly this slot, so the hand
+                // over is invisible; the cream band and black logo only arrive
+                // once the hero has scrolled out from under the header.
+                const overHero = !!heroEl && y < heroEl.offsetHeight - header.offsetHeight;
+                if (header.classList.contains("logo-pending") || overHero || y < 60) {
                     header.classList.remove("is-stuck", "is-hidden");
                     if (overDark) header.classList.add("over-hero");
                     return;
@@ -591,7 +597,7 @@
                 header.classList.add("is-stuck");
                 header.classList.toggle(
                     "is-hidden",
-                    self.direction === 1 && self.scroll() > holdUntil()
+                    self.direction === 1 && y > holdUntil()
                 );
             }
         });
@@ -648,39 +654,10 @@
     })();
 
     /*----------------------------------------*/
-    /*  10. Hero rotator
+    /*  10. (hero rotator, removed 18 Nov)
     /*----------------------------------------*/
-    (function heroRotator() {
-        const lines = Array.from(document.querySelectorAll(".ga-hero-line"));
-        if (lines.length < 2) return;
-
-        // Reduced motion keeps the first line and never moves. The <p> carries
-        // the full phrase in aria-label, so nothing is lost to a screen reader.
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-        const HOLD_MS = 2600;
-        let index = 0;
-
-        setInterval(function () {
-            const current = lines[index];
-            index = (index + 1) % lines.length;
-            const next = lines[index];
-
-            // Current slides down and out, next drops in from above.
-            current.classList.remove("is-in");
-            current.classList.add("is-out");
-
-            // Park the incoming line above the box with no transition, so it
-            // does not travel across the whole height on its way in.
-            next.classList.remove("is-out");
-            void next.offsetWidth;
-            next.classList.add("is-in");
-
-            setTimeout(function () {
-                current.classList.remove("is-out");
-            }, 760);
-        }, HOLD_MS);
-    })();
+    // Removed 18 Nov with the rest of the hero furniture (bar, tagline,
+    // rotating line). The hero is now just the gif and the logo.
 
     /*----------------------------------------*/
     /*  11. Wordmark dock
@@ -691,13 +668,10 @@
         const header = document.querySelector(".px-header-2-area.header-fixed");
         if (!dock || !hero || !header) return;
 
-        const good = dock.querySelector(".ga-wm-good");
-        const apples = dock.querySelector(".ga-wm-apples");
-        const mid = dock.querySelector(".ga-wm-mid");
-        const rotator = dock.querySelector(".ga-wm-above");
-        const navGood = header.querySelector(".ga-logo-line");
-        const navApples = header.querySelector(".ga-logo-word");
-        if (!good || !apples || !navGood || !navApples) return;
+        const stage = dock.querySelector(".ga-wm-stage");
+        const meta = hero.querySelector(".ga-hero-meta");
+        const navLogo = header.querySelector(".ga-logo");
+        if (!stage || !navLogo) return;
 
         // The header owns the slot the wordmark is flying into, so until the
         // handover its own logo stays hidden and the two never both show.
@@ -708,7 +682,10 @@
         // Reveal once the splash is out of the way. The preloader marks itself
         // loaded; if there is no preloader on the page, go straight away.
         const loader = document.getElementById("loader");
-        function reveal() { dock.classList.add("is-revealed"); }
+        function reveal() {
+            dock.classList.add("is-revealed");
+            if (meta) meta.classList.add("is-revealed");
+        }
         if (!loader || loader.classList.contains("loaded")) {
             reveal();
         } else {
@@ -716,42 +693,35 @@
                 if (loader.classList.contains("loaded")) { reveal(); obs.disconnect(); }
             }).observe(loader, { attributes: true, attributeFilter: ["class"] });
             // belt and braces: never leave the hero wordless if the splash stalls
-            setTimeout(reveal, 7000);
+            setTimeout(reveal, 10500);
         }
 
-        // Measure the flight. Both rects are read in viewport coordinates with
-        // the dock untransformed, and the dock is fixed, so the delta holds for
-        // the whole scroll. The target is measured with the header in its
-        // scrolled state, because that is the slot the wordmark ends up in.
+        // The hero lockup and the header logo are the same shape in em, so the
+        // flight is one scale + translate from corner to corner. The target is
+        // the logo as it sits while the header is still over the hero (not
+        // stuck, not hidden), because section 08 holds it there until the hero
+        // has gone, so that is where the hand-over happens. The header's
+        // padding is transitioned, so transitions are off while measuring.
         function measure() {
-            gsap.set([good, apples], { clearProps: "transform" });
+            gsap.set(stage, { clearProps: "transform" });
 
-            // .is-stuck drops the header's padding-top from 40 to 18, and that
-            // property is transitioned. Measuring straight after adding the
-            // class reads the padding the transition has not moved off yet, so
-            // the target came out 22px low and the mark jumped on handover.
-            // Transitions are suppressed for the measurement.
             const wasStuck = header.classList.contains("is-stuck");
+            const wasHidden = header.classList.contains("is-hidden");
             const prevTransition = header.style.transition;
             header.style.transition = "none";
-            if (!wasStuck) header.classList.add("is-stuck");
+            header.classList.remove("is-stuck", "is-hidden");
             void header.offsetHeight;
 
-            const tg = navGood.getBoundingClientRect();
-            const ta = navApples.getBoundingClientRect();
+            const t = navLogo.getBoundingClientRect();
 
-            if (!wasStuck) header.classList.remove("is-stuck");
+            if (wasStuck) header.classList.add("is-stuck");
+            if (wasHidden) header.classList.add("is-hidden");
             void header.offsetHeight;
             header.style.transition = prevTransition;
 
-            const g = good.getBoundingClientRect();
-            const a = apples.getBoundingClientRect();
-            if (!g.width || !tg.width) return null;
-
-            return {
-                good:   { x: tg.left - g.left, y: tg.top - g.top, scale: tg.width / g.width },
-                apples: { x: ta.left - a.left, y: ta.top - a.top, scale: ta.width / a.width }
-            };
+            const s = stage.getBoundingClientRect();
+            if (!s.width || !t.width) return null;
+            return { x: t.left - s.left, y: t.top - s.top, scale: t.width / s.width };
         }
 
         if (reduced) {
@@ -780,16 +750,16 @@
 
             if (tl) tl.scrollTrigger && tl.scrollTrigger.kill();
             if (tl) tl.kill();
+            if (meta) gsap.set(meta, { clearProps: "opacity" });
 
             tl = gsap.timeline({
-                defaults: { ease: "none" },
                 scrollTrigger: {
                     trigger: hero,
                     start: "top top",
-                    // lands a little before the hero fully clears, so the mark
-                    // is already parked by the time the header takes its band
+                    // parked a little before the hero clears, while the header
+                    // is still transparent over it
                     end: "bottom 22%",
-                    scrub: 0.5,
+                    scrub: 0.6,
                     invalidateOnRefresh: true,
                     onUpdate: function (self) {
                         const done = self.progress > 0.985;
@@ -799,14 +769,20 @@
                 }
             });
 
-            tl.to(good,   { x: d.good.x,   y: d.good.y,   scale: d.good.scale }, 0)
-              .to(apples, { x: d.apples.x, y: d.apples.y, scale: d.apples.scale }, 0);
+            // Eased out, so it lifts off the bottom straight away (it never
+            // sits over the ticker or the cream section rising underneath) and
+            // settles gently into the slot.
+            tl.to(stage, { x: d.x, y: d.y, scale: d.scale, ease: "power1.out", duration: 1 }, 0);
 
-            // The bar, the tagline and the rotating line are hero furniture,
-            // not part of the mark, so they drop away early rather than
-            // shrinking into the nav with it.
-            const furniture = [mid, rotator].filter(Boolean);
-            if (furniture.length) tl.to(furniture, { opacity: 0, duration: 0.3 }, 0);
+            // Below xl the context block sits right above the logo, in its
+            // flight path, so it fades out over the first ~30px of scroll,
+            // before the logo can reach it. On a desktop it sits bottom right,
+            // well clear, and simply scrolls away with the hero. (This fades
+            // the block; the entrance runs on its spans, so the two never
+            // fight over the same opacity.)
+            if (meta && window.matchMedia("(max-width: 1199px)").matches) {
+                tl.fromTo(meta, { opacity: 1 }, { opacity: 0, duration: 0.05, ease: "none" }, 0);
+            }
         }
 
         // Fonts change the measured widths, so wait for them before measuring.
@@ -817,7 +793,7 @@
         }
 
         ScrollTrigger.addEventListener("refreshInit", function () {
-            gsap.set([good, apples], { clearProps: "transform" });
+            gsap.set(stage, { clearProps: "transform" });
         });
 
         let resizeTimer = null;

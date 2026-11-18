@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118o); bump it in index.html, studio.html, contact.html
+  (currently 20261118p); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -106,6 +106,54 @@ Read this first when picking the project up, from either Claude account.
   Myrtle launch), not the 2021-22 shoot in "Best picks".
 - Lesson for picking images anywhere on this site: newest and boldest first.
   Check the date before the content.
+
+**Joey's calls, 18 Nov (seventh round): hero rebuilt, splash bites redone**
+- **The hero was broken, and it was a real bug, not taste.** Joey: "black on
+  black drop shadow", "lazy and shit", "you can remove filler if needed or
+  redesign it". The hero wordmark was an `<h1>` and inherited the theme's
+  black heading colour, so GOOD APPLES rendered black on the dark gif. Every
+  automated check passed, because none of them looks at colour. **Lesson:
+  look at the hero yourself, at the user's own window size (Joey's is about
+  1490 wide), before calling it done.**
+- **Redesigned, the "logo is the hero" way** (Joey: "look at industry gold
+  standard bespoke logo transitions from hero to nav"; Gucci and Fergus are
+  the usual references). Rules from Joey: the full bleed gif stays, and so
+  does the ticker strip directly under it. Everything else was open.
+  - The hero now carries one thing: a giant cream copy of the stacked
+    GOOD / APPLES logo, bottom left, in the same `.container` as the header
+    logo and with exactly its metrics in em. On scroll the whole lockup
+    rises and shrinks straight into the header logo in one transform (eased
+    out, scrubbed), then hands over to it. Same shape, so it lands with no
+    jump: checked frame by frame either side of the hand-over.
+  - Gone: the green bar, "A Human-Led Creative Agency" between the words,
+    the rotator (section 10 of main.js removed), and every text-shadow. A
+    scrim (bottom, top band, bottom-left corner) keeps the cream readable on
+    light frames.
+  - Context, small: "A human-led creative agency" (green), "Burleigh Heads,
+    Australia", "Since 2016", bottom right on the logo's baseline on a
+    desktop; above the logo on tablets and phones, where it fades within the
+    first ~30px of scroll so the rising logo never crosses it. It lives in
+    the hero and scrolls away with it (pinned, it ghosted over the ticker).
+  - The header now stays transparent with a cream logo until the hero has
+    scrolled out from under it, then takes its cream band and black logo.
+- **Work section gap fixed.** "GOOD WORK, FOR GOOD PEOPLE" sat jammed against
+  the dark services band because `.ga-work-area` had no top padding.
+- **Splash:** "bigger slower bites", "gradually increase in size each bite",
+  "less 3d bite effect and just direct bite etch into flat image", then the
+  tooth marks "look way too unnatural and like repetitive cogs".
+  - Flat cut-outs: the flesh layer (filter + second mask) is gone.
+  - Side bites a third bigger (r 50 and 64), 0.6s apart (was 0.3s); the
+    whole meal is about 5.5s before the hole opens.
+  - The apple grows 1.07x per bite (about 1.5x by the core), sized to stay
+    clear of the edges on a 1440x650 window.
+  - Bite edges are a handful of wide, shallow, uneven scoops with small
+    ridges between them, re-rolled every visit, instead of seven small round
+    teeth.
+- Tools: `Claude tools/herorec.mjs` screenshots the hero after the splash and
+  at chosen scroll positions (desktop with a fake mouse, or `WxHm` for a
+  phone). `qa.mjs` and `herorec.mjs` used to start their "wait for the
+  splash" on the blank tab before the page loaded, so they shot mid-splash;
+  both now wait for the real page.
 
 **Joey's calls, 18 Nov (sixth round): the three held pages go up**
 - **Take Me Wellness: build it.** "as long as the copy isn't claiming we did
@@ -227,6 +275,8 @@ Read this first when picking the project up, from either Claude account.
     menu, console errors, a screenshot per scroll step).
   - splashrec.mjs: records a page load as a strip of screenshots, to play the
     splash through frame by frame.
+  - herorec.mjs: the hero after the splash and at chosen scroll positions
+    (`WxH` desktop with a fake mouse, `WxHm` phone).
   - The site is served locally on port 4321 (`python3 -m http.server 4321`
     from the repo; the in-app preview launcher can't read the Desktop, so run
     it from a shell and point `.claude/launch.json` at the URL).
@@ -244,11 +294,10 @@ Read this first when picking the project up, from either Claude account.
 **Joey's calls, 18 Nov (second round)**
 - **The full bleed flipbook is the hero now.** The scattered image grid is
   gone from the home page: "not a fan of the scattered images for hero".
-  The hero is 100svh of the cycling frames with the GOOD / APPLES lockup
-  over it, inverted to cream, plus a three line rotator (Good Work / By Good
-  People / For Good People). The markup still uses `.ga-banner-img` and
-  `.ga-banner-frames`, so the frame cycling and the no-smoother parallax
-  fallback kept working untouched.
+  The hero is 100svh of the cycling frames. (What sits on it was redesigned
+  in the seventh round: see below. The rotator is gone.) The markup still
+  uses `.ga-banner-img` and `.ga-banner-frames`, so the frame cycling and the
+  no-smoother parallax fallback kept working untouched.
 - **`assets/img/hero/*.jpg` are deliberately kept** even though nothing on
   the site references them. Joey: the scattered selects "are still a decent
   image reffo for general image selection taste for case study thumbs and
@@ -285,13 +334,12 @@ Read this first when picking the project up, from either Claude account.
   services stays dark, separated. **Do not put a dark block directly under
   the ticker.**
 - **One wordmark, not two.** Joey: the stacked nav mark and the full width
-  hero mark were both on screen at once. The hero wordmark now lives in a
-  fixed dock (`#ga_wordmark`, section 23 of the CSS, section 11 of main.js)
-  outside `#smooth-wrapper`, and is flown into the nav slot on scroll: the two
-  words scale and translate to land exactly on the header's two logo lines,
-  while the green bar, tagline and rotating line fade out as hero furniture.
-  At the end the dock hides and the real header logo takes over, so only one
-  mark exists at any moment. It reverses fully on the way back up.
+  hero mark were both on screen at once. The hero wordmark lives in a fixed
+  dock (`#ga_wordmark`, section 23 of the CSS, section 11 of main.js) outside
+  `#smooth-wrapper` and is flown into the nav slot on scroll. At the end the
+  dock hides and the real header logo takes over, so only one mark exists at
+  any moment. It reverses fully on the way back up. (Since the seventh round
+  the hero mark is the stacked logo itself, flown as one piece: see below.)
   - It must live outside `#smooth-wrapper`: ScrollSmoother transforms
     `#smooth-content`, and a transformed ancestor makes `position: fixed`
     behave like `absolute`.
@@ -299,11 +347,11 @@ Read this first when picking the project up, from either Claude account.
     (`logo-pending`), or the mark would land on a header that had slid away.
   - It stays visible for 240px past the hero before it can hide again,
     otherwise the landing was snatched away the instant it happened.
-  - **The target is measured with transitions suppressed.** `.is-stuck` drops
-    the header's padding-top 40 -> 18 and that property is transitioned, so
-    measuring straight after adding the class read the old padding and the
-    mark jumped 22px on handover. Verified landing delta is now [0,0,0] on
-    both words.
+  - **The target is measured with transitions suppressed.** The header's
+    padding is transitioned, so a measurement taken mid-transition lands the
+    mark off target. Since the seventh round the target is the header as it
+    sits over the hero (not stuck), and the header stays that way until the
+    hero has gone, so the hand-over happens there.
 - **Work thumbs colour on hover again.** The ten unlinked cards had been
   locked to greyscale to flag they have no page; that rule had equal
   specificity to the hover rule and sat later in the file, so it won. Ten of
@@ -313,7 +361,9 @@ Read this first when picking the project up, from either Claude account.
   agency, or that green line, all can be adjusted / moved / removed if
   needed... not attached tho those, but appreciate some detailed contextual
   text or elements". So the strapline, tagline and green bar are all free to
-  change; he just wants *some* supporting detail there.
+  change; he just wants *some* supporting detail there. (Seventh round: the
+  bar and rotator are gone; the detail is now three small facts beside the
+  logo.)
 
 **Done 18 Nov (Good Apples account, picking up from the team account)**
 - **Bitten-apple splash replaces the percent counter** (section 01 of
@@ -330,13 +380,14 @@ Read this first when picking the project up, from either Claude account.
     `--ga-hole`). Each bite lands with a shake, a small zoom punch, a tilt
     away from the bitten side and a few tiny crumbs (Joey: "impactful subtle
     shake, zoom, and alternate rotations... very subtle apple crumbs").
-  - Bites cut the photo slightly deeper than a flesh-toned copy underneath,
-    so a thin crescent of flesh shows along the tooth marks, tapering at the
-    ends. The big right bite sits low on purpose so it never touches the leaf.
+  - Seventh round: bites are now flat cut-outs straight out of the photo
+    (no flesh layer), bigger, slower and edged with uneven tooth scoops; the
+    apple grows with each bite. See "seventh round" below. The big right bite
+    still sits low on purpose so it never touches the leaf.
   - Only the hero's first frame and the fonts gate the exit (it used to wait
     for all 16 frames, 3.5 MB, which held phones on the splash for 10s+). The
     flipbook already holds on frame one until the rest decode.
-  - Full meal on the first visit per session (~3.5s); coming back to home in
+  - Full meal on the first visit per session (~5.5s since the seventh round); coming back to home in
     the same visit skips straight to the opening (~0.6s); reduced motion gets
     a plain fade. A 10s hard stop means nobody is ever left on black.
 - **Work thumbs show in colour on phones.** They only coloured on hover, and
