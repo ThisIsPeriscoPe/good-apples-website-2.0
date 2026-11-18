@@ -48,17 +48,18 @@ Each project page now ends with a gallery built by
 cropped, resized and compressed into `assets/img/work/<slug>/` and
 `assets/video/`. Galleries carry alt text only, no captions or claims.
 
-## No copy yet (9 projects, being sourced 18 Nov into Desktop/Good Apples/Web/Project facts/)
+## Written 18 Nov 2026 from private fact sheets
 
-ICONIC Beverages, BikeChain, Fjord, Zesty Paws, Pharmacy Guild, TreeArc, Rygg,
-Take Me Wellness, ELMNT H3O.
+ICONIC Beverages, BikeChain, Fjord, Zesty Paws, TreeArc and ELMNT H3O. Every
+line of their copy comes from the fact sheets in
+`Desktop/Good Apples/Web/Project facts/<slug>.md` (kept off this public repo
+because they hold client correspondence). Each sheet lists its sources and
+what must not be published.
 
-These are all 2024 or later, so they post-date the Sept 2025 showcase deck.
-Their cards are deliberately rendered without links until copy exists, so the
-index has no dead links. Places worth digging:
-- `Desktop/Good Apples/Case Studies/Good Apples Case Studies 2.0.xd` (Aug 2026)
-- The inbox, which is where the 2025-26 work was found in the first place
-- Drive "SMB - Final Report" is She Means Business results, not new copy
+## Not built yet (waiting on Joey)
+
+Take Me Wellness, Rygg and Pharmacy Guild. Their cards stay unlinked. The
+reasons are in their private fact sheets; ask Joey before building them.
 
 ## Facts worth keeping (from the showcase deck)
 

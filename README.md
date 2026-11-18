@@ -121,10 +121,18 @@ Read this first when picking the project up, from either Claude account.
   `assets/video/`, writes or updates `work/<slug>.html` (new pages use
   work/kioni.html as the template), and links the home card. Edit the JSON
   and re-run rather than hand-editing gallery markup.
-- Nine pages still to build: ICONIC Beverages, BikeChain, Fjord, Zesty Paws,
-  Pharmacy Guild, TreeArc, Rygg, Take Me Wellness, ELMNT H3O. Their facts are
-  being gathered, with sources, into `Desktop/Good Apples/Web/Project facts/`
-  (private: not in the public repo). Write their copy only from those files.
+- **15 of 18 pages are built and linked** (18 Nov). New today: Veteran
+  Games, ICONIC Beverages, BikeChain, Fjord, Zesty Paws, TreeArc, ELMNT H3O.
+  Their copy comes only from the private fact sheets in
+  `Desktop/Good Apples/Web/Project facts/` (not in this public repo).
+- **Held, waiting on Joey: Take Me Wellness, Rygg, Pharmacy Guild.** Cards stay
+  unlinked. The reasons are in their private fact sheets. Do not build them
+  until Joey says so. (This README is public; keep client-sensitive detail in
+  the fact sheets, not here.)
+- Image choices made with care on the new pages: no disputed offers (the
+  Santini percentage is unresolved, so that clip is out), no Nike press
+  imagery (rights open), no staff names or headshots (TreeArc cards and team
+  photos left out), 4:5 BikeChain statics only.
 - Favicon and touch icon added (made from the splash apple); the console 404
   is gone.
 
