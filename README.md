@@ -17,7 +17,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118s); bump it in index.html, studio.html, contact.html
+  (currently 20261118t); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -161,10 +161,13 @@ Read this first when picking the project up, from either Claude account.
     the top with stem and leaf, the base, and a waist about 32 wide (the old
     core was 82). They stop short of the leaf (the right-hand ones sit low
     for that). The core then drops as before.
-  - Each bite rocks the apple away from the bitten side, back past centre,
-    then settles, with every swing a fresh random size (measured at 30fps:
-    about +10/-2.5, -6/+8, +11/-4, -13/-3 degrees), and it settles at a
-    slightly different angle each time instead of straight.
+  - Each bite tilts the apple once, away from the bitten side, by a fresh
+    random 5.5 to 10 degrees, then eases back **without swinging past
+    upright** (Joey: "its not meant to swing back past centre before
+    settling"). It settles leaning slightly towards the side it tilted to,
+    0.3 to 2.4 degrees, different every bite; as the bites swap sides the
+    tilts alternate. Measured in the page: -6 to -2.0, +10 to +1.3, -7.6 to
+    -0.4, +6.5 to +1.3, -7.4 to -2.2. The core then falls the way it leans.
   - Bites snap in with a hard ease-out: a springy ease made the big bites
     overshoot, so the apple looked as if it grew back.
   - Tried and rejected: eating the core from below until only the stem cap

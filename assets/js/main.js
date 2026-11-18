@@ -206,21 +206,20 @@
         }
 
         // One chomp. The bite snaps in, and the apple takes the hit: a punch
-        // of zoom, a short shake, and a rock back and forth, first away from
-        // the side that was bitten. Joey: "rotate back and forth per bite,
-        // not always by the same amount, a bit of asymmetry". So every swing
-        // is a fresh random size, and the apple settles at a slightly
-        // different angle each time rather than snapping back to straight.
-        // It also settles at its new, bigger size (level), so it grows bite
-        // by bite. Chomps are built in bite order, so `rest` carries from one
-        // bite's resting angle into the next.
-        let rest = 0;
+        // of zoom, a short shake, and a tilt away from the side that was
+        // bitten, then an easy return. Joey: "rotate back and forth per bite,
+        // not always by the same amount, a bit of asymmetry", and then "its
+        // not meant to swing back past centre before settling". So each bite
+        // is one tilt (a fresh random size) and one smooth return that never
+        // crosses upright: it settles leaning slightly towards the side it
+        // tilted to, by a different small amount each time. As the bites swap
+        // sides the tilts alternate, which gives the back and forth. It also
+        // settles at its new, bigger size (level), so it grows bite by bite.
         const between = function (a, b) { return a + Math.random() * (b - a); };
         function chomp(b, bite, level) {
             const away = b.cx > CENTRE.x ? -1 : 1;
-            const from = rest;
-            rest = between(-2.6, 2.6);
-            const swing = [away * between(5.5, 10), -away * between(2.5, 6), away * between(0.8, 2.6)];
+            const tilt = away * between(5.5, 10);
+            const rest = away * between(0.3, 2.4);
             const shake = [between(2.2, 4.4), between(1.4, 3.4), between(0.5, 1.6)];
             return gsap.timeline()
                 // a bite never overshoots: on the big ones a springy ease made
@@ -229,10 +228,8 @@
                 .fromTo(svg, { scale: level * PUNCH }, { scale: level, duration: 0.62, ease: "elastic.out(1, 0.45)", overwrite: "auto" }, 0)
                 .to(svg, {
                     keyframes: [
-                        { rotation: from + swing[0], duration: 0.1, ease: "power2.out" },
-                        { rotation: from + swing[1], duration: 0.2, ease: "sine.inOut" },
-                        { rotation: from + swing[2], duration: 0.2, ease: "sine.inOut" },
-                        { rotation: rest, duration: 0.34, ease: "sine.out" }
+                        { rotation: tilt, duration: 0.12, ease: "power3.out" },
+                        { rotation: rest, duration: 0.6, ease: "power2.out" }
                     ],
                     overwrite: "auto"
                 }, 0)
@@ -261,7 +258,9 @@
                 gsap.timeline()
                     .add(chomp(BITES[last], bites[last], level(last)), 0)
                     // core left, a beat, then it drops away
-                    .to(svg, { y: drop, rotation: 16, duration: 0.75, ease: "power2.in", overwrite: "auto" }, 0.5)
+                    // it falls the way it is leaning, rather than swinging
+                    // back across upright to fall the other way
+                    .to(svg, { y: drop, rotation: function () { return gsap.getProperty(svg, "rotation") < 0 ? -16 : 16; }, duration: 0.75, ease: "power2.in", overwrite: "auto" }, 0.5)
                     .to(svg, { opacity: 0, duration: 0.25, ease: "none" }, 1.0)
                     .add(openUp(), 0.8);
             });
