@@ -774,14 +774,17 @@
             // settles gently into the slot.
             tl.to(stage, { x: d.x, y: d.y, scale: d.scale, ease: "power1.out", duration: 1 }, 0);
 
-            // Below xl the context block sits right above the logo, in its
-            // flight path, so it fades out over the first ~30px of scroll,
-            // before the logo can reach it. On a desktop it sits bottom right,
-            // well clear, and simply scrolls away with the hero. (This fades
-            // the block; the entrance runs on its spans, so the two never
-            // fight over the same opacity.)
-            if (meta && window.matchMedia("(max-width: 1199px)").matches) {
-                tl.fromTo(meta, { opacity: 1 }, { opacity: 0, duration: 0.05, ease: "none" }, 0);
+            // The context block scrolls up with the hero, so it has to be gone
+            // before it reaches the header, or it slides under the menu
+            // button. Below xl it sits right above the logo, in its flight
+            // path, so it goes over the first ~30px of scroll. On a desktop it
+            // sits bottom right, clear of the logo, and fades through the
+            // middle of the flight, while it is still well down the screen.
+            // (This fades the block; the entrance runs on its spans, so the
+            // two never fight over the same opacity.)
+            if (meta) {
+                const narrow = window.matchMedia("(max-width: 1199px)").matches;
+                tl.fromTo(meta, { opacity: 1 }, { opacity: 0, duration: narrow ? 0.05 : 0.2, ease: "none" }, narrow ? 0 : 0.5);
             }
         }
 
