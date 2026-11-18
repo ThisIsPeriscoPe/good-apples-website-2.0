@@ -56,10 +56,25 @@ line of their copy comes from the fact sheets in
 because they hold client correspondence). Each sheet lists its sources and
 what must not be published.
 
-## Not built yet (waiting on Joey)
+## Take Me Wellness, Rygg and Pharmacy Guild (written 18 Nov 2026)
 
-Take Me Wellness, Rygg and Pharmacy Guild. Their cards stay unlinked. The
-reasons are in their private fact sheets; ask Joey before building them.
+Held until Joey cleared all three on 18 Nov. Copy comes from the same private
+fact sheets, with these rules from Joey's calls:
+
+- **Take Me Wellness:** the copy claims only the Shopify store (proposal,
+  wireframes, theme, page design, homepage banners; built with PeriscoPe's
+  developers) and says plainly that another studio made the identity and
+  packaging. It does not say the store is live. The gallery is the homepage
+  banner set plus brand imagery the store was built around; the other studio's
+  website and phone mockups are left out.
+- **Rygg:** website (2025) and the US packaging compliance adaptation of two
+  tubes, described as an adaptation, not a new pack design. No packaging
+  images (the files are marked confidential). Gallery is the live rygg.au
+  (scroll-through, phone and desktop screens captured 18 Nov with the dated
+  promo strip hidden) plus Rygg's own campaign photography.
+- **Pharmacy Guild:** QSPP "Pharmacy has Evolved" credited to Akin Agency, who
+  commissioned it; the PAM explainer was made direct for the Guild. Gallery
+  clips are silent, like every gallery video.
 
 ## Facts worth keeping (from the showcase deck)
 

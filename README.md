@@ -7,7 +7,7 @@ the folder over HTTP (the fonts need a real origin, so `file://` won't do).
 python3 -m http.server 4321
 ```
 
-## Handoff (updated 17 Nov 2026)
+## Handoff (updated 18 Nov 2026)
 
 Read this first when picking the project up, from either Claude account.
 
@@ -107,6 +107,35 @@ Read this first when picking the project up, from either Claude account.
 - Lesson for picking images anywhere on this site: newest and boldest first.
   Check the date before the content.
 
+**Joey's calls, 18 Nov (sixth round): the three held pages go up**
+- **Take Me Wellness: build it.** "as long as the copy isn't claiming we did
+  the branding/packaging, then its fine." The identity and packaging were made
+  by another studio before we came on, so the page claims only the Shopify
+  store: proposal, wireframes, theme, page design and homepage banners, built
+  with PeriscoPe's developers. Never write that we did the brand or the
+  packaging, and don't call the store live. The `TakeMe_Home.jpg` website
+  mockup and the phone mockups in `GIF Full Bleed` are that studio's concepts,
+  dated before we started, so they are not in the gallery.
+- **Rygg: build it.** "we did the work so we showing it." The page covers the
+  website (2025) and the US packaging adaptation of the HEATE and KHULE tubes.
+  The packaging files are marked confidential, so only the copy mentions that
+  work: no packaging images until the US tubes are on sale.
+- **Rygg hero replaced.** Joey: "rygg needs a better hero bro, that webby
+  screenshot doesn't cut it." It is now Rygg's own campaign photo (two athletes
+  holding HEATE and KHULE against blue sky), taken full size from rygg.au and
+  trimmed to drop a flare at the bottom edge. Copies are in
+  `Desktop/Good Apples/Web/Assets/Rygg/Site photos (rygg.au, Nov 2026)`.
+  **Lesson: heroes are full-bleed photography, never a website screenshot.**
+  Screens belong in the gallery.
+- **Fjord hero replaced too, for the same reason** (it was also a homepage
+  screenshot). It is now a still from Fjord's own homepage film: a woman
+  mid-gasp in an ice bath. The film and the still are in
+  `Desktop/Good Apples/Web/Assets/Fjord`. No other hero is a screenshot.
+- **Pharmacy Guild: build it,** crediting Akin Agency for the QSPP animation
+  ("just mention akin where suitable"). Shown: QSPP "Pharmacy has Evolved"
+  and the PAM explainer. Only finished, delivered pieces; nothing from the
+  2026 library that is still in production.
+
 **Project pages and galleries (18 Nov, in progress)**
 - **Veteran Games page built** (work/veteran-games.html), copy sourced from the
   2027 Partnership Report HANDOFF and written to the VG Tone of Voice sheet
@@ -121,14 +150,16 @@ Read this first when picking the project up, from either Claude account.
   `assets/video/`, writes or updates `work/<slug>.html` (new pages use
   work/kioni.html as the template), and links the home card. Edit the JSON
   and re-run rather than hand-editing gallery markup.
-- **15 of 18 pages are built and linked** (18 Nov). New today: Veteran
-  Games, ICONIC Beverages, BikeChain, Fjord, Zesty Paws, TreeArc, ELMNT H3O.
-  Their copy comes only from the private fact sheets in
+- **All 18 pages are built and linked** (18 Nov). No `.is-pending` cards
+  remain. New on 18 Nov: Veteran Games, ICONIC Beverages, BikeChain, Fjord,
+  Zesty Paws, TreeArc, ELMNT H3O, then Take Me Wellness, Rygg and Pharmacy
+  Guild. Their copy comes only from the private fact sheets in
   `Desktop/Good Apples/Web/Project facts/` (not in this public repo).
-- **Held, waiting on Joey: Take Me Wellness, Rygg, Pharmacy Guild.** Cards stay
-  unlinked. The reasons are in their private fact sheets. Do not build them
-  until Joey says so. (This README is public; keep client-sensitive detail in
-  the fact sheets, not here.)
+- Years corrected from the fact sheets: Take Me Wellness 2025–26 (was 2024;
+  its card moved up beside the other 2025–26 work), Rygg 2025 (was 2025–26).
+- **Take Me Wellness, Rygg and Pharmacy Guild were held, then cleared by Joey
+  on 18 Nov** (see "Joey's calls, 18 Nov (sixth round)" below). This README is
+  public; keep client-sensitive detail in the private fact sheets, not here.
 - Image choices made with care on the new pages: no disputed offers (the
   Santini percentage is unresolved, so that clip is out), no Nike press
   imagery (rights open), no staff names or headshots (TreeArc cards and team
@@ -136,38 +167,19 @@ Read this first when picking the project up, from either Claude account.
 - Favicon and touch icon added (made from the splash apple); the console 404
   is gone.
 
-**Next: the remaining ten project pages**
-1. Copy research still to do:
-   - Drive deck "Good Apples Project Showcase" (Sept 2025). Not yet read.
-   - Drive "SMB - Final Report". Not yet read.
-   - Kioni: DONE. Full copy extracted to the scratchpad from
-     `Desktop/Good Apples/Case Studies/Good Apples Case Study - Kioni Skin.pdf`
-     (use pdftotext -layout; pdfplumber and pypdf are not installed, pdftotext
-     is at /opt/homebrew/bin). Story: founder Maria Mandroules, ex ED nurse
-     practitioner, two kids with eczema, microbiome and the gut-skin-brain
-     axis. Name from Kioni, a village on Ikaria, a Blue Zone. Design route:
-     classic blue and white Greek pottery crossed with illustrations of
-     microbiomes and cells.
-   - Veteran Games: DONE, numbers verified in
-     `Desktop/Veteran Games/2027 Partnership Report/HANDOFF.md`. 2026 had four
-     events; 367 competitor entries; Finals 11 teams from AUS/UK/USA at
-     Sunshine Coast Stadium; 3,001 live stream views; 376K IG views over Finals
-     weekend; 52 media items, 1,554,691 reach, $764,261 ASR; Chin-Up Challenge
-     raised $51,065 across the year. Survey n=11 so quote it as a small sample
-     or not at all.
-     **Before writing any VG copy, read the whole VG Tone of Voice sheet**
-     (spreadsheet 1iphskWF1R6_cHF6qhK1MQGsDI0-gBJ8aeWXVnwnziwQ, all four tabs,
-     download as .xlsx because the connector only shows the first rows).
-2. Disciplines per project are deliberately NOT on the cards yet. Only the name
-   and year are shown, because both are real. Do not guess disciplines; take
-   them from the showcase deck.
-3. Ten projects still have no copy at all: ICONIC Beverages, BikeChain, Fjord,
-   Zesty Paws, Pharmacy Guild, TreeArc, Rygg, Take Me Wellness, ELMNT H3O.
-   Worth digging: `Good Apples Case Studies 2.0.xd` (Aug 2026) and the inbox.
-   Leave a card unlinked rather than inventing a description for it.
-4. Then the Studio page and the Contact page.
-5. Check desktop, phone and 1440x650 before showing Joey, and read the two
-   faults above first so they are not reintroduced.
+**Next (as of 18 Nov, all 18 pages built)**
+1. Joey to answer: did we design the CMBT Hydrate can and the plant protein
+   bar packaging now on the CMBT page? If not, swap those images out.
+2. Per-service image thumbs (see "second round" below) can now cover nine of
+   the ten services from built pages: Pharmacy Guild shows Video and Motion,
+   Fjord and Zesty Paws show Email and CRM, ELMNT shows Decks and Sales
+   Collateral. 3D and Product Renders still has no project. Ask Joey before
+   building them.
+3. Take Me Wellness: when the store launches, add real screens of it to the
+   gallery (today it shows the homepage banners and brand imagery only).
+4. Rygg: add packaging images once the US tubes are on sale.
+5. Before showing Joey anything, check desktop, phone and 1440x650, and read
+   the two faults above so they are not reintroduced.
 
 **Where things live**
 - Hero contact sheet: Desktop/Good Apples/Web/Work hero picks (17 Nov).jpg.
@@ -177,8 +189,16 @@ Read this first when picking the project up, from either Claude account.
   - CMBT and BSKT: "Best picks (Nov 2026)"
   - Kioni: "Shoot originals (Drive)"
   - Fjord, Rygg and Veteran Games: site scroll videos and homepage stills
+  - Rygg: "Rygg site scroll, no promo strip (18 Nov 2026).mp4" (the gallery
+    video; the older scroll shows a dated promo bar), "Site screens (Nov
+    2026)" (phone and desktop captures plus the orange and blue phone
+    panels), "Site photos (rygg.au, Nov 2026)" (campaign photos, full size)
   - Sprout: brand video and frame
-  - Pharmacy Guild: frame, in Pharma
+  - Pharmacy Guild: in Pharma; gallery stills in "Pharma/Stills (Nov 2026)".
+    The QSPP masters are in Desktop/Archive/QSPP/Animation/01. Pharmacy has
+    Evolved/Final Exports, the PAM explainer in Desktop/Archive/Pharmacy Guild
+  - Take Me Wellness: Desktop/Archive/Take Me Wellness (homepage banners in
+    Web/Assets/1.Hero Content)
 - Heroes kept in client folders:
   - Veteran Games: Desktop/Veteran Games/Design Assets/VG Event Announcement
     Template/(Footage)/SAMPLE - Ninja Wall.jpg
@@ -192,6 +212,8 @@ Read this first when picking the project up, from either Claude account.
   - shiftcheck.py checks the frames move evenly.
   - encode_scroll.py makes the eased mp4.
   - shot.mjs takes screenshots.
+  - shotlist.mjs screenshots a list of pages in one go, phone or desktop,
+    with CSS injected first (used to hide rygg.au's dated promo strip).
   - sheet.py and build_sheet.py make contact sheets.
   - qa.mjs: headless QA pass per page and size (overflow, hidden reveals,
     menu, console errors, a screenshot per scroll step).
@@ -426,11 +448,10 @@ images/               original uncropped source images
     - Real results exist for Veteran Games (2027 Partnership Report/HANDOFF.md)
       and She Means Business (SMB Final Report on Drive).
     - Sprout, CMBT and BSKT assets live mainly on Drive (HYPE folders).
-  - Rygg: the old laptop/phone mockups are out of date (Joey, 17 Nov). The hero
-    is now a scroll video of the live rygg.au, saved in
-    Desktop/Good Apples/Web/Assets/Rygg as "Rygg site scroll (Nov 2026).mp4"
-    (1440x900, 14 s), plus a homepage still. A live-site scroll video works for
-    any web project.
+  - Rygg: the old laptop/phone mockups are out of date (Joey, 17 Nov). The
+    hero is now Rygg's own campaign photo (Joey, 18 Nov: no screenshot
+    heroes), and the live-site scroll video sits in the gallery. A live-site
+    scroll video works in any web project's gallery.
 - Open questions (owner: Joey/Martin):
   - No results or numbers exist for any Good Apples-era project.
   - Client testimonials found in email need each client's OK before going live.
