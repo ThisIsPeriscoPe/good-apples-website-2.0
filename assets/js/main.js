@@ -982,10 +982,37 @@
         // turn position:fixed into absolute
         document.body.appendChild(box);
 
+        // a few downloads at a time: on a slow connection 40-odd images at
+        // once split the bandwidth so finely that no card could open for many
+        // seconds. Each service's first frame goes first, then the rest, and
+        // the row being hovered jumps the queue.
+        const queue = [];
+        let inflight = 0, started = false;
+        function pump() {
+            while (inflight < 4 && queue.length) {
+                const im = queue.shift();
+                if (im.src) continue;
+                inflight++;
+                const done = function () { inflight--; pump(); };
+                im.addEventListener("load", done, { once: true });
+                im.addEventListener("error", done, { once: true });
+                im.src = im.getAttribute("data-src");
+            }
+        }
         function load() {
-            sets.forEach(function (set) {
-                set.forEach(function (im) { if (!im.src) im.src = im.getAttribute("data-src"); });
-            });
+            if (started) return;
+            started = true;
+            sets.forEach(function (set) { queue.push(set[0]); });
+            sets.forEach(function (set) { set.slice(1).forEach(function (im) { queue.push(im); }); });
+            pump();
+        }
+        function prioritise(i) {
+            const mine = sets[i].filter(function (im) { return !im.src; });
+            for (let k = queue.length - 1; k >= 0; k--) {
+                if (mine.indexOf(queue[k]) > -1) queue.splice(k, 1);
+            }
+            queue.unshift.apply(queue, mine);
+            pump();
         }
         if ("IntersectionObserver" in window) {
             const io = new IntersectionObserver(function (es) {
@@ -1050,6 +1077,7 @@
         // related to that service". Each service flips through its own set.
         function show(i, e) {
             load();
+            prioritise(i);
             want = true;
             if (!on) {
                 // first row entered: open where the cursor is, no fly-in
