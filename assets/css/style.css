@@ -2208,3 +2208,34 @@ body.ga-thumb-on #ball {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/*----------------------------------------*/
+/*  Heading font: Bootzy Condensed (Joey, 23 Nov 2026). The GOOD APPLES
+    logo and hero wordmark stay in Archivo. Web font files go in
+    assets/fonts/ once the web licence is bought; until then this only
+    renders where the font is installed. */
+/*----------------------------------------*/
+@font-face {
+    font-family: "GA Bootzy Condensed";
+    src: local("Bootzy Condensed TM Regular"), local("BootzyCondensedTM-Regular"), url("../fonts/bootzy-condensed.woff2") format("woff2");
+    font-display: swap;
+}
+:root { --ga-ff-heading: "GA Bootzy Condensed", var(--ga-ff-wordmark); }
+.px-hero-2-text, .ga-statement, .ga-ticker-item, .ga-section-title,
+.ga-service-name, .ga-work-name, .ga-manifesto p:first-child, .ga-footer-mail,
+.ga-case-title, .ga-studio-value-name, .ga-studio-sub, .ga-contact-mail,
+.ga-menu-list a {
+    font-family: var(--ga-ff-heading);
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: 0;
+}
+/* Bootzy Condensed is much narrower than Archivo: set it bigger to keep the weight */
+.ga-statement { font-size: clamp(42px, 6.6vw, 118px); }
+.ga-ticker-item { font-size: clamp(28px, 3.3vw, 56px); }
+.ga-section-title { font-size: clamp(56px, 9vw, 168px); }
+.ga-service-name { font-size: clamp(34px, 3.9vw, 70px); }
+.ga-work-name { font-size: clamp(30px, 2.6vw, 46px); }
+.ga-manifesto p:first-child { font-size: clamp(38px, 4.4vw, 78px); }
+.ga-case-title { font-size: clamp(66px, 11.5vw, 230px); }
+.ga-menu-list a { font-size: clamp(48px, 9vw, 134px); }

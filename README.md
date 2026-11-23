@@ -12,7 +12,7 @@ python3 -m http.server 4321
 Read this first when picking the project up, from either Claude account.
 
 **Open now (23 Nov 2026)**
-- **Heading font: waiting on Joey's pick.** He asked what the heading font is
+- **Heading font: Bootzy Condensed, live 23 Nov (Joey's pick).** Logo stays Archivo. Joey bought the web licence; the file in `assets/fonts/bootzy-condensed.woff2` was made from his desktop copy because the official web files weren't downloaded yet. To do: swap in YouWorkForThem's own web font files and make this repo private (the licence bars font files in a public repo; Joey OK'd pushing as is because it's a prototype). Background: He asked what the heading font is
   and floated Bootzy, Helvetica Condensed or Coolvetica. The headings are
   Archivo Condensed ExtraBold (free). Nine options are set side by side in
   `Desktop/Good Apples/Web/Assets/Site previews/Heading font options (23 Nov).png`,
@@ -63,7 +63,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261123b); bump it in index.html, studio.html, contact.html
+  (currently 20261123c); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
