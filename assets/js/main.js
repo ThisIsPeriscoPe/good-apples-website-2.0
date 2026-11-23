@@ -944,19 +944,21 @@
     /*  13. Service hover thumbs
     /*----------------------------------------*/
     // Joey, 18 Nov: "something more interesting, maybe image thumbs on hover
-    // or something that correlate to services". Hovering a service shows a
-    // real project that did that work (data-thumb / data-project on each
-    // row), in a card that opens from its centre and follows the cursor with
-    // a little lag and lean. The list's own hover (green name, arrow, the
-    // other rows dimming) is untouched. Mouse devices only: nothing is built
-    // or downloaded on a phone.
+    // or something that correlate to services"; 23 Nov: no client label, no
+    // tilt, and flip through several client images per service like a gif.
+    // Hovering a service opens a card from its centre that follows the
+    // cursor and flips through that service's set (data-thumbs on each row:
+    // beautiful design and photography, never text-heavy screens). The
+    // list's own hover (green name, arrow, other rows dimming) is untouched.
+    // Mouse devices only: nothing is built or downloaded on a phone.
     (function serviceThumbs() {
         const area = document.querySelector(".ga-services-area");
         if (!area) return;
         if (!window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 992px)").matches) return;
-        const rows = Array.from(area.querySelectorAll(".ga-service[data-thumb]"));
+        const rows = Array.from(area.querySelectorAll(".ga-service[data-thumbs]"));
         if (!rows.length) return;
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const FRAME_MS = 280;   // close to the hero gif's pace
 
         const box = document.createElement("div");
         box.className = "ga-service-thumb";
@@ -964,30 +966,44 @@
         const card = document.createElement("div");
         card.className = "ga-service-thumb-card";
         box.appendChild(card);
-        const imgs = rows.map(function (r) {
-            const im = new Image();
-            im.alt = "";
-            im.decoding = "async";
-            im.src = r.getAttribute("data-thumb");
-            card.appendChild(im);
-            return im;
+        // one stack of frames per service; sources are only set once the
+        // section is close, so nothing downloads for people who never get here
+        const sets = rows.map(function (r) {
+            return r.getAttribute("data-thumbs").split(",").map(function (src) {
+                const im = new Image();
+                im.alt = "";
+                im.decoding = "async";
+                im.setAttribute("data-src", src.trim());
+                card.appendChild(im);
+                return im;
+            });
         });
-        const label = document.createElement("span");
-        label.className = "ga-service-thumb-label";
-        card.appendChild(label);
         // on <body>: inside #smooth-wrapper the smoother's transform would
         // turn position:fixed into absolute
         document.body.appendChild(box);
 
-        let tx = 0, ty = 0, x = 0, y = 0, on = false, raf = null;
+        function load() {
+            sets.forEach(function (set) {
+                set.forEach(function (im) { if (!im.src) im.src = im.getAttribute("data-src"); });
+            });
+        }
+        if ("IntersectionObserver" in window) {
+            const io = new IntersectionObserver(function (es) {
+                if (es.some(function (e) { return e.isIntersecting; })) { load(); io.disconnect(); }
+            }, { rootMargin: "800px 0px" });
+            io.observe(area);
+        } else {
+            load();
+        }
+
+        let tx = 0, ty = 0, x = 0, y = 0, on = false, want = false, raf = null;
+        let current = -1, frame = 0, flip = null, active = null;
 
         function render() {
-            const k = reduced ? 1 : 0.16;
+            const k = reduced ? 1 : 0.18;
             x += (tx - x) * k;
             y += (ty - y) * k;
-            // lean into the direction of travel, a few degrees at most
-            const lean = reduced ? 0 : Math.max(-7, Math.min(7, (tx - x) * 0.05));
-            box.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) rotate(" + lean.toFixed(2) + "deg)";
+            box.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
             if (on || Math.abs(tx - x) > 0.4 || Math.abs(ty - y) > 0.4) {
                 raf = requestAnimationFrame(render);
             } else {
@@ -1010,29 +1026,81 @@
             if (!raf) raf = requestAnimationFrame(render);
         }
 
+        // a frame only counts once it has arrived, so the card never opens as
+        // an empty box while its images are still downloading
+        function ready(im) { return im.complete && im.naturalWidth > 0; }
+
+        function open() {
+            on = true;
+            box.classList.add("is-on");
+            // the theme's cursor dot reads as a bite out of the green name
+            // under the card, and the card already follows the pointer
+            document.body.classList.add("ga-thumb-on");
+            if (!raf) raf = requestAnimationFrame(render);
+        }
+
+        function showFrame(img) {
+            if (active) active.classList.remove("is-active");
+            active = img;
+            active.classList.add("is-active");
+            if (want && !on) open();
+        }
+
+        // Joey: "make it gif through a bunch of different client images
+        // related to that service". Each service flips through its own set.
         function show(i, e) {
-            imgs.forEach(function (im, j) { im.classList.toggle("is-active", j === i); });
-            label.textContent = rows[i].getAttribute("data-project") || "";
+            load();
+            want = true;
             if (!on) {
                 // first row entered: open where the cursor is, no fly-in
                 aim(e);
                 x = tx;
                 y = ty;
             }
-            on = true;
-            box.classList.add("is-on");
+            if (i === current) {
+                if (active && ready(active)) open();
+                return;
+            }
+            current = i;
+            frame = 0;
+            clearInterval(flip);
+            flip = null;
+            const set = sets[i], first = set[0];
+            if (ready(first)) {
+                showFrame(first);
+            } else {
+                // keep what is showing until this set's first frame lands,
+                // unless the flip has already moved on to a later one
+                first.addEventListener("load", function () {
+                    if (want && current === i && set.indexOf(active) < 1) showFrame(first);
+                }, { once: true });
+            }
+            if (!reduced && set.length > 1) {
+                flip = setInterval(function () {
+                    // the next frame that has arrived; skip any still on the way
+                    for (let n = 1; n <= set.length; n++) {
+                        const k = (frame + n) % set.length;
+                        if (ready(set[k])) { frame = k; showFrame(set[k]); return; }
+                    }
+                }, FRAME_MS);
+            }
         }
 
         function hide() {
+            want = false;
             on = false;
             box.classList.remove("is-on");
+            document.body.classList.remove("ga-thumb-on");
+            clearInterval(flip);
+            flip = null;
+            current = -1;
         }
 
         rows.forEach(function (r, i) {
             r.addEventListener("mouseenter", function (e) { show(i, e); });
             r.addEventListener("mouseleave", function (e) {
                 const to = e.relatedTarget;
-                if (!to || !to.closest || !to.closest(".ga-service[data-thumb]")) hide();
+                if (!to || !to.closest || !to.closest(".ga-service[data-thumbs]")) hide();
             });
         });
         area.addEventListener("mousemove", aim);

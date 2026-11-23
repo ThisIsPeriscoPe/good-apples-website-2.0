@@ -1173,7 +1173,7 @@ body.tp-magic-cursor #magic-cursor {
 }
 
 /* Hover thumb: a real project for the service under the cursor, following
-   it with a little lag and lean (section 13 of main.js builds it and puts it
+   it with a little lag, flipping through that service's images like a gif (section 13 of main.js builds it and puts it
    on <body>, outside the smoother's transform). Mouse devices only. */
 .ga-service-thumb {
     position: fixed;
@@ -1206,28 +1206,17 @@ body.tp-magic-cursor #magic-cursor {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transform: scale(1.12);
-    transition: opacity 0.35s ease, transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+/* frames swap hard, like the hero gif, not a crossfade */
 .ga-service-thumb img.is-active {
     opacity: 1;
-    transform: scale(1);
 }
 
-.ga-service-thumb-label {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    padding: 6px 8px 5px;
-    background-color: var(--ga-black);
-    color: var(--tp-body-bg);
-    font-family: var(--tp-ff-body);
-    font-weight: 700;
-    font-size: 11px;
-    line-height: 1;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+/* the theme's cursor dot sits out while a card shows: over the green name it
+   read as a bite out of a letter, and the card already follows the pointer */
+body.ga-thumb-on #ball {
+    visibility: hidden;
 }
 
 @media (hover: none), (max-width: 991px) {

@@ -7,9 +7,52 @@ the folder over HTTP (the fonts need a real origin, so `file://` won't do).
 python3 -m http.server 4321
 ```
 
-## Handoff (updated 18 Nov 2026)
+## Handoff (updated 23 Nov 2026)
 
 Read this first when picking the project up, from either Claude account.
+
+**Open now (23 Nov 2026)**
+- **Heading font: waiting on Joey's pick.** He asked what the heading font is
+  and floated Bootzy, Helvetica Condensed or Coolvetica. The headings are
+  Archivo Condensed ExtraBold (free). Nine options are set side by side in
+  `Desktop/Good Apples/Web/Assets/Site previews/Heading font options (23 Nov).png`,
+  rendered from `Desktop/Good Apples/Web/Claude tools/font-specimen/specimen.html`.
+  - Bootzy and Bootzy Condensed (Type Mania): Joey owns both desktop fonts.
+    The YouWorkForThem web licence is a one-off US$29 for up to 50,000
+    pageviews a month.
+  - Coolvetica and Helvetica Neue Condensed also need paid web licences
+    (Typodermic, Monotype). Free look-alikes: Anton, Bricolage Grotesque,
+    Instrument Sans Condensed.
+  - **Catch for any paid web font:** the licences forbid putting the font
+    files in a public code repository, and this repo is public. Before one
+    ships, make the repo private (GitHub Pages from a private repo needs a
+    paid GitHub plan) or host the site elsewhere.
+  - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
+    the brand mark.
+
+**Joey's calls, 23 Nov: service hover cards**
+- No client label and no tilt on the card. It flips through several client
+  images for that service "like a gif", and they must be "beautiful
+  design/photography", not text-heavy.
+- Done: each card flips through 3 to 5 images with hard cuts every 280ms, like
+  the hero gif (section 13 of main.js; images are
+  `assets/img/services/NN-K.jpg`, listed per row in `data-thumbs`). The card
+  only opens once an image has loaded and only flips through loaded ones, so
+  it never shows as an empty box on a slow connection (tested throttled with
+  `Claude tools/thumbtest.mjs`). The theme's cursor dot hides while a card
+  shows, because over the green name it looked like a bite out of a letter.
+- Rules for these images (every source is listed in
+  `Claude tools/service-thumbs.json`):
+  - Design or photography only. Never text-heavy screens, emails, ads,
+    guideline pages or deck spreads. No cut-off words. No image used for two
+    services.
+  - Nothing unpublished. Check the private fact sheet's "Not for publishing"
+    list first.
+  - Only clients whose project page lists that discipline.
+- Local QA: serve with `python3 "../Claude tools/serve.py" 4321` from this
+  folder, not `python3 -m http.server`. The stock server queues only 5
+  connections and drops some of the card images, which qa.mjs reports as
+  errors.
 
 **Where it's up to**
 - The site is a one-page homepage: hero, statement, banner flipbook, values
@@ -17,7 +60,7 @@ Read this first when picking the project up, from either Claude account.
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261118v); bump it in index.html, studio.html, contact.html
+  (currently 20261123a); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
@@ -122,10 +165,10 @@ Read this first when picking the project up, from either Claude account.
   unchanged.
 - **Hover thumbs.** Joey: "maybe image thumbs on hover or something that
   correlate to services". A 4:5 project image follows the cursor, floating
-  above it so it never covers the hovered row (section 13 of main.js; images
-  in `assets/img/services/01-10.jpg`). Projects: TreeArc, BSKT, Rygg, Zesty
-  Paws, Healthy Rituals, Pharmacy Guild, ELMNT, BikeChain, Fjord, and Veteran
-  Games (two partnership-deck slides). Mouse devices only.
+  above it so it never covers the hovered row (section 13 of main.js).
+  Mouse devices only. **Superseded 23 Nov:** the single image per service,
+  its client label and its tilt are gone; see "Joey's calls, 23 Nov" at the
+  top.
 - **Text reveal.** Joey: "way more interesting and industry forward than just
   the stock fade up". Text blocks now reveal word-masked, line by line, with
   a slight tilt (section 03 of main.js and section 18 of the CSS); images
