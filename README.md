@@ -39,8 +39,11 @@ Read this first when picking the project up, from either Claude account.
   `assets/img/services/NN-K.jpg`, listed per row in `data-thumbs`). The card
   only opens once an image has loaded and only flips through loaded ones, so
   it never shows as an empty box on a slow connection (tested throttled with
-  `Claude tools/thumbtest.mjs`). The theme's cursor dot hides while a card
-  shows, because over the green name it looked like a bite out of a letter.
+  `Claude tools/thumbtest.mjs`). Images download four at a time, each
+  service's first image first, and the hovered row jumps the queue; all at
+  once, a slow connection opened no card within 7 seconds. The theme's cursor
+  dot hides while a card shows, because over the green name it looked like a
+  bite out of a letter.
 - Rules for these images (every source is listed in
   `Claude tools/service-thumbs.json`):
   - Design or photography only. Never text-heavy screens, emails, ads,
