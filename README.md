@@ -30,6 +30,19 @@ Read this first when picking the project up, from either Claude account.
   - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
     the brand mark.
 
+**Home rebuilt in the reference style (24 Nov, evening, vibe-preview branch)**
+- Order now: hero gif, acid ticker, a slim intro row (one 23px line plus one small paragraph),
+  the work grid straight away ("Some of the good ones", "20 projects"), services (dark, kept),
+  the studio strip (the manifesto as three short columns with a "Let's chat" box), footer.
+- The tall Bootzy statement, the tall manifesto and the giant footer email are gone.
+- New footer on every page: small columns (Studio, Elsewhere, Sitemap, Say hello) and one big
+  graphic line, "Good people make good things happen." in Bootzy, each half fitted to the full
+  width by main.js section 15 (`.ga-fit`).
+- The floating back-to-top box is hidden (Joey's no-floating-buttons rule; it covered text on
+  phones).
+- Still to do: Part E (case study pages, studio, contact in the same style), full QA, merge to
+  main, bump the `?v=` stamp, push, check live.
+
 **Joey's calls, 24 Nov (evening): CMBT is the Volk Bar shoot now**
 - Joey: "why are the cmbt photos so dull? i swear there are properly edited versions", then
   "great shots but less staged and cringe", "should be a bunch of volk bar shoots" (sent the

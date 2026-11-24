@@ -2387,3 +2387,114 @@ body.ga-thumb-on #ball {
     pointer-events: none;
 }
 .ga-work-video.is-playing { opacity: 1; }
+
+/*----------------------------------------*/
+/*  Home layout (Joey, 24 Nov 2026: "holding onto old layout stuff too
+    much", "really tall narrow blocks of text"). Small type in wide, short
+    blocks. The one big graphic moment is the fitted line in the footer. */
+/*----------------------------------------*/
+.ga-intro-area { padding: clamp(34px, 3.6vw, 60px) 0 clamp(38px, 4vw, 66px); }
+.ga-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px clamp(20px, 3vw, 48px);
+    align-items: start;
+}
+.ga-intro-lead {
+    margin: 0;
+    max-width: 21em;
+    font: 500 23px/1.22 var(--ga-ff-ui) !important;
+    letter-spacing: -0.01em !important;
+    text-transform: none !important;
+    color: #0A0A0A;
+}
+.ga-intro-sub {
+    margin: 0;
+    max-width: 33em;
+    font: 400 15px/1.45 var(--ga-ff-ui);
+    color: #55554f;
+}
+.ga-intro-area + .ga-work-area { padding-top: 0; }
+.ga-goods-count { font: 400 13px/1.2 var(--ga-ff-ui); color: #8a8a86; }
+.ga-box-dark { background: #0A0A0A !important; color: #fff !important; }
+.ga-box-dark:hover { background: var(--ga-accent) !important; color: #0A0A0A !important; }
+
+/* studio strip: three short columns instead of one tall manifesto */
+.ga-about-area { padding: clamp(70px, 8vw, 130px) 0 0; }
+.ga-about {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px clamp(20px, 3vw, 48px);
+    align-items: start;
+    padding-top: 18px;
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+}
+.ga-about p {
+    margin: 0 0 1em;
+    max-width: 30em;
+    font: 400 15px/1.45 var(--ga-ff-ui);
+    color: #0A0A0A;
+}
+.ga-about .ga-about-lead {
+    max-width: 14em;
+    font: 500 23px/1.22 var(--ga-ff-ui);
+    letter-spacing: -0.01em;
+}
+.ga-about-last .ga-box { margin-top: 4px; }
+
+/* footer: small columns, one fitted line, a base row */
+.ga-foot { padding: clamp(60px, 7vw, 110px) 0 clamp(16px, 1.8vw, 26px); }
+.ga-foot-cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px clamp(20px, 3vw, 48px);
+    padding-top: 18px;
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+}
+.ga-foot-label {
+    display: block;
+    margin-bottom: 8px;
+    font: 400 13px/1.2 var(--ga-ff-ui);
+    color: #8a8a86;
+}
+.ga-foot-col p,
+.ga-foot-col li { margin: 0; font: 400 15px/1.45 var(--ga-ff-ui); color: #0A0A0A; }
+.ga-foot-col ul { margin: 0; padding: 0; list-style: none; }
+.ga-foot-col a { color: inherit; text-decoration: none; }
+.ga-foot-col a:not(.ga-box):hover { text-decoration: underline; text-underline-offset: 3px; }
+.ga-foot-col .ga-box { margin-top: 12px; }
+.ga-foot-big {
+    margin: clamp(56px, 7vw, 120px) 0 clamp(12px, 1.4vw, 22px);
+    font-family: var(--ga-ff-heading);
+    font-weight: 400;
+    line-height: 0.84;
+    text-transform: uppercase;
+    color: #0A0A0A;
+}
+.ga-fit { display: block; white-space: nowrap; font-size: 12vw; } /* main.js section 15 sets the exact size */
+.ga-foot-base {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+    font: 400 13px/1.2 var(--ga-ff-ui);
+    color: #8a8a86;
+}
+@media (max-width: 991px) {
+    .ga-foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ga-about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ga-about .ga-about-lead { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+    .ga-intro { grid-template-columns: minmax(0, 1fr); }
+    .ga-intro-lead, .ga-about .ga-about-lead { font-size: 20px !important; }
+    .ga-about { grid-template-columns: minmax(0, 1fr); }
+}
+.ga-intro-lead, .ga-intro-sub, .ga-about p { text-wrap: pretty; }
+/* no floating buttons (Joey's rule); it also sat on top of text on phones */
+.back-to-top-btn, .back-to-top-wrapper { display: none !important; }
+@media (max-width: 767px) {
+    .ga-foot-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 14px; }
+    .ga-foot-col:last-child { grid-column: 1 / -1; }
+}

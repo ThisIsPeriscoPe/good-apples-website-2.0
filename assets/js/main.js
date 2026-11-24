@@ -1183,4 +1183,34 @@
         inView.forEach(function (v) { io.observe(v); });
     })();
 
+    /*----------------------------------------*/
+    /*  15. Fit text
+    /*----------------------------------------*/
+    // Each .ga-fit line is sized so its text fills the parent's width exactly
+    // (the footer's big line). Measured with a Range so the block's own width
+    // never skews it; re-run once the fonts land and on resize.
+    (function fitText() {
+        const lines = Array.from(document.querySelectorAll(".ga-fit"));
+        if (!lines.length) return;
+        function fit() {
+            lines.forEach(function (el) {
+                const avail = el.parentElement.clientWidth;
+                if (!avail) return;
+                el.style.fontSize = "100px";
+                const r = document.createRange();
+                r.selectNodeContents(el);
+                const w = r.getBoundingClientRect().width;
+                if (w) el.style.fontSize = (100 * avail / w * 0.995).toFixed(2) + "px";
+            });
+            if (window.ScrollTrigger) ScrollTrigger.refresh();
+        }
+        fit();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+        let t = null;
+        window.addEventListener("resize", function () {
+            clearTimeout(t);
+            t = setTimeout(fit, 150);
+        });
+    })();
+
 })();
