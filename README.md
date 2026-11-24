@@ -7,28 +7,66 @@ the folder over HTTP (the fonts need a real origin, so `file://` won't do).
 python3 -m http.server 4321
 ```
 
-## Handoff (updated 23 Nov 2026)
+## Handoff (updated 24 Nov 2026)
 
 Read this first when picking the project up, from either Claude account.
 
-**Open now (23 Nov 2026)**
-- **Heading font: Bootzy Condensed, live 23 Nov (Joey's pick).** Logo stays Archivo. Joey bought the web licence; the file in `assets/fonts/bootzy-condensed.woff2` was made from his desktop copy because the official web files weren't downloaded yet. To do: swap in YouWorkForThem's own web font files and make this repo private (the licence bars font files in a public repo; Joey OK'd pushing as is because it's a prototype). Background: He asked what the heading font is
-  and floated Bootzy, Helvetica Condensed or Coolvetica. The headings are
-  Archivo Condensed ExtraBold (free). Nine options are set side by side in
-  `Desktop/Good Apples/Web/Assets/Site previews/Heading font options (23 Nov).png`,
-  rendered from `Desktop/Good Apples/Web/Claude tools/font-specimen/specimen.html`.
-  - Bootzy and Bootzy Condensed (Type Mania): Joey owns both desktop fonts.
-    The YouWorkForThem web licence is a one-off US$29 for up to 50,000
-    pageviews a month.
-  - Coolvetica and Helvetica Neue Condensed also need paid web licences
-    (Typodermic, Monotype). Free look-alikes: Anton, Bricolage Grotesque,
-    Instrument Sans Condensed.
-  - **Catch for any paid web font:** the licences forbid putting the font
-    files in a public code repository, and this repo is public. Before one
-    ships, make the repo private (GitHub Pages from a private repo needs a
-    paid GitHub plan) or host the site elsewhere.
-  - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
-    the brand mark.
+**Type and logo: Bootzy is out (Joey's calls, 24 Nov 2026, late)**
+- Joey on the live site: "duno abut bootsy, but full on tbh". Then he sent two refs:
+  spiritlandproductions.com ("good web reffo... not sure you wanna keep in mind or try
+  implement") and goodroombk.com ("whats this font"). Measurements of both are in
+  `Desktop/Good Apples/Web/Claude tools/type-spec.md`.
+- Good Room's font is plain Helvetica Neue Medium in caps, squashed to half width with a CSS
+  transform (`.stretch { width: 200%; transform: scaleX(.5) }`). It isn't a condensed font.
+- **Headings now (live 24 Nov):** Helvetica Neue Medium caps squashed the same way. That covers
+  case, studio and contact titles, the footer line, the home services list and the phone menu.
+  Sizes are not fitted any more: titles and the footer line use 9vw (twice Good Room's 4.5vw), the
+  services list 4.5vw, and the footer line 14.5vw on phones. The rules are at the end of style.css.
+  Everything else stays plain Helvetica Neue.
+  - Plain Spiritland-style caps were option A. Bootzy vs A vs B is in
+    `Desktop/Good Apples/Web/Assets/Site previews/Heading type: Bootzy vs Spiritland vs Good Room (24 Nov).png`.
+- **Logo (Joey: "can we get good apples logo in a phater version of that"):** Helvetica Neue
+  Condensed Black squashed to 72% across, same GOOD / APPLES lockup. It is outlined to SVG by
+  `Claude tools/logo_svg.py` from the Mac's own font file, so it looks the same on every device.
+  - The file is `assets/img/ga-logo.svg`. The SVG is also inline in every header and in the home
+    hero, where the two words still rise in.
+  - The hero wordmark and the header logo are the same shape, so the fly-into-the-header
+    animation still works.
+  - This replaces the old rule that the logo stays in Archivo (Joey's call).
+  - The other candidates are in `Assets/Site previews/Logo: fat Helvetica options (24 Nov).png`.
+  - To change the squash or face, edit `LOGO` in logo_svg.py, run `site`, and re-paste the two
+    snippets.
+- Joey asked whether case study names and other bold text should be squashed too. Claude's view:
+  keep them plain Helvetica. The squash only holds up big, and at 15–23px it goes spindly. Joey
+  hasn't confirmed.
+- On brand: the Good Apples brand guide pairs Archivo Narrow with Neue Haas Grotesk Display,
+  which is Helvetica's original, so Helvetica Neue headings sit inside the guide.
+- Bootzy's web font file is out of the repo, in `Desktop/Good Apples/Web/Assets/Fonts/`. It is
+  still in git history. The old to-dos (YouWorkForThem's web files, making the repo private for
+  the font licence) only apply if Bootzy comes back.
+- Open question for launch: the logo and headings come from the Mac's system Helvetica Neue.
+  Before the real site goes out, check that Good Apples holds a Helvetica Neue licence covering
+  logo use (Monotype).
+- The Spiritland idea not used yet: the whole page fading from white to black as you scroll into
+  a dark section (their trigger: the section top 300px from the window top, 1.5s fade).
+
+**Joey's calls, 24 Nov (late): Zesty Paws and Harvest & Halo images**
+- Zesty Paws (Joey: "zesty paws hero could be far better pick. not the xmas baubals for starters"):
+  - The card thumb and hero frame 15 are now our Black Friday homepage banner (cat and sheltie on
+    charcoal and yellow, white doodles), not the Christmas one.
+  - Thumb: a square from `ZPAU_WebHero_BlackFriday_HeroSection1_Desktop_2560x1440.jpg`, widened
+    with the banner's flat charcoal (34,35,39) so no doodle is cut.
+  - Frame 15: from the TextOverMedia 3840x2160 version, pets on the right so the wordmark gets
+    the dark side. The art is set at 94% and 90px down on the flat ground, so no doodle is cut by
+    the hero's parallax.
+  - On phones the frame shows the dog (`object-position: 100%` in style.css). Every doodle was
+    checked at 14 screen sizes.
+  - The Christmas banner is still in the Zesty Paws gallery as one of the banners we made.
+  - Source files: `Desktop/Zesty Paws/Black Friday - Nov26/Website Heroes/`.
+- Harvest & Halo (Joey: "probs centre align that bottle"): the tube sat at 56% across in the
+  thumb. The thumb is now a square cut from hero frame 08 with the tube dead centre, and frame 08
+  itself is nudged from 51.5% to centre. The original lilac photo isn't on the Mac; frame 08 is
+  the largest copy.
 
 **Home rebuilt in the reference style (24 Nov, evening, vibe-preview branch)**
 - Order now: hero gif, acid ticker, a slim intro row (one 23px line plus one small paragraph),
@@ -36,13 +74,12 @@ Read this first when picking the project up, from either Claude account.
   the studio strip (the manifesto as three short columns with a "Let's chat" box), footer.
 - The tall Bootzy statement, the tall manifesto and the giant footer email are gone.
 - New footer on every page: small columns (Studio, Elsewhere, Sitemap, Say hello) and one big
-  graphic line, "Good people make good things happen." in Bootzy, each half fitted to the full
-  width by main.js section 15 (`.ga-fit`).
+  graphic line, "Good people make good things happen." Since 24 Nov it is in the squashed Helvetica
+  (`.ga-foot-line`), no longer fitted. main.js section 15 (`.ga-fit`) is kept but nothing uses it.
 - The floating back-to-top box is hidden (Joey's no-floating-buttons rule; it covered text on
   phones).
-- Case study pages, studio and contact now match (Part E): crumbs, the name as one fitted
-  Bootzy line (capped at 34% of the window height so short names like CMBT don't fill the
-  screen), then one short info row (hook as the single 23px line, copy in two columns, What
+- Case study pages, studio and contact now match (Part E): crumbs, the name as the page title
+  (squashed Helvetica since 24 Nov), then one short info row (hook as the single 23px line, copy in two columns, What
   we did, Year). No cover image (the square thumb was a repeat). After the gallery, "More
   good ones": the next four projects in home grid order. Studio's title is "Studio" (the old
   "Good people, good things." repeated the footer line). Green pill buttons are flat boxes.
@@ -80,7 +117,7 @@ Read this first when picking the project up, from either Claude account.
   cans with a hand reaching (superseded the same evening by the Volk Bar shot, see above),
   Harvest & Halo tube on lilac, TreeArc business cards, Outer Bound cold brew tray, Sprout tub on
   the peach podium (a square crop of the brand film at 24.5s, centred, bullets cropped out),
-  Zesty Paws Christmas web hero (no text), Veteran Games high-five (VG site gallery), Take Me
+  Zesty Paws Christmas web hero (no text; swapped for the Black Friday banner later on 24 Nov), Veteran Games high-five (VG site gallery), Take Me
   our site design on red. Healthy Rituals: the woman in the trees for now.
 - **Healthy Rituals banner:** Joey made a banner with the HR logo on a blurred background ("for
   find your creative platform or something"). Not found yet: checked Archive/Healthy Rituals
@@ -629,8 +666,8 @@ Read this first when picking the project up, from either Claude account.
 index.html            markup for every section
 assets/css/style.css  all styling, numbered sections in the header comment
 assets/js/main.js     preloader, smooth scroll, hero hover, banner flipbook, cursor
-assets/fonts/         Archivo variable (OFL). The wordmark is the Condensed
-                      ExtraBold instance, wdth 75% / wght 800
+assets/fonts/         Archivo variable (OFL). Unused since 24 Nov 2026: the logo is
+                      assets/img/ga-logo.svg (Helvetica Neue Condensed Black, 72%)
 assets/vendor/        GSAP + ScrollTrigger + ScrollSmoother, Swiper
 assets/img/hero/      hero grid thumbnails, cropped per subject
 assets/img/banner/    16 frames for the full-bleed flipbook band
