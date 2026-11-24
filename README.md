@@ -116,8 +116,9 @@ Read this first when picking the project up, from either Claude account.
 - Rebuilt 24 Nov: veteran-games, rygg, iconic-beverages, zesty-paws, bikechain, fjord, cmbt,
   she-means-business, pharmacy-guild. The others (Kioni, BSKT, Healthy Rituals, Harvest & Halo, Outer
   Bound, Take Me, ELMNT, TreeArc, Sprout) were photo-led already and are unchanged.
-- Next (Joey, 24 Nov): push the overall site vibe towards Public Possession, Klasse Wrecks, Sound
-  Metaphors and Plant World, adapted for a studio rather than a shop. Not started.
+- Vibe pass (Joey, 24 Nov): push the site towards Public Possession, Klasse Wrecks, Sound Metaphors and
+  Plant World, adapted for a studio rather than a shop. All four measured in `Claude tools/vibe-spec.md`.
+  Rolled out across every page on 24 Nov (evening); see the sections at the top of this handoff.
 
 **Joey's calls, 23 Nov: service hover cards**
 - No client label and no tilt on the card. It flips through several client
@@ -147,12 +148,13 @@ Read this first when picking the project up, from either Claude account.
   errors.
 
 **Where it's up to**
-- The site is a one-page homepage: hero, statement, banner flipbook, values
-  ticker, services, work index, manifesto, footer.
+- The homepage (since 24 Nov): hero gif, acid ticker, intro row, work grid,
+  services, studio strip, footer. Plus studio.html, contact.html and 20 case
+  pages in work/ (built with Claude tools/build_pages.py and case_layout.py).
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261123c); bump it in index.html, studio.html, contact.html
+  (currently 20261124a); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
