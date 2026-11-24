@@ -40,8 +40,15 @@ Read this first when picking the project up, from either Claude account.
   width by main.js section 15 (`.ga-fit`).
 - The floating back-to-top box is hidden (Joey's no-floating-buttons rule; it covered text on
   phones).
-- Still to do: Part E (case study pages, studio, contact in the same style), full QA, merge to
-  main, bump the `?v=` stamp, push, check live.
+- Case study pages, studio and contact now match (Part E): crumbs, the name as one fitted
+  Bootzy line (capped at 34% of the window height so short names like CMBT don't fill the
+  screen), then one short info row (hook as the single 23px line, copy in two columns, What
+  we did, Year). No cover image (the square thumb was a repeat). After the gallery, "More
+  good ones": the next four projects in home grid order. Studio's title is "Studio" (the old
+  "Good people, good things." repeated the footer line). Green pill buttons are flat boxes.
+- `Claude tools/case_layout.py` does the case page layout and the More rows; build_pages.py
+  calls it after every build, so new pages from the kioni.html template come out the same.
+- Still to do: full QA, merge to main, bump the `?v=` stamp, push, check live.
 
 **Joey's calls, 24 Nov (evening): CMBT is the Volk Bar shoot now**
 - Joey: "why are the cmbt photos so dull? i swear there are properly edited versions", then

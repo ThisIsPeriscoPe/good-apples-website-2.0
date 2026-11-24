@@ -1194,13 +1194,20 @@
         if (!lines.length) return;
         function fit() {
             lines.forEach(function (el) {
-                const avail = el.parentElement.clientWidth;
+                const box = el.parentElement;
+                const cs = getComputedStyle(box);
+                const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
                 if (!avail) return;
                 el.style.fontSize = "100px";
                 const r = document.createRange();
                 r.selectNodeContents(el);
                 const w = r.getBoundingClientRect().width;
-                if (w) el.style.fontSize = (100 * avail / w * 0.995).toFixed(2) + "px";
+                if (!w) return;
+                let size = 100 * avail / w * 0.995;
+                // data-fit-max caps it at that share of the window height (short names)
+                const cap = parseFloat(el.getAttribute("data-fit-max"));
+                if (cap) size = Math.min(size, cap * window.innerHeight);
+                el.style.fontSize = size.toFixed(2) + "px";
             });
             if (window.ScrollTrigger) ScrollTrigger.refresh();
         }
