@@ -46,8 +46,13 @@ Read this first when picking the project up, from either Claude account.
 - Rebuilt 24 Nov: veteran-games, rygg, iconic-beverages, zesty-paws, bikechain, fjord, cmbt,
   she-means-business, pharmacy-guild. The others (Kioni, BSKT, Healthy Rituals, Harvest & Halo, Outer
   Bound, Take Me, ELMNT, TreeArc, Sprout) were photo-led already and are unchanged.
-- Next (Joey, 24 Nov): push the overall site vibe towards Public Possession, Klasse Wrecks, Sound
-  Metaphors and Plant World, adapted for a studio rather than a shop. Not started.
+- Vibe pass (Joey, 24 Nov): push the site towards Public Possession, Klasse Wrecks, Sound Metaphors and
+  Plant World. All four measured in `Claude tools/vibe-spec.md`. A home page preview is on the
+  `vibe-preview` branch (not live): flat white box nav, a slim acid-green values ticker, small Helvetica
+  Neue UI type, and the work index as a tight 4-up goods grid with tiny tags (NEW in green for 2026).
+  Board: `Desktop/Good Apples/Web/Assets/Site previews/Vibe preview - home (24 Nov).jpg`. Waiting on
+  Joey before rolling it out. Known to fix on rollout: square work thumbs need a per-card crop check
+  (TreeArc cuts its text).
 
 **Joey's calls, 23 Nov: service hover cards**
 - No client label and no tilt on the card. It flips through several client
