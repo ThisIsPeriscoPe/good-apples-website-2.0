@@ -30,10 +30,31 @@ Read this first when picking the project up, from either Claude account.
   - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
     the brand mark.
 
+**Joey's calls, 24 Nov (evening): CMBT is the Volk Bar shoot now**
+- Joey: "why are the cmbt photos so dull? i swear there are properly edited versions", then
+  "great shots but less staged and cringe", "should be a bunch of volk bar shoots" (sent the
+  Volk-against-sky Choc Cherry shot) and "scrape the internet if needed".
+- Why they were dull: the May 2024 Hydrate shoot JPEGs we used (`Best picks (Nov 2026)` 07 and
+  14) are flat Lightroom exports (Contrast -30). Graded versions of that shoot and of the Dec
+  2024 EMF athlete shoot are in CMBT's Drive: Retailer Asset Hub > Marketing Assets
+  (Product_Shots: RTDs, Hydrate+, Preworkout; Lifestyle_Shots > Athlete_With_Product; Athlete_Content).
+  Not used: Joey called the posed hand-and-can RTD shots staged and cringe.
+- Now used: the 2026 Volk Bar campaign, from CMBT's public Instagram at its full 1080px (no
+  bigger copy exists online; cmbt.com.au's Volk Bar bar shots are AI renders, `hf_` files,
+  never use). Copies in `Desktop/Good Apples/Web/Assets/CMBT/Volk Bar 2026 (Instagram)`, named
+  date_shortcode.
+  - Thumb: Volk holding Choc Cherry against sky, square (the framing Joey sent).
+  - Hero frame 13: a wide crop of the same shot, upscaled to 1800x1200 with fresh fine grain.
+  - CMBT gallery: the two Volk portraits, the three flavour cards on black, the shoot behind the
+    scenes and Volk on the production line, the fighter videos, the bars wall and the Volk Bar
+    boxes at BMF. Out: the 2024 choc bar posters, the Hydrate+ IG pair and Fast Hydration.
+- Open: the copy doesn't mention the Volk Bar or 7-Eleven (cmbt.com.au: "Volk Bars at 7-Eleven
+  nationwide"). Confirm with Joey what we did on the Volk Bar before adding it.
+
 **Joey's calls, 24 Nov (later): thumbs, hero gif, two new case studies, vibe**
 - New square work thumbs (`assets/img/work/<slug>.jpg`, 1000px), all Joey's picks or approved:
   BSKT blue granola pour (2025 studio set), Kioni bottle on rock against sky, CMBT 2024 Hydrate
-  cans with a hand reaching ("should be great product photog"; never the bar-pattern shot),
+  cans with a hand reaching (superseded the same evening by the Volk Bar shot, see above),
   Harvest & Halo tube on lilac, TreeArc business cards, Outer Bound cold brew tray, Sprout tub on
   the peach podium (a square crop of the brand film at 24.5s, centred, bullets cropped out),
   Zesty Paws Christmas web hero (no text), Veteran Games high-five (VG site gallery), Take Me
