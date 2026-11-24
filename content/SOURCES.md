@@ -76,6 +76,19 @@ fact sheets, with these rules from Joey's calls:
   commissioned it; the PAM explainer was made direct for the Guild. Gallery
   clips are silent, like every gallery video.
 
+## CMBT: The Volk Bar (added 24 Nov 2026)
+
+- "In 2026 CMBT launched The Volk Bar with Alexander Volkanovski": the Volk Bar Info Sheet
+  (Mar 2026, CMBT's Drive, Retailer Asset Hub > CMBT Sales Sheets) and CMBT's launch posts on
+  Instagram (@cmbtnutrition, April 2026: flavour cards, "It's almost time 29.4.26").
+- "It went into 7-Eleven stores nationwide": cmbt.com.au's site banner, 24 Nov 2026 ("Get your
+  Volk Bars at 7-Eleven nationwide now!").
+- "broke 7-Eleven's core protein bar sales record in its first week": CMBT's press release post
+  on Instagram, 9 Aug 2026 ("The Volk Bar breaks 7-Eleven's core protein bar sales record in its
+  first week").
+- Added on Joey's go-ahead (24 Nov 2026). The page doesn't claim which parts of the Volk Bar we
+  made; confirm before saying so.
+
 ## Facts worth keeping (from the showcase deck)
 
 - Good Apples: inception 2016, rebrands 2018 and 2024.
