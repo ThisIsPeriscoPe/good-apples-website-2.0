@@ -2374,3 +2374,16 @@ body.ga-thumb-on #ball {
     background: #0A0A0A !important;
     color: #fff !important;
 }
+
+/* work card videos sit over the still, which doubles as the poster */
+.ga-work-thumb { position: relative; }
+.ga-work-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+}
+.ga-work-video.is-playing { opacity: 1; }

@@ -1135,4 +1135,52 @@
         area.addEventListener("mouseleave", hide);
     })();
 
+    /*----------------------------------------*/
+    /*  14. Work card videos
+    /*----------------------------------------*/
+    // Joey, 24 Nov: ICONIC's logo animation plays on rollover, Pharmacy
+    // Guild runs a square cut of the animation from a clean first frame, and
+    // Fjord's tee mockups flip like a gif. "hover" cards play while the
+    // pointer is on them (and while in view on touch screens, which can't
+    // hover); "auto" cards play whenever they are on screen. The still image
+    // underneath is the poster, so nothing changes until a frame is ready.
+    (function workVideos() {
+        const vids = Array.from(document.querySelectorAll(".ga-work-video"));
+        if (!vids.length) return;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) return;
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+        function play(v) {
+            v.preload = "auto";
+            const p = v.play();
+            if (p && p.catch) p.catch(function () {});
+        }
+        function stop(v, rewind) {
+            v.pause();
+            v.classList.remove("is-playing");
+            if (rewind) { try { v.currentTime = 0; } catch (e) {} }
+        }
+        vids.forEach(function (v) {
+            // only show the video once it is really moving, never a blank box
+            v.addEventListener("playing", function () { v.classList.add("is-playing"); });
+        });
+
+        vids.filter(function (v) { return v.dataset.play === "hover" && canHover; }).forEach(function (v) {
+            const card = v.closest(".ga-work-item");
+            if (!card) return;
+            card.addEventListener("mouseenter", function () { play(v); });
+            card.addEventListener("mouseleave", function () { stop(v, true); });
+        });
+
+        const inView = vids.filter(function (v) { return v.dataset.play === "auto" || !canHover; });
+        if (!inView.length || !("IntersectionObserver" in window)) return;
+        const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) play(e.target); else stop(e.target, false);
+            });
+        }, { threshold: 0.6 });
+        inView.forEach(function (v) { io.observe(v); });
+    })();
+
 })();

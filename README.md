@@ -30,6 +30,35 @@ Read this first when picking the project up, from either Claude account.
   - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
     the brand mark.
 
+**Joey's calls, 24 Nov (later): thumbs, hero gif, two new case studies, vibe**
+- New square work thumbs (`assets/img/work/<slug>.jpg`, 1000px), all Joey's picks or approved:
+  BSKT blue granola pour (2025 studio set), Kioni bottle on rock against sky, CMBT 2024 Hydrate
+  cans with a hand reaching ("should be great product photog"; never the bar-pattern shot),
+  Harvest & Halo tube on lilac, TreeArc business cards, Outer Bound cold brew tray, Sprout tub on
+  the peach podium (a square crop of the brand film at 24.5s, centred, bullets cropped out),
+  Zesty Paws Christmas web hero (no text), Veteran Games high-five (VG site gallery), Take Me
+  our site design on red. Healthy Rituals: the woman in the trees for now.
+- **Healthy Rituals banner:** Joey made a banner with the HR logo on a blurred background ("for
+  find your creative platform or something"). Not found yet: checked Archive/Healthy Rituals
+  (web, brand, paid), the Good Apples folders, Drive, the old good-apples.com.au Shopify store
+  and the PeriscoPe site assets. A rebuild from `blur-img.jpg` was rejected ("that aint the
+  one, its one ive made before"). Use his original only.
+- **Take Me:** Joey says the TakeMe_Home website design IS the final design we did, which
+  corrects the 18 Nov note above that called it the other studio's concept.
+- **Rygg:** using Rygg's photos is fine because we are showcasing the packaging.
+- **Sprout search (24 Nov):** no flash or studio photography found in Drive (Sprout Animations
+  are text-heavy, the 2021 kitchen shoot and the Bilinga shoot are lifestyle, BOF Images,
+  2023 campaigns). The film frame is the approved stand-in.
+- Moving thumbs: ICONIC aura and Pharmacy Guild (square cut of the QSPP social animation from
+  its clean first frame) play on hover; Fjord's six tee mockups and Super Cubes' characters
+  loop like a gif while on screen. Files in `assets/video/thumbs/`; section 14 of main.js.
+- Hero gif: frames 02, 06, 12, 13 and 15 replaced (BSKT red fan, Kioni hand-held duo, Outer
+  Bound cold brew, CMBT Hydrate cans, Zesty Paws Christmas hero) instead of the Take Me
+  billboard, TreeArc shopfront, SMB posters, Take Me phone and SMB poster.
+- **New case studies:** Super Cubes (2020, packaging for frozen fruit purées for Woolworths)
+  and Switch Nutrition (2021–22 rebrand), copy only from the Project Showcase deck; years
+  from the Drive file dates. Media in `Desktop/Good Apples/Web/Assets/Super Cubes` and `/Switch`.
+
 **Joey's calls, 24 Nov: case study galleries curated like a studio**
 - Joey: "be mindful of what a design studio would do, look at jojestudio", "be tasteful and ensure
   content selections all compliment each other". Websites and decks go on a flat screen with padding on
