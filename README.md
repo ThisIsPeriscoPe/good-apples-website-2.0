@@ -70,8 +70,9 @@ Read this first when picking the project up, from either Claude account.
   - CMBT gallery: the two Volk portraits, the three flavour cards on black, the shoot behind the
     scenes and Volk on the production line, the fighter videos, the bars wall and the Volk Bar
     boxes at BMF. Out: the 2024 choc bar posters, the Hydrate+ IG pair and Fast Hydration.
-- Open: the copy doesn't mention the Volk Bar or 7-Eleven (cmbt.com.au: "Volk Bars at 7-Eleven
-  nationwide"). Confirm with Joey what we did on the Volk Bar before adding it.
+- Copy (Joey, 24 Nov: "Yes, add it"): a third paragraph on The Volk Bar's 2026 launch with
+  Volkanovski, 7-Eleven nationwide and the first-week sales record. Sources in content/SOURCES.md.
+  It doesn't say which parts of the Volk Bar we made; confirm with Joey before claiming any.
 
 **Joey's calls, 24 Nov (later): thumbs, hero gif, two new case studies, vibe**
 - New square work thumbs (`assets/img/work/<slug>.jpg`, 1000px), all Joey's picks or approved:
