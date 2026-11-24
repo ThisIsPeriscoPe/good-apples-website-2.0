@@ -2239,3 +2239,138 @@ body.ga-thumb-on #ball {
 .ga-manifesto p:first-child { font-size: clamp(38px, 4.4vw, 78px); }
 .ga-case-title { font-size: clamp(66px, 11.5vw, 230px); }
 .ga-menu-list a { font-size: clamp(48px, 9vw, 134px); }
+
+/*----------------------------------------*/
+/*  Vibe pass (Joey, 24 Nov 2026): Public Possession / Klasse Wrecks /
+    Sound Metaphors / Plant World. Small neutral type, one acid accent,
+    flat box UI, a tight "goods" grid with tiny tags. Spec:
+    Claude tools/vibe-spec.md */
+/*----------------------------------------*/
+:root {
+    --ga-ff-ui: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --ga-accent: #AAE060;
+    --tp-ff-body: var(--ga-ff-ui);
+}
+
+/* flat box buttons, as Public Possession's nav */
+.ga-box,
+.ga-boxnav a {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 16px 1px;
+    background: #fff;
+    color: #0A0A0A;
+    border-radius: 2px;
+    font: 400 15px/1 var(--ga-ff-ui);
+    letter-spacing: 0;
+    text-decoration: none;
+    transition: background-color .2s ease;
+}
+.ga-box:hover,
+.ga-boxnav a:hover { background: var(--ga-accent); color: #0A0A0A; }
+.ga-boxnav { display: inline-flex; gap: 8px; vertical-align: middle; }
+.px-header-2-area .ga-boxnav a { min-width: 120px; }
+@media (min-width: 992px) {
+    .px-header-2-bar .tp-hamburger-btn { display: none; }
+}
+@media (max-width: 991px) {
+    .ga-boxnav { display: none; }
+}
+
+/* values ticker: slim acid strip, small bold type (Public Possession's 31px orange band) */
+.ga-ticker-area {
+    background-color: var(--ga-accent);
+    padding: 8px 0 9px;
+}
+.ga-ticker-item {
+    font: 700 15px/1 var(--ga-ff-ui) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    font-stretch: normal !important;
+    color: #0A0A0A;
+}
+.ga-ticker-item i { margin: 0 22px; color: #0A0A0A; }
+.ga-ticker-item i svg { width: 9px; height: 9px; }
+
+/* work index as a tight goods grid */
+.ga-goods-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+.ga-goods-title {
+    margin: 0;
+    font: 400 15px/1.2 var(--ga-ff-ui) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    color: #0A0A0A;
+}
+.ga-goods-head .ga-box { background: #0A0A0A; color: #fff; }
+.ga-goods-head .ga-box:hover { background: var(--ga-accent); color: #0A0A0A; }
+.ga-work-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 10px;
+}
+.ga-work-item:nth-child(n) { margin-top: 0 !important; }
+.ga-work-thumb { margin-bottom: 10px; background: #EFEFEC; }
+.ga-work-thumb img {
+    aspect-ratio: 1 / 1;
+    filter: none;
+}
+.ga-work-item:hover .ga-work-thumb img { filter: none; transform: scale(1.03); }
+.ga-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 7px; }
+.ga-tag {
+    display: inline-block;
+    padding: 3px 5px 2px;
+    background: #E6E6E2;
+    color: #0A0A0A;
+    font: 400 11px/1.2 var(--ga-ff-ui);
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+.ga-tag.is-new { background: var(--ga-accent); }
+.ga-work-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.ga-work-name {
+    font: 500 15px/1.2 var(--ga-ff-ui) !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+    font-stretch: normal !important;
+    color: #0A0A0A;
+}
+.ga-work-cat {
+    margin: 0;
+    font: 400 13px/1.2 var(--ga-ff-ui);
+    letter-spacing: 0;
+    text-transform: none;
+    color: #8a8a86;
+    white-space: nowrap;
+}
+@media (max-width: 1199px) { .ga-work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 767px) {
+    .ga-work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 8px; }
+    .ga-work-row { flex-direction: column; gap: 3px; }
+}
+
+/* services in the vibe pass: slim head, small sentence-case group names */
+.ga-dark .ga-goods-title { color: #FEFFF8; }
+.ga-dark .ga-goods-head .ga-box { background: #FEFFF8; color: #0A0A0A; }
+.ga-dark .ga-goods-head { margin-bottom: clamp(30px, 3vw, 48px); }
+.ga-service-group-name {
+    font: 400 13px/1.2 var(--ga-ff-ui) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    color: var(--ga-accent);
+}
+.ga-eyebrow { letter-spacing: 0 !important; text-transform: none !important; font: 400 15px/1.2 var(--ga-ff-ui) !important; }
+
+/* back to top: a flat box, not a floating circle with a shadow */
+.back-to-top-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    background: #0A0A0A !important;
+    color: #fff !important;
+}
