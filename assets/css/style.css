@@ -2033,7 +2033,8 @@ body.ga-thumb-on #ball {
 
 @media (max-width: 767px) {
     .ga-hero-meta {
-        bottom: calc(clamp(28px, 4.6vh, 64px) + 1.46 * min(calc((100vw - 32px) / 4.15), 21vh) + clamp(14px, 2.2vh, 22px));
+        /* the logo SVG is 1.4915em tall and 2.964em wide (Helvetica lockup, 24 Nov 2026) */
+        bottom: calc(clamp(28px, 4.6vh, 64px) + 1.4915 * min(calc((100vw - 32px) / 2.964), 21vh) + clamp(14px, 2.2vh, 22px));
     }
 }
 
@@ -2208,37 +2209,6 @@ body.ga-thumb-on #ball {
         grid-template-columns: minmax(0, 1fr);
     }
 }
-
-/*----------------------------------------*/
-/*  Heading font: Bootzy Condensed (Joey, 23 Nov 2026). The GOOD APPLES
-    logo and hero wordmark stay in Archivo. Web font files go in
-    assets/fonts/ once the web licence is bought; until then this only
-    renders where the font is installed. */
-/*----------------------------------------*/
-@font-face {
-    font-family: "GA Bootzy Condensed";
-    src: local("Bootzy Condensed TM Regular"), local("BootzyCondensedTM-Regular"), url("../fonts/bootzy-condensed.woff2") format("woff2");
-    font-display: swap;
-}
-:root { --ga-ff-heading: "GA Bootzy Condensed", var(--ga-ff-wordmark); }
-.px-hero-2-text, .ga-statement, .ga-ticker-item, .ga-section-title,
-.ga-service-name, .ga-work-name, .ga-manifesto p:first-child, .ga-footer-mail,
-.ga-case-title, .ga-studio-value-name, .ga-studio-sub, .ga-contact-mail,
-.ga-menu-list a {
-    font-family: var(--ga-ff-heading);
-    font-weight: 400;
-    font-stretch: normal;
-    letter-spacing: 0;
-}
-/* Bootzy Condensed is much narrower than Archivo: set it bigger to keep the weight */
-.ga-statement { font-size: clamp(42px, 6.6vw, 118px); }
-.ga-ticker-item { font-size: clamp(28px, 3.3vw, 56px); }
-.ga-section-title { font-size: clamp(56px, 9vw, 168px); }
-.ga-service-name { font-size: clamp(34px, 3.9vw, 70px); }
-.ga-work-name { font-size: clamp(30px, 2.6vw, 46px); }
-.ga-manifesto p:first-child { font-size: clamp(38px, 4.4vw, 78px); }
-.ga-case-title { font-size: clamp(66px, 11.5vw, 230px); }
-.ga-menu-list a { font-size: clamp(48px, 9vw, 134px); }
 
 /*----------------------------------------*/
 /*  Vibe pass (Joey, 24 Nov 2026): Public Possession / Klasse Wrecks /
@@ -2465,10 +2435,6 @@ body.ga-thumb-on #ball {
 .ga-foot-col .ga-box { margin-top: 12px; }
 .ga-foot-big {
     margin: clamp(56px, 7vw, 120px) 0 clamp(12px, 1.4vw, 22px);
-    font-family: var(--ga-ff-heading);
-    font-weight: 400;
-    line-height: 0.84;
-    text-transform: uppercase;
     color: #0A0A0A;
 }
 .ga-fit { display: block; white-space: nowrap; font-size: 12vw; } /* main.js section 15 sets the exact size */
@@ -2513,9 +2479,6 @@ body.ga-thumb-on #ball {
 .ga-case-crumbs a:hover { color: #0A0A0A; }
 .ga-case-head .ga-case-title {
     margin: 0 0 clamp(22px, 2.6vw, 40px);
-    font-size: 12vw;
-    line-height: 0.84;
-    text-transform: uppercase;
     color: #0A0A0A;
 }
 .ga-case-info {
@@ -2563,8 +2526,6 @@ body.ga-thumb-on #ball {
     .ga-case-info .ga-case-text { column-count: 1; }
     .ga-case-info .ga-case-hook { font-size: 20px !important; }
 }
-/* Bootzy's caps rise above a tight line box: keep the crumbs clear of them */
-.ga-case-head .ga-case-title { margin-top: 0.1em; }
 
 /* studio and contact in the same system as the case pages */
 .ga-case-side .ga-foot-label ~ .ga-foot-label { margin-top: 18px; }
@@ -2622,3 +2583,79 @@ body.ga-thumb-on #ball {
 /* four More cards never leave one stranded on a row */
 @media (max-width: 1199px) and (min-width: 992px) { .ga-more-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 991px) { .ga-more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/*----------------------------------------*/
+/*  Heading type (Joey, 24 Nov 2026): Bootzy felt a bit full on. Headings
+    are Helvetica Neue Medium caps squashed to half width, the way
+    goodroombk.com sets its type (Joey asked "whats this font"): each line
+    is laid out at double width, then scaled to 50% across from the left,
+    so it breaks lines at double width and lands back inside its box.
+    Sizes below are before the squash. Measurements, and the plain
+    Spiritland caps alternative: Claude tools/type-spec.md.
+    The GOOD APPLES logo stays in Archivo. */
+/*----------------------------------------*/
+:root {
+    --ga-ff-heading: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --ga-squash: scaleX(0.5);
+}
+.ga-case-head .ga-case-title,
+.ga-foot-big,
+.ga-service-name,
+.ga-menu-list a {
+    font-family: var(--ga-ff-heading);
+    font-weight: 500;
+    font-stretch: normal;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+.ga-case-head .ga-case-title,
+.ga-foot-line,
+.ga-service-name {
+    width: 200%;
+    transform: var(--ga-squash);
+    transform-origin: 0 0;
+}
+/* titles and the footer line: twice Good Room's 4.5vw; list rows: theirs */
+.ga-case-head .ga-case-title { font-size: clamp(72px, 9vw, 170px); line-height: 0.8; }
+.ga-foot-big { font-size: clamp(40px, 9vw, 170px); line-height: 0.8; }
+@media (max-width: 767px) {
+    .ga-foot-big { font-size: 14.5vw; } /* each half close to the full width on phones */
+}
+.ga-foot-line { display: block; white-space: nowrap; }
+.ga-service-name { font-size: clamp(40px, 4.5vw, 84px); line-height: 0.8; }
+.ga-service:hover .ga-service-name { transform: translateX(clamp(6px, 0.8vw, 16px)) var(--ga-squash); }
+.ga-menu-list a {
+    font-size: clamp(72px, min(9vw, 15vh), 134px);
+    line-height: 0.9;
+    transform: var(--ga-squash);
+    transform-origin: 0 50%;
+}
+.ga-menu-list a:hover { transform: translateX(clamp(8px, 1.2vw, 22px)) var(--ga-squash); }
+@media (max-height: 640px) {
+    .ga-menu-list a { font-size: clamp(24px, 9vh, 52px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ga-service:hover .ga-service-name,
+    .ga-menu-list a:hover { transform: var(--ga-squash); }
+}
+
+/* GOOD APPLES logo (Joey, 24 Nov 2026: "a phater version of that"): Helvetica Neue
+   Condensed Black squashed to 72% across, outlined to SVG by Claude tools/logo_svg.py so it
+   is the same on every device. The header logo and the hero wordmark are the same SVG
+   shape, so the hero's flight into the header (main.js) is still one scale. The viewBox
+   carries 16 units of overshoot room top and bottom: 1517 units tall for 1485 of caps. */
+.ga-logo { transform: none; }
+.ga-logo-svg { display: block; height: 49px; width: auto; } /* 48px of caps: narrower than the Archivo logo, so a touch taller */
+/* real text for the hero heading, read by screen readers and search, not shown */
+.ga-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.ga-wm-svg { display: block; height: 1.4915em; width: auto; overflow: visible; }
+.ga-wm-svg .ga-wm-inner { transform-box: fill-box; }
+@media (max-width: 767px) {
+    /* full phone width inside the 16px gutters: the lockup is 2.964em wide */
+    .ga-wm-stage { font-size: min(calc((100vw - 32px) / 2.964), 21vh); }
+}
+
+/* Zesty Paws hero frame (24 Nov 2026): the pets sit on the right so the wordmark gets the dark
+   space on a desktop; where only a slice of the frame shows (phones, tablets upright), hold the
+   dog in view instead of the empty middle. */
+.ga-banner-frame[src$="frame-15.jpg"] { object-position: 100% 50%; } /* the dog, its crown and bone: no doodle cut at any phone width */
