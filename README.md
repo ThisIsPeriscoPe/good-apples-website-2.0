@@ -48,7 +48,9 @@ Read this first when picking the project up, from either Claude account.
   "Good people, good things." repeated the footer line). Green pill buttons are flat boxes.
 - `Claude tools/case_layout.py` does the case page layout and the More rows; build_pages.py
   calls it after every build, so new pages from the kioni.html template come out the same.
-- Still to do: full QA, merge to main, bump the `?v=` stamp, push, check live.
+- Shipped 24 Nov (evening): QA'd all 23 pages at 375x812 (phone), 1440x650, 1487x900 and
+  1920x1080 with no overflow, hidden text or console errors; merged vibe-preview into main
+  (stamp 20261124a), pushed, and checked the live home and CMBT pages.
 
 **Joey's calls, 24 Nov (evening): CMBT is the Volk Bar shoot now**
 - Joey: "why are the cmbt photos so dull? i swear there are properly edited versions", then
