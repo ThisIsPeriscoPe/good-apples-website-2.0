@@ -30,6 +30,76 @@ Read this first when picking the project up, from either Claude account.
   - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
     the brand mark.
 
+**Home rebuilt in the reference style (24 Nov, evening, vibe-preview branch)**
+- Order now: hero gif, acid ticker, a slim intro row (one 23px line plus one small paragraph),
+  the work grid straight away ("Some of the good ones", "20 projects"), services (dark, kept),
+  the studio strip (the manifesto as three short columns with a "Let's chat" box), footer.
+- The tall Bootzy statement, the tall manifesto and the giant footer email are gone.
+- New footer on every page: small columns (Studio, Elsewhere, Sitemap, Say hello) and one big
+  graphic line, "Good people make good things happen." in Bootzy, each half fitted to the full
+  width by main.js section 15 (`.ga-fit`).
+- The floating back-to-top box is hidden (Joey's no-floating-buttons rule; it covered text on
+  phones).
+- Case study pages, studio and contact now match (Part E): crumbs, the name as one fitted
+  Bootzy line (capped at 34% of the window height so short names like CMBT don't fill the
+  screen), then one short info row (hook as the single 23px line, copy in two columns, What
+  we did, Year). No cover image (the square thumb was a repeat). After the gallery, "More
+  good ones": the next four projects in home grid order. Studio's title is "Studio" (the old
+  "Good people, good things." repeated the footer line). Green pill buttons are flat boxes.
+- `Claude tools/case_layout.py` does the case page layout and the More rows; build_pages.py
+  calls it after every build, so new pages from the kioni.html template come out the same.
+- Still to do: full QA, merge to main, bump the `?v=` stamp, push, check live.
+
+**Joey's calls, 24 Nov (evening): CMBT is the Volk Bar shoot now**
+- Joey: "why are the cmbt photos so dull? i swear there are properly edited versions", then
+  "great shots but less staged and cringe", "should be a bunch of volk bar shoots" (sent the
+  Volk-against-sky Choc Cherry shot) and "scrape the internet if needed".
+- Why they were dull: the May 2024 Hydrate shoot JPEGs we used (`Best picks (Nov 2026)` 07 and
+  14) are flat Lightroom exports (Contrast -30). Graded versions of that shoot and of the Dec
+  2024 EMF athlete shoot are in CMBT's Drive: Retailer Asset Hub > Marketing Assets
+  (Product_Shots: RTDs, Hydrate+, Preworkout; Lifestyle_Shots > Athlete_With_Product; Athlete_Content).
+  Not used: Joey called the posed hand-and-can RTD shots staged and cringe.
+- Now used: the 2026 Volk Bar campaign, from CMBT's public Instagram at its full 1080px (no
+  bigger copy exists online; cmbt.com.au's Volk Bar bar shots are AI renders, `hf_` files,
+  never use). Copies in `Desktop/Good Apples/Web/Assets/CMBT/Volk Bar 2026 (Instagram)`, named
+  date_shortcode.
+  - Thumb: Volk holding Choc Cherry against sky, square (the framing Joey sent).
+  - Hero frame 13: a wide crop of the same shot, upscaled to 1800x1200 with fresh fine grain.
+  - CMBT gallery: the two Volk portraits, the three flavour cards on black, the shoot behind the
+    scenes and Volk on the production line, the fighter videos, the bars wall and the Volk Bar
+    boxes at BMF. Out: the 2024 choc bar posters, the Hydrate+ IG pair and Fast Hydration.
+- Open: the copy doesn't mention the Volk Bar or 7-Eleven (cmbt.com.au: "Volk Bars at 7-Eleven
+  nationwide"). Confirm with Joey what we did on the Volk Bar before adding it.
+
+**Joey's calls, 24 Nov (later): thumbs, hero gif, two new case studies, vibe**
+- New square work thumbs (`assets/img/work/<slug>.jpg`, 1000px), all Joey's picks or approved:
+  BSKT blue granola pour (2025 studio set), Kioni bottle on rock against sky, CMBT 2024 Hydrate
+  cans with a hand reaching (superseded the same evening by the Volk Bar shot, see above),
+  Harvest & Halo tube on lilac, TreeArc business cards, Outer Bound cold brew tray, Sprout tub on
+  the peach podium (a square crop of the brand film at 24.5s, centred, bullets cropped out),
+  Zesty Paws Christmas web hero (no text), Veteran Games high-five (VG site gallery), Take Me
+  our site design on red. Healthy Rituals: the woman in the trees for now.
+- **Healthy Rituals banner:** Joey made a banner with the HR logo on a blurred background ("for
+  find your creative platform or something"). Not found yet: checked Archive/Healthy Rituals
+  (web, brand, paid), the Good Apples folders, Drive, the old good-apples.com.au Shopify store
+  and the PeriscoPe site assets. A rebuild from `blur-img.jpg` was rejected ("that aint the
+  one, its one ive made before"). Use his original only.
+- **Take Me:** Joey says the TakeMe_Home website design IS the final design we did, which
+  corrects the 18 Nov note above that called it the other studio's concept.
+- **Rygg:** using Rygg's photos is fine because we are showcasing the packaging.
+- **Sprout search (24 Nov):** no flash or studio photography found in Drive (Sprout Animations
+  are text-heavy, the 2021 kitchen shoot and the Bilinga shoot are lifestyle, BOF Images,
+  2023 campaigns). The film frame is the approved stand-in.
+- Moving thumbs: ICONIC aura and Pharmacy Guild (square cut of the QSPP social animation from
+  its clean first frame) play on hover; Fjord's six tee mockups and Super Cubes' characters
+  loop like a gif while on screen. Files in `assets/video/thumbs/`; section 14 of main.js.
+- Hero gif: frames 02, 06, 12, 13 and 15 replaced (BSKT red fan, Kioni hand-held duo, Outer
+  Bound cold brew, CMBT Hydrate cans, Zesty Paws Christmas hero) instead of the Take Me
+  billboard, TreeArc shopfront, SMB posters, Take Me phone and SMB poster.
+- **New case studies:** Super Cubes (2020, packaging for frozen fruit purées for Woolworths)
+  and Switch Nutrition (2021–22 rebrand), copy only from the Project Showcase deck; years
+  from the Drive file dates. Media in `Desktop/Good Apples/Web/Assets/Super Cubes` and `/Switch`.
+
 **Joey's calls, 24 Nov: case study galleries curated like a studio**
 - Joey: "be mindful of what a design studio would do, look at jojestudio", "be tasteful and ensure
   content selections all compliment each other". Websites and decks go on a flat screen with padding on
@@ -47,12 +117,8 @@ Read this first when picking the project up, from either Claude account.
   she-means-business, pharmacy-guild. The others (Kioni, BSKT, Healthy Rituals, Harvest & Halo, Outer
   Bound, Take Me, ELMNT, TreeArc, Sprout) were photo-led already and are unchanged.
 - Vibe pass (Joey, 24 Nov): push the site towards Public Possession, Klasse Wrecks, Sound Metaphors and
-  Plant World. All four measured in `Claude tools/vibe-spec.md`. A home page preview is on the
-  `vibe-preview` branch (not live): flat white box nav, a slim acid-green values ticker, small Helvetica
-  Neue UI type, and the work index as a tight 4-up goods grid with tiny tags (NEW in green for 2026).
-  Board: `Desktop/Good Apples/Web/Assets/Site previews/Vibe preview - home (24 Nov).jpg`. Waiting on
-  Joey before rolling it out. Known to fix on rollout: square work thumbs need a per-card crop check
-  (TreeArc cuts its text).
+  Plant World, adapted for a studio rather than a shop. All four measured in `Claude tools/vibe-spec.md`.
+  Rolled out across every page on 24 Nov (evening); see the sections at the top of this handoff.
 
 **Joey's calls, 23 Nov: service hover cards**
 - No client label and no tilt on the card. It flips through several client
@@ -82,12 +148,13 @@ Read this first when picking the project up, from either Claude account.
   errors.
 
 **Where it's up to**
-- The site is a one-page homepage: hero, statement, banner flipbook, values
-  ticker, services, work index, manifesto, footer.
+- The homepage (since 24 Nov): hero gif, acid ticker, intro row, work grid,
+  services, studio strip, footer. Plus studio.html, contact.html and 20 case
+  pages in work/ (built with Claude tools/build_pages.py and case_layout.py).
 - It IS deployed, despite what this note said before 17 Nov:
   https://thisisperiscope.github.io/good-apples-website-2.0/ returns 200.
   GitHub Pages serves main from the repo root. Assets carry a `?v=` stamp
-  (currently 20261123c); bump it in index.html, studio.html, contact.html
+  (currently 20261124a); bump it in index.html, studio.html, contact.html
   AND in every work/*.html
   whenever CSS or JS changes, or phones serve a stale mix.
 - Done 17 Nov (second pass, personal account):
