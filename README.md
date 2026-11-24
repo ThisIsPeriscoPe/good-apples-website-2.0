@@ -30,6 +30,25 @@ Read this first when picking the project up, from either Claude account.
   - The GOOD APPLES logo stays in Archivo whatever the headings become. It is
     the brand mark.
 
+**Joey's calls, 24 Nov: case study galleries curated like a studio**
+- Joey: "be mindful of what a design studio would do, look at jojestudio", "be tasteful and ensure
+  content selections all compliment each other". Websites and decks go on a flat screen with padding on
+  black or a clean blurred background, never raw full-block recordings, and no runs of text-heavy pages.
+- Spec measured from jojestudio.com.au: `Claude tools/case-study-layout-spec.md`. build_pages.py now
+  supports `frame` (a flat screen on a solid or blurred stage), `{"type": "stage"}` rows (2 or 3 flat
+  pieces on one block) and `labels` (tiny padded corner text in the client's typeface).
+- Imagery we did not shoot (Fjord, Rygg) is fine as a hero or thumb, but in a gallery it needs a design
+  layer, e.g. labels (Fjord in Satoshi, Rygg in Space Grotesk). Their photos can also be used as blurred
+  background layers. Fjord's homepage film is out (theirs).
+- Pharmacy Guild: one block per film we made (Pharmacy has Evolved, the PAM explainer), no stills.
+- ICONIC: the logo once (aura film), then palette and type tiles, then the guidelines site scrolling on
+  a screen. Its photography belongs to the distributed brands and is never used.
+- Rebuilt 24 Nov: veteran-games, rygg, iconic-beverages, zesty-paws, bikechain, fjord, cmbt,
+  she-means-business, pharmacy-guild. The others (Kioni, BSKT, Healthy Rituals, Harvest & Halo, Outer
+  Bound, Take Me, ELMNT, TreeArc, Sprout) were photo-led already and are unchanged.
+- Next (Joey, 24 Nov): push the overall site vibe towards Public Possession, Klasse Wrecks, Sound
+  Metaphors and Plant World, adapted for a studio rather than a shop. Not started.
+
 **Joey's calls, 23 Nov: service hover cards**
 - No client label and no tilt on the card. It flips through several client
   images for that service "like a gif", and they must be "beautiful
